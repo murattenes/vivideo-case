@@ -1,0 +1,287 @@
+{
+  "_schema": "Two observations per field: researchObservation (hands-on, immutable) and latestCheck (watcher). See scripts/freshness/validate-pricing.mjs for the invariant.",
+  "meta": {
+    "researchWindow": { "from": "2026-07-25", "to": "2026-08-01" },
+    "note": "Two independent observations per field. `researchObservation` is what was seen during hands-on testing and never changes. `latestCheck` is what the freshness watcher last read. A field unknown during research and known now is NOT a price change — it was simply never recorded.",
+    "statusValues": ["observed", "unknown", "not_applicable"]
+  },
+
+  "products": {
+    "vivideo": {
+      "name": "Vivideo",
+      "sourceUrl": "https://vivideo.ai/pricing",
+      "planTested": "MAX",
+      "fields": {
+        "plans": {
+          "researchObservation": {
+            "value": [{ "name": "MAX", "note": "Plan used for all benchmark runs" }],
+            "observedAt": "2026-07-25",
+            "status": "observed"
+          },
+          "latestCheck": {
+            "value": [
+              { "name": "Pro", "headline": "$2/week", "billedYearly": "$99", "weeklyOption": "$9/week", "credits": "30 credits/week" },
+              { "name": "Max", "headline": "$4/week", "billedYearly": "$199", "weeklyOption": "$19/week", "credits": "100 credits/week" }
+            ],
+            "observedAt": "2026-08-01",
+            "status": "observed"
+          }
+        },
+        "pricingFraming": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": {
+            "value": "Headline price is per WEEK but billed once yearly. Banner reads 'Save up to 79%'. Weekly-billing alternative is 4.5x the yearly-equivalent weekly rate ($9/wk vs $2/wk).",
+            "observedAt": "2026-08-01",
+            "status": "observed"
+          }
+        },
+        "currency": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": "USD", "observedAt": "2026-08-01", "status": "observed" }
+        },
+        "freePlanLimits": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "watermarkRule": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "maxExportResolution": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        }
+      }
+    },
+
+    "heygen": {
+      "name": "HeyGen",
+      "sourceUrl": "https://www.heygen.com/pricing",
+      "planTested": "Creator",
+      "fields": {
+        "plans": {
+          "researchObservation": {
+            "value": [{ "name": "Creator", "price": "$29", "period": "month", "note": "Purchased for testing; localized label 'Oluşturucu'" }],
+            "observedAt": "2026-07-26",
+            "status": "observed"
+          },
+          "latestCheck": {
+            "value": [{ "prices": ["$0", "$29", "$49", "$149"], "note": "Ordered price ladder read from the pricing page" }],
+            "observedAt": "2026-08-01",
+            "status": "observed"
+          }
+        },
+        "currency": {
+          "researchObservation": { "value": "USD", "observedAt": "2026-07-26", "status": "observed" },
+          "latestCheck": { "value": "USD", "observedAt": "2026-08-01", "status": "observed" }
+        },
+        "includedCredits": {
+          "researchObservation": {
+            "value": "Sufficient for ~11 generated videos with credits remaining",
+            "observedAt": "2026-07-27",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "watermarkRule": {
+          "researchObservation": {
+            "value": "Free-tier generated videos carry a HeyGen watermark",
+            "observedAt": "2026-07-26",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "maxExportResolution": {
+          "researchObservation": {
+            "value": "1080p gated behind upgrade; download and editing also prompt upgrade",
+            "observedAt": "2026-07-26",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "freePlanLimits": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        }
+      }
+    },
+
+    "invideo": {
+      "name": "InVideo AI",
+      "sourceUrl": "https://invideo.io/pricing/",
+      "planTested": "Plus",
+      "watcherLimitation": "Pricing is client-rendered. No prices in static HTML — page-level changes are detected, but price values require a manual check.",
+      "fields": {
+        "plans": {
+          "researchObservation": {
+            "value": [{ "name": "Plus", "price": "$20", "period": "month", "charged": "TRY 985.87" }],
+            "observedAt": "2026-07-29",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": "2026-08-01", "status": "unknown" }
+        },
+        "currency": {
+          "researchObservation": { "value": "USD (charged in TRY)", "observedAt": "2026-07-29", "status": "observed" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "freePlanLimits": {
+          "researchObservation": {
+            "value": "Initial free allowance too small to complete meaningful generation after agent setup",
+            "observedAt": "2026-07-29",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "watermarkRule": {
+          "researchObservation": {
+            "value": "Paid plan purchased specifically for unwatermarked export",
+            "observedAt": "2026-07-29",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "maxExportResolution": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        }
+      }
+    },
+
+    "pollo": {
+      "name": "Pollo AI",
+      "sourceUrl": "https://pollo.ai/pricing",
+      "planTested": "Lite",
+      "watcherLimitation": "Returns HTTP 403 to non-browser clients (Cloudflare). Automated checks fail by design; verify manually in a browser.",
+      "fields": {
+        "plans": {
+          "researchObservation": {
+            "value": [{ "name": "Lite", "price": "$15", "period": "month" }],
+            "observedAt": "2026-07-27",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": "2026-08-01", "status": "unknown" }
+        },
+        "currency": {
+          "researchObservation": { "value": "USD", "observedAt": "2026-07-27", "status": "observed" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "includedCredits": {
+          "researchObservation": {
+            "value": "~5 videos using Pollo's lower-cost models; felt restrictive relative to other tested plans",
+            "observedAt": "2026-07-27",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "watermarkRule": {
+          "researchObservation": {
+            "value": "Free export retains a Pollo watermark; watermark-free download reserved for members",
+            "observedAt": "2026-07-27",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "freePlanLimits": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "maxExportResolution": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        }
+      }
+    },
+
+    "revid": {
+      "name": "Revid.ai",
+      "sourceUrl": "https://www.revid.ai/pricing",
+      "planTested": "Growth",
+      "fields": {
+        "plans": {
+          "researchObservation": {
+            "value": [{ "name": "Growth", "price": "$39", "period": "month", "note": "Most expensive plan purchased for testing" }],
+            "observedAt": "2026-07-30",
+            "status": "observed"
+          },
+          "latestCheck": {
+            "value": [{ "prices": ["$39", "$99", "$199"], "note": "Ordered price ladder read from the pricing page; $39 matches the tested Growth plan" }],
+            "observedAt": "2026-08-01",
+            "status": "observed"
+          }
+        },
+        "currency": {
+          "researchObservation": { "value": "USD", "observedAt": "2026-07-30", "status": "observed" },
+          "latestCheck": { "value": "USD", "observedAt": "2026-08-01", "status": "observed" }
+        },
+        "includedCredits": {
+          "researchObservation": {
+            "value": "Credit allowance felt generous despite being the most expensive tested plan",
+            "observedAt": "2026-07-30",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "freePlanLimits": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "watermarkRule": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "maxExportResolution": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        }
+      }
+    },
+
+    "runway": {
+      "name": "Runway",
+      "sourceUrl": "https://runway.com/pricing",
+      "planTested": "Standard",
+      "fields": {
+        "plans": {
+          "researchObservation": {
+            "value": [{ "name": "Standard", "price": "$15", "period": "month", "charged": "TRY 886.84 incl. VAT" }],
+            "observedAt": "2026-07-28",
+            "status": "observed"
+          },
+          "latestCheck": {
+            "value": [{ "prices": ["$0", "$12", "$15", "$28", "$35", "$36", "$76", "$84", "$95", "$228"], "note": "Ordered price ladder; includes monthly and annual-equivalent figures. $15 matches the tested Standard plan." }],
+            "observedAt": "2026-08-01",
+            "status": "observed"
+          }
+        },
+        "currency": {
+          "researchObservation": { "value": "USD (charged in TRY, incl. VAT)", "observedAt": "2026-07-28", "status": "observed" },
+          "latestCheck": { "value": "USD", "observedAt": "2026-08-01", "status": "observed" }
+        },
+        "freePlanLimits": {
+          "researchObservation": {
+            "value": "Free allocation permitted image generation but did not provide expected video generation access in the tested account",
+            "observedAt": "2026-07-28",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "includedCredits": {
+          "researchObservation": {
+            "value": "Credits remained after five benchmark videos, helped by credits earned through quests",
+            "observedAt": "2026-07-29",
+            "status": "observed"
+          },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "watermarkRule": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        },
+        "maxExportResolution": {
+          "researchObservation": { "value": null, "observedAt": null, "status": "unknown" },
+          "latestCheck": { "value": null, "observedAt": null, "status": "unknown" }
+        }
+      }
+    }
+  }
+}

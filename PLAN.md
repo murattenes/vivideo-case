@@ -9,8 +9,8 @@ _Revision 3. Freshness checker is now **fully deterministic — no API calls**. 
 | Phase | Status |
 |---|---|
 | 1 — Repo scaffold | ✅ **Done** |
-| 2 — Minimal deploy | ⏳ Pushed, CI `build` green. **Blocked:** enable Settings → Pages → Source = GitHub Actions |
-| 3 — Pricing data model | ☐ Not started |
+| 2 — Minimal deploy | ✅ **Done** — live at https://murattenes.github.io/vivideo-case/ |
+| 3 — Pricing data model | ⏳ In progress |
 | 4 — Freshness checker (no API) | ☐ Not started |
 | 5 — Executive summary | ☐ Not started |
 | 6 — Remaining content | ☐ Not started |
@@ -150,7 +150,17 @@ Same rule for nav links, evidence images, and any fetched data file. Set `site` 
 
 ---
 
-## Phase 2 — Minimal deploy ⏳ IN PROGRESS
+## Phase 2 — Minimal deploy ✅ DONE
+
+**Live: https://murattenes.github.io/vivideo-case/** — run #2 green, both jobs.
+
+Verified against the deployed URL (not just local preview, which cannot catch base-path bugs): page `HTTP 200`, probe asset `HTTP 200 image/svg+xml`, all 12 emitted paths prefixed `/vivideo-case/`, zero double slashes.
+
+Actions bumped to current majors — checkout v7, setup-node v7, upload-pages-artifact v5, deploy-pages v5 — clearing the Node 20 deprecation warnings. Input surface unchanged for the options used.
+
+<details>
+<summary>Original Phase 2 detail</summary>
+
 
 Ship one page with a nav link and one image before writing real content. Confirms `base`, the Actions workflow, and Pages settings in one pass, and catches the path bug from Phase 1 while there is one asset to fix instead of forty.
 
@@ -182,6 +192,8 @@ Nine of the CSVs were header-only. **Two held real content, captured before dele
 - **Evidence records** for `VIVI-GEN-001/002` screenshots, including the note that both display account name and credit balance and must be sanitized before publication.
 
 **Follow-up:** top-level `README.md` still documents the old research-kit workflow and points at deleted files (`data/`, `research/scoring-rubric.md`). It is the repo's front page — replace it during Phase 6.
+
+</details>
 
 ---
 

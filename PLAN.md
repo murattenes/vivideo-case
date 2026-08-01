@@ -14,7 +14,7 @@ _Revision 3. Freshness checker is now **fully deterministic — no API calls**. 
 | 4 — Freshness checker (no API) | ⏸️ **Deferred** by request — foundation built & verified in Phase 3; finish after the site presents well |
 | 5 — Design system + executive summary | ✅ **Done** — https://murattenes.github.io/vivideo-case/executive-summary/ |
 | 6 — Remaining content | ✅ **Done** — all 9 pages live |
-| 7 — Media pipeline | ☐ Not started |
+| 7 — Media pipeline | ✅ **Done** — 30 players + 25 session-recording links live |
 | 8 — Privacy pass | ☐ Not started |
 | 9 — Deploy | ☐ Not started |
 
@@ -459,7 +459,32 @@ Only one main run per product/workflow. State the single-run limit on the page i
 
 ---
 
-## Phase 7 — Media pipeline
+## Phase 7 — Media pipeline ✅ DONE
+
+### Built
+
+- 30 JPEG posters (ffmpeg, 540w, 1.1 MB total — this ffmpeg build lacks a WebP encoder).
+- `media-manifest.json`: every (product, prompt) → Drive output file ID + session-recording ID where one exists (25/30; Vivideo has none). IDs enumerated from the shared folder via `embeddedfolderview` — no API key needed.
+- `BenchmarkCard`: local poster, click swaps in Drive `/preview` iframe, zero video bytes before click; session recordings link out beneath cards; Vivideo cards purple-bordered.
+- Drive files verified **publicly accessible unauthenticated** (outputs + a recording).
+
+### Duration ground-truthing
+
+ffprobe over all 30 outputs vs the compare files: consistent under floor-of-player rounding, except **Runway AVATAR-01 = 17.0s vs recorded 16s** — corrected to 17s (video wins).
+
+### Revid corrections settled by dated screenshots
+
+- **Affiliate: 20% lifetime** (+20 credits once verified), code **auto-embedded into shared videos**. The earlier 50% note was wrong. (Screenshot 2026-07-30)
+- **25-credit publish reward requires “revid.ai” in the caption** — attribution as a condition. (Screenshot 2026-07-31)
+
+Updated on distribution / competitors / strategy / exec summary; print still 1 page.
+
+### ⚠️ OPEN PRIVACY ISSUE — user action required
+
+The Drive share was applied to the **root folder**, so **`receipts/` is publicly reachable** (heygen.pdf, invideo.pdf, polloai, revidai, runway.pdf — verified accessible without login). The spend report explicitly says checkout captures contain billing data and must not be published. **Fix: move `receipts` out of the shared `vivi` folder** (moving it out removes public access; competitor folders stay shared). Screen recordings being public is a deliberate evidence choice and is fine — they show account name/credit balance, already user-approved for sharing.
+
+### Original Phase 7 plan
+
 
 **Posters.** One script over the 30 outputs. Match on the `-{agent,ad,t2v,i2v,avatar}01.mp4` suffix, not a product prefix — the filenames use `vivideo-`, `pollo-`, `revidai-`, `heygen-`, `invideo-`, `runway-` inconsistently. Seek ~15% in, scale to 540px, WebP q75 → `site/public/posters/`. Capture true duration via `ffprobe`. ~30 KB each, ~1 MB total.
 

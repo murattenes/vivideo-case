@@ -7,7 +7,7 @@ const recs = [
     n: 1,
     title: 'Make approval a binding Generation Contract',
     problem:
-      'Vivideo showed 9 credits and charged 15; approved 12 and charged 21; previewed 18 seconds and delivered 34. A separate 6-credit estimate charged exactly 6 — the estimates are unreliable, not consistently inflated, which is worse for trust. HeyGen’s plan diverged too (18s plan → 45s delivered). Credit complaints recur in the reviews of all six products.',
+      'Vivideo’s displayed cost and generated plan were not consistently reliable, while the selected review sample repeatedly describes credits lost on failures, unusable output or correction. Duration drift is one supporting example of the broader predictability problem.',
     what: [
       'Before charging: show prompt, interpreted brief, scene plan, target duration with tolerance, selected model and why, maximum credit charge, resolution/watermark status, and the failure-restoration rule.',
       'After approval: never exceed the ceiling without re-asking; keep duration within tolerance; correct a material mismatch without a second charge; restore credits automatically on technical failure; keep the contract and the actual result in project history.',
@@ -62,7 +62,7 @@ const recs = [
     n: 5,
     title: 'Turn sharing into a measurable distribution engine',
     problem:
-      'Vivideo has a share button and no loop: nothing measures or rewards what a share produces. Competitors run referral (Pollo 50/200), branded-caption publishing rewards (Revid +25 for posting with “revid.ai” in the caption), quests (Runway) and affiliates (Pollo ≤30%, Revid 20% lifetime with the code auto-embedded in shared videos).',
+      'Post-generation sharing was the only Vivideo distribution mechanism verified in this study; no referral, publishing reward or downstream measurement was observed. Competitors run referral (Pollo 50/200), branded-caption publishing rewards (Revid +25), quests (Runway) and affiliates (Pollo ≤30%, Revid 20% lifetime).',
     what: [
       'Referral paid on activation and upgrade, not signup. Publishing rewards tied to measured downstream value, not upload count. Quests that teach high-value behaviour: complete a brand kit, correct one scene instead of regenerating, publish in two formats, reuse a character.',
       'Affiliate program last, once first-output acceptance and retention are healthy — paid traffic into an untrusted funnel amplifies complaints.',
@@ -157,7 +157,8 @@ const threats = [
         <em>not another model marketplace.</em>
       </h1>
       <p class="stand">
-        Model access is rentable; every product tested proves it. The durable
+        Several tested products route across the same third-party model families,
+        while their surrounding workflows remain visibly different. The durable
         position is the layer between a user’s intent and a publishable video:
         approved plan → transparent routing → editable draft → measured
         publishing. Priced not in model count but in

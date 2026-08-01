@@ -222,7 +222,7 @@
           "autoSelected": true,
           "requested": "10s",
           "actual": "11s",
-          "note": "The mug text never changed from PAUSE to PLAY, and the pinwheel stopped instead of completing the rotation.",
+          "note": "The pinwheel rotated more than the requested approximately one full clockwise turn; the mug text also did not change from PAUSE to PLAY.",
           "flag": "constraint"
         },
         {
@@ -232,7 +232,7 @@
           "autoSelected": true,
           "requested": "10–15s",
           "actual": "12s",
-          "note": "Pinwheel dropped from its position; camera departed from the requested stable push-in.",
+          "note": "The pinwheel rotated more than the requested approximately one full clockwise turn, dropped from its position, and the camera departed from the stable push-in.",
           "flag": "constraint"
         },
         {
@@ -242,8 +242,8 @@
           "autoSelected": false,
           "requested": "12s",
           "actual": "12s",
-          "note": "Preserved the scene and completed the requested motion — the cleanest run of the six.",
-          "flag": null
+          "note": "Preserved the source scene best, but the pinwheel rotated more than the requested approximately one full clockwise turn.",
+          "flag": "constraint"
         },
         {
           "product": "pollo",
@@ -252,8 +252,8 @@
           "autoSelected": false,
           "requested": "15s",
           "actual": "15s",
-          "note": "Complete result; no major first-run failure recorded.",
-          "flag": null
+          "note": "Produced a complete result, but the pinwheel rotated more than the requested approximately one full clockwise turn.",
+          "flag": "constraint"
         },
         {
           "product": "revid",
@@ -262,8 +262,8 @@
           "autoSelected": true,
           "requested": "10s",
           "actual": "10s",
-          "note": "Complete result; no major first-run failure recorded.",
-          "flag": null
+          "note": "Produced a complete result, but the pinwheel rotated more than the requested approximately one full clockwise turn.",
+          "flag": "constraint"
         },
         {
           "product": "runway",
@@ -272,7 +272,7 @@
           "autoSelected": false,
           "requested": "10s",
           "actual": "10s",
-          "note": "Limited motion and temporal inconsistency across the shot.",
+          "note": "The pinwheel rotated more than the requested approximately one full clockwise turn, with limited motion and temporal inconsistency elsewhere in the shot.",
           "flag": "constraint"
         }
       ]

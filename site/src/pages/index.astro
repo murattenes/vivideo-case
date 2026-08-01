@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Divergence from '../components/Divergence.astro';
 import { route } from '../lib/url';
 
 const stats = [
@@ -8,7 +7,7 @@ const stats = [
   { n: '5', label: 'fixed prompts, run everywhere' },
   { n: '30', label: 'first-run outputs kept' },
   { n: '59', label: 'user reviews coded' },
-  { n: '$118', label: 'spent on subscriptions' },
+  { n: '$118', label: 'spent on five competitor subscriptions' },
   { n: '8', label: 'days, 25 Jul – 1 Aug' },
 ];
 
@@ -22,7 +21,7 @@ const sections = [
   {
     href: 'benchmarks',
     title: 'Benchmarks',
-    hook: 'Five prompts × six products: workflow, model, requested vs. delivered duration, first-run notes.',
+    hook: 'Five prompts × six products: workflow, model, constraint adherence, and first-run evidence.',
     kicker: '30 runs',
   },
   {
@@ -75,26 +74,25 @@ const sections = [
     <header class="hero">
       <p class="eyebrow">Case study · competitor product analysis · 2026</p>
       <h1>
-        Six AI video products promise a plan.<br />
-        <em>We measured what they deliver.</em>
+        The model generates.<br />
+        <em>The product determines whether users stay in control.</em>
       </h1>
       <p class="stand">
         First-hand teardown of Vivideo against Pollo AI, InVideo AI, Revid.ai,
-        HeyGen and Runway — same five prompts, paid accounts, every session
-        recorded. The recurring finding isn't that outputs vary. It's that
-        <strong>approval doesn't bind</strong>: estimates, durations and models
-        drift after the user says yes.
+        HeyGen and Runway — five frozen prompts, six paid-plan accounts, and 30
+        preserved first outputs. Output quality varied; the more durable
+        differences were <strong>control around the model</strong>: how clearly
+        cost and routing were explained, whether an imperfect result could be
+        corrected, whether creator context persisted, and whether publishing
+        created a measurable loop.
       </p>
 
-      <div class="hero-proof">
-        <Divergence
-          label="Vivideo: agent plan approved at"
-          approved={12}
-          delivered={21}
-          unit=" cr"
-          source="one of four measured divergences — see the summary"
-        />
-      </div>
+      <ol class="control-chain" aria-label="The controllable creation opportunity">
+        <li><span class="eyebrow">Plan</span><strong>Clear cost, model and limits</strong></li>
+        <li><span class="eyebrow">Generate</span><strong>Visible routing and settings</strong></li>
+        <li><span class="eyebrow">Correct</span><strong>Targeted fixes, not full regeneration</strong></li>
+        <li><span class="eyebrow">Publish</span><strong>Sharing connected to measurable loops</strong></li>
+      </ol>
 
       <p class="cta-row">
         <a class="cta" href={route('executive-summary')}>Read the executive summary</a>
@@ -160,9 +158,42 @@ const sections = [
     color: var(--ink);
   }
 
-  .hero-proof {
-    max-width: 30rem;
-    margin-bottom: 1.6rem;
+  .control-chain {
+    list-style: none;
+    margin: 0 0 1.6rem;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+  .control-chain li {
+    padding: 0.75rem 0.8rem 0.8rem 0;
+  }
+  .control-chain li + li {
+    padding-left: 0.8rem;
+    border-left: 1px solid var(--rule);
+  }
+  .control-chain span,
+  .control-chain strong {
+    display: block;
+  }
+  .control-chain strong {
+    margin-top: 0.18rem;
+    font-family: var(--display);
+    font-size: 0.88rem;
+    line-height: 1.25;
+  }
+  @media (max-width: 42rem) {
+    .control-chain {
+      grid-template-columns: 1fr 1fr;
+    }
+    .control-chain li:nth-child(3) {
+      border-left: 0;
+    }
+    .control-chain li:nth-child(n + 3) {
+      border-top: 1px solid var(--rule);
+    }
   }
 
   .cta-row {

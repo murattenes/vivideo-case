@@ -1,61 +1,80 @@
 ---
 import Base from '../layouts/Base.astro';
 import { route } from '../lib/url';
+import current from '../data/freshness/current.json';
+import watcherStatus from '../data/freshness/status.json';
 
-// Curated view over the two-observation pricing model. researchObservation is
-// immutable hands-on data; latestCheck is what the page-watcher read on
-// 2026-08-01. A field unknown during research and known now renders as "not
-// recorded during testing", never as a detected change.
-const rows = [
+const researchRows = [
   {
     id: 'vivideo',
     tested: 'MAX plan (all benchmark runs)',
     paid: '—',
-    current: 'Pro $2/wk billed $99/yr · Max $4/wk billed $199/yr · weekly option $9 / $19 per wk',
-    status: 'observed 2026-08-01',
     note: 'Pricing not recorded during the research window — the current column is the watcher’s first read, not a change.',
   },
   {
     id: 'heygen',
     tested: 'Creator · $29/mo',
     paid: '$29.00',
-    current: 'Price ladder $0 / $29 / $49 / $149 — $29 still present',
-    status: 'observed 2026-08-01',
     note: 'Free tier watermarks output; 1080p, download and editing gated behind upgrades (observed in testing).',
   },
   {
     id: 'invideo',
     tested: 'Plus · $20/mo',
     paid: '$20.00 (charged TRY 985.87)',
-    current: 'Read weekly by the watcher — $17/mo tier upward, monthly and yearly',
-    status: 'client-rendered, read via headless browser',
     note: 'Static HTML has no prices at all; rendering the page in a real browser makes them readable.',
   },
   {
     id: 'pollo',
     tested: 'Lite · $15/mo',
     paid: '$15.00',
-    current: 'Read weekly by the watcher — Lite $15/mo, $10/mo billed yearly',
-    status: 'Cloudflare-protected, read via headless browser',
-    note: 'Returns HTTP 403 to plain HTTP clients; a real browser with automation fingerprinting disabled gets through.',
+    note: 'Monthly pricing is captured automatically; the annual toggle requires the dated manual verification shown by the watcher.',
   },
   {
     id: 'revid',
     tested: 'Growth · $39/mo',
     paid: '$39.00',
-    current: 'Price ladder $39 / $99 / $199 — $39 still present',
-    status: 'observed 2026-08-01',
     note: 'Most expensive tested plan; pricing link sits below the homepage fold.',
   },
   {
     id: 'runway',
     tested: 'Standard · $15/mo',
     paid: '$15.00 (charged TRY 886.84 incl. VAT)',
-    current: 'Price ladder includes $12–$228 across tiers — $15 still present',
-    status: 'observed 2026-08-01',
     note: 'Free allocation permitted image generation but not the expected video access (observed in testing).',
   },
 ];
+
+const period = (value: string | null | undefined) =>
+  value === 'month' ? 'mo' : value === 'week' ? 'wk' : value === 'year' ? 'yr' : value ?? '';
+
+const planText = (plan: any) => {
+  const monthly = plan.monthly?.price
+    ? `${plan.monthly.price}/${period(plan.monthly.period)}`
+    : 'monthly not captured';
+  const yearly = plan.yearly?.price
+    ? `annual ${plan.yearly.price}/${period(plan.yearly.period)}${plan.yearly.billedTotal ? ` billed ${plan.yearly.billedTotal}/yr` : ''}`
+    : null;
+  return `${plan.name}: ${monthly}${yearly ? ` · ${yearly}` : ''}`;
+};
+
+const statusText = (status: any) => {
+  if (!status?.status) return 'not checked';
+  const label = status.status === 'unchanged' ? 'no change' : status.status.replaceAll('_', ' ');
+  const date = status.checkedAt ? new Date(status.checkedAt).toISOString().slice(0, 10) : null;
+  return date ? `${label} · ${date}` : label;
+};
+
+const rows = researchRows.map((row) => {
+  const snapshot = (current.products as Record<string, any>)[row.id];
+  const status = (watcherStatus.products as Record<string, any>)[row.id];
+  return {
+    ...row,
+    current: snapshot?.plans?.length
+      ? snapshot.plans.map(planText).join(' | ')
+      : 'No successful pricing snapshot',
+    status: statusText(status),
+    watcherNote: status?.yearlyNote ?? null,
+  };
+});
 
 const names: Record<string, string> = {
   vivideo: 'Vivideo', heygen: 'HeyGen', invideo: 'InVideo AI',
@@ -125,6 +144,7 @@ const spend = [
                   <td>
                     {r.current}
                     <span class="cell-note">{r.note}</span>
+                    {r.watcherNote && <span class="cell-note">{r.watcherNote}</span>}
                   </td>
                   <td class="n status">{r.status}</td>
                 </tr>
@@ -134,11 +154,12 @@ const spend = [
         </table>
       </div>
       <p class="fineprint">
-        Snapshot data: <code>site/src/data/pricing.json</code> — every field
-        carries an immutable research observation and a dated latest check,
-        with <code>unknown</code> stated rather than guessed. Automated checks
-        honestly report two failures: Pollo blocks non-browser clients (HTTP
-        403) and InVideo renders pricing client-side.
+        Tested-plan and paid-price observations remain fixed research evidence.
+        The current column is rendered directly from
+        <code>site/src/data/freshness/current.json</code>, so Pricing and
+        Freshness cannot silently present different live values. The dated
+        watcher status is shown separately; Pollo's annual toggle is explicitly
+        marked as manually verified rather than automatically captured.
       </p>
     </section>
 
@@ -197,8 +218,9 @@ const spend = [
     <section aria-labelledby="cancel-h">
       <h2 id="cancel-h">Cancellation friction, ranked</h2>
       <p class="sec-note">
-        Every subscription above was actually cancelled, on camera. Ordered
-        from easiest exit to hardest.
+        All six cancellation journeys were recorded. Five reached confirmation
+        through the product or billing portal; Vivideo required support
+        follow-up. Ordered from easiest exit to hardest.
       </p>
       <div class="scroll-x">
         <table>

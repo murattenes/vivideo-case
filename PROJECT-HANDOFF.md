@@ -87,7 +87,7 @@ Important caveats:
 
 ## 5. Generated-output evidence and file naming
 
-Each `competitors/<product>/` folder contains generated outputs and full screen recordings.
+Each `competitors/<product>/` folder contains generated outputs. Approximately 25 competitor onboarding/run recordings are preserved; the five Vivideo benchmark sessions do not have linked run recordings in the current media manifest.
 
 Current naming convention:
 
@@ -135,11 +135,12 @@ These files use comma-separated rows despite the `.md` extension. They contain t
 
 #### I2V-01
 
-- InVideo preserved the scene and completed the requested motion without the major instability seen in weaker outputs.
-- HeyGen displaced the pinwheel and departed from the requested stable push-in.
-- Runway used limited motion and showed temporal inconsistency.
-- Vivideo failed the PAUSE-to-PLAY mug-text change and stopped the pinwheel instead of completing the requested rotation.
-- Pollo and Revid produced complete results without another major first-run failure recorded in the notes.
+- Every product rotated the red pinwheel more than the requested approximately one full clockwise turn.
+- InVideo preserved the source scene best despite missing the one-turn constraint.
+- HeyGen also displaced the pinwheel and departed from the requested stable push-in.
+- Runway also used limited motion and showed temporal inconsistency.
+- Vivideo also failed the PAUSE-to-PLAY mug-text change.
+- Pollo and Revid produced otherwise complete results, but still missed the one-turn constraint.
 
 #### AVATAR-01
 

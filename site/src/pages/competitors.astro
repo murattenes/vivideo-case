@@ -13,11 +13,11 @@ const profiles = [
     strongest:
       'The agent produced the most complete first-run educational short of all six products — when it works, the end-to-end flow is genuinely good.',
     weakness:
-      'Approval binds nothing: credit estimates (9→15, 12→21) and plan durations (18s→34s) drifted after consent. The submitted prompt is not visible after generation, one item showed a wrong relative timestamp, and cancellation ends in an email to support.',
+      'Cost estimates were not consistently reliable (9→15 and 12→21 credits). The submitted prompt is not visible after generation, no focused correction layer was found, one item showed a wrong relative timestamp, and cancellation ends in an email to support.',
     firstRun:
-      'Strongest AGENT-01 of the six; weakest T2V-01 (shaking still image plus narration on a no-audio prompt) and a failed I2V-01 (no text change, stopped pinwheel).',
+      'Strongest AGENT-01 of the six; weakest T2V-01 (shaking still image plus narration on a no-audio prompt). In I2V-01 the pinwheel exceeded the requested one turn and the mug text did not change.',
     implication:
-      'The gaps are trust and control, not capability. Fixing the contract between plan and delivery is cheaper than any model upgrade — and it is the one fix competitors have not made either.',
+      'The gaps are predictability, control and recoverability—not the absence of generation capability. Improve the workflow around the model before adding more models.',
   },
   {
     id: 'heygen',
@@ -29,11 +29,11 @@ const profiles = [
     strongest:
       'The guided brief. Asking a few questions before generating produced the most coherent multi-scene structures — and its avatar quality is the one thing its own reviewers consistently praise.',
     weakness:
-      'Its plan diverges too (an 18s plan delivered 45s in one run; AGENT-01 overshot the range; AD-01 undershot by 5s), generation is slow (~11 min), and if you idle after the plan it proceeds on its own. Free tier watermarks, gates 1080p, download and editing behind upgrade prompts.',
+      'The guided plan did not always predict the final output, generation was slow (~11 min for AGENT-01), and if the user idled after planning the product proceeded on its own. The free tier watermarks output and gates 1080p, download and editing behind upgrade prompts.',
     firstRun:
-      'Complete results on every prompt; duration misses on AGENT-01 and AD-01; displaced pinwheel on I2V-01. Credits felt generous — roughly 11 videos with allowance remaining.',
+      'Complete results on every prompt; strongest avatar specialization, coherent agent/ad structure, and object instability in I2V-01. Credits felt generous — roughly 11 videos with allowance remaining.',
     implication:
-      'Steal the guided brief and pre-generation plan — then make the approved values binding, which HeyGen never does. Its divergence proves planning without commitment is theatre.',
+      'Steal the guided brief and pre-generation plan, then improve it with clear cost, settings and an explicit confirmation before generation proceeds.',
   },
   {
     id: 'pollo',
@@ -43,7 +43,7 @@ const profiles = [
     positioning:
       'One interface over many underlying models, with a large tool/use-case library grouped by marketing, e-commerce, social media and music.',
     strongest:
-      'Distribution mechanics: two-sided referral (50 credits each at signup, 200 each at upgrade, shareable to six destinations), an affiliate program advertising up to 30%, and watermarked free export. Also the shortest, most direct cancellation flow of the six.',
+      'Distribution mechanics: two-sided referral (50 credits each at signup, 200 each at upgrade, shareable to five social destinations plus a copied link), an affiliate program advertising up to 30%, and watermarked free export. Also the shortest, most direct cancellation flow of the six.',
     weakness:
       'Credits are restrictive — roughly 5 videos on the cheapest in-house models. The interface felt crowded during testing, the duration selector silently overrides the prompt, and its reviewers complain about prompt adherence and double monetization (subscribing, then still buying credits).',
     firstRun:
@@ -59,7 +59,7 @@ const profiles = [
     positioning:
       'A prompt-to-finished-video agent that generates short clips and assembles them into complete videos, with an Explore gallery of examples whose prompts can be inspected and copied.',
     strongest:
-      'The agent’s assembly. Generating short Seedance clips from frames and stitching them produced the cleanest I2V run and range-accurate durations. The Explore gallery with copyable prompts is the best blank-page cure of the six.',
+      'The agent’s assembly. Generating short Seedance clips from frames and stitching them produced the cleanest I2V scene preservation. The Explore gallery with copyable prompts is the best blank-page cure of the six.',
     weakness:
       'The free allowance died during agent setup, before a single generation. The agent defaults to strong, expensive models — good output, fast credit burn. Cancellation used a multi-step survey that rejected meaningless free-text answers.',
     firstRun:
@@ -108,7 +108,6 @@ const landscape = [
   { name: 'Pika', note: 'creative effects, short clips' },
   { name: 'Synthesia', note: 'enterprise avatar / training video' },
   { name: 'Captions', note: 'social-native avatar + auto editing' },
-  { name: 'Fliki', note: 'briefly probed: series feature for channel owners; 3 free credits; free export capped at 720p MP4' },
 ];
 ---
 

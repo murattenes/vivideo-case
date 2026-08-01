@@ -23,8 +23,9 @@ const isBaseline = (id: string) => (products as Record<string, { name: string; b
       <h1>Same prompts, thirty first runs</h1>
       <p class="stand">
         Every product received the same five prompts and the same source assets,
-        on a paid plan, with the full session screen-recorded. The first output
-        was kept — no retries, no cherry-picking.
+        on a paid plan. All 30 first outputs were preserved, and approximately
+        25 competitor sessions were screen-recorded — no retries, no
+        cherry-picking.
       </p>
     </header>
 
@@ -125,29 +126,30 @@ const isBaseline = (id: string) => (products as Record<string, { name: string; b
       <h2 id="reading-h">What the thirty runs add up to</h2>
       <ul>
         <li>
-          <strong>Duration misses cluster where the product decides.</strong>
-          Vivideo's 34s on a 15–20s ask, HeyGen's 21s and 15s misses, Revid's
-          14s on a 17s ask — every one sits on a run where the product planned
-          or auto-selected. Where we set the duration ourselves on a manual
-          model, it was delivered exactly, every time.
-        </li>
-        <li>
-          <strong>Prohibitions fail harder than requests.</strong> The
-          T2V-01 violations — Vivideo narrating a no-audio prompt, Revid's
-          stationary boat — have no user workaround. You can ask again for
-          more; you cannot ask harder for less.
-        </li>
-        <li>
-          <strong>Source fidelity is the hardest test.</strong> I2V-01's
-          PAUSE→PLAY text change was completed by nobody. InVideo came closest
-          by preserving the scene and motion; Vivideo and HeyGen both broke the
-          scene itself.
-        </li>
-        <li>
-          <strong>The model column explains less than the workflow column.</strong>
+          <strong>The workflow explains more than the model label.</strong>
           Seedance 2.0 variants appear behind InVideo's cleanest runs and
-          Runway's self-capped 10s run alike. Orchestration — what the product
-          did around the model — is what varied.
+          Runway's self-capped 10s run alike. Prompt rewriting, routing, clip
+          assembly and post-processing changed what the same visible prompt
+          became.
+        </li>
+        <li>
+          <strong>I2V-01 was the hardest benchmark in this test set.</strong>
+          Every output rotated the red pinwheel more than the requested
+          approximately one full clockwise turn. InVideo preserved the source
+          scene best; other runs also introduced object or temporal instability.
+        </li>
+        <li>
+          <strong>Hard constraints created the most consequential failures.</strong>
+          Vivideo added narration to a no-audio prompt, Revid left the boat
+          stationary, and the I2V rotation constraint failed everywhere. These
+          are correction problems, not small quality differences.
+        </li>
+        <li>
+          <strong>Duration drift is a secondary predictability signal.</strong>
+          The largest misses appeared when an agent planned or auto-selected
+          the workflow; manually selected durations were delivered more
+          consistently. The strategic issue is control over the plan, not video
+          length by itself.
         </li>
       </ul>
     </section>

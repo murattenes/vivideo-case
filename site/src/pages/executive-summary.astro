@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Divergence from '../components/Divergence.astro';
 import { route } from '../lib/url';
 
 const findings = [
@@ -8,24 +7,24 @@ const findings = [
     group: 'What is true of the market',
     items: [
       {
-        claim: 'The same prompt never tested the same thing.',
+        claim: 'The same visible prompt tested the whole product system, not only the model.',
         evidence:
           'One fixed prompt set, six different orchestration decisions: InVideo auto-selected Seedance 2.0, Pollo used Pollo 2.5, Runway’s agent capped itself at 10s on Seedance 2.0 Mini, Revid assembled four separate shots.',
-        so: 'Model quality and product quality are different axes — and buyers cannot separate them either. Competing on “best model” competes on something no user perceives independently of your orchestration.',
+        so: 'Prompt rewriting, routing, assembly and post-processing shape what users receive. Model quality and product quality are different axes.',
         prov: 'observed',
       },
       {
-        claim: 'Credit opacity is the category’s wound, not a Vivideo bug.',
+        claim: 'No product dominated every workflow.',
         evidence:
-          'It recurs in reviews of all six: HeyGen credits spent on an unfinished video, Runway credits not restored after two generations stuck at 0%, Pollo subscribers still buying extra credits, InVideo’s agent regenerating clips without approval, Revid’s displayed and charged credits disagreeing.',
-        so: 'No one owns “you only pay for output you accept.” The position is unclaimed.',
-        prov: 'claim',
+          'Vivideo produced the most complete AGENT-01 first run; InVideo preserved the I2V scene best; HeyGen led guided planning and avatars; Pollo led model breadth; Revid connected social creation to publishing; Runway offered the deepest creative workflows.',
+        so: 'The useful comparison is which product mechanism wins a job, not a single winner table.',
+        prov: 'observed',
       },
       {
-        claim: 'The paywall consistently lands after the effort, not before it.',
+        claim: 'Credit confusion and paying to correct failure recur across the category.',
         evidence:
-          'Vivideo reviewers report the advertised free video required payment to view. InVideo’s free allowance ran out after agent setup but before generation. Runway’s free tier gave image access but not the expected video access. Pollo’s free export carries a watermark.',
-        so: 'Users meet the wall at maximum sunk cost. That is the moment that produces refund demands and one-star reviews.',
+          'The selected review sample mentions credits spent on unfinished, stuck, regenerated or unusable output across all six products; late preview, export, resolution and watermark restrictions add to the uncertainty.',
+        so: 'Users accept probabilistic output more readily than unpredictable cost and repeated payment for correction.',
         prov: 'claim',
       },
     ],
@@ -34,24 +33,31 @@ const findings = [
     group: 'What we found in Vivideo, first-hand',
     items: [
       {
-        claim: 'Approval is not binding.',
+        claim: 'Vivideo already has credible end-to-end agent potential.',
+        evidence:
+          'Its AGENT-01 educational short was the most complete first-run result of the six, and the corrected avatar workflow produced a complete presenter video.',
+        so: 'The strategic gap is not the absence of generation capability. It is the control and recovery layer around that capability.',
+        prov: 'observed',
+      },
+      {
+        claim: 'Cost and plan estimates were not consistently predictable.',
         evidence:
           'An estimate of 9 credits charged 15. A plan approved at 12 charged 21. A plan preview of 18 seconds delivered 34. A separate 6-credit estimate charged exactly 6 — the estimates are not consistently inflated, they are unreliable.',
-        so: 'The most fixable trust defect we found, and upstream of most of the complaints in Vivideo’s own reviews.',
+        so: 'Duration drift is one symptom inside a broader predictability problem. The opportunity is a clear ceiling and visible settings, not merely better timing.',
         prov: 'observed',
       },
       {
-        claim: 'Negative constraints were ignored.',
+        claim: 'An imperfect output is difficult to recover without starting over.',
         evidence:
-          'T2V-01 prohibited audio; the output added a voice reading the visual prompt aloud. I2V-01 required the mug text to change PAUSE→PLAY and the pinwheel to complete one rotation; the text never changed and the pinwheel stopped.',
-        so: 'A user can rewrite a prompt to ask for more. They cannot rewrite it to ask for less. Prohibition failures have no workaround.',
+          'The tested Vivideo build exposed no post-generation correction layer. T2V-01 added prohibited narration, while every I2V-01 output exceeded the requested approximately one full clockwise pinwheel turn.',
+        so: 'Without scene-level correction, a constraint failure becomes another full generation, another wait and potentially another charge.',
         prov: 'observed',
       },
       {
-        claim: 'Cancellation cannot be completed inside the product.',
+        claim: 'The self-service cancellation journey does not finish inside the product.',
         evidence:
           'The flow shows what will be lost, asks for a reason, offers 50 bonus credits — then instructs the user to email support. Pollo completed cancellation in three clicks.',
-        so: 'It converts a routine churn event into a support ticket and, repeatedly, a public review.',
+        so: 'It adds support dependency at the highest-friction moment in the customer relationship.',
         prov: 'observed',
       },
     ],
@@ -60,17 +66,17 @@ const findings = [
     group: 'What is worth taking from competitors',
     items: [
       {
-        claim: 'Pollo pays referrals at conversion, not at signup.',
+        claim: 'Pollo rewards both signup and paid conversion.',
         evidence:
-          '50 credits to each side when the invited user registers, 200 to each side when that user upgrades. Shareable to six destinations.',
-        so: 'The reward lands where the value is. A template for paying for activation instead of vanity registrations.',
+          'Both sides receive 50 credits when the invited user registers and 200 when that user upgrades. The invitation can be shared to five social destinations or copied as a link.',
+        so: 'The larger reward lands at upgrade. It is a useful template for weighting incentives toward downstream value.',
         prov: 'observed',
       },
       {
-        claim: 'Revid pays for publishing, not just for generating.',
+        claim: 'Competitors reduce repeat effort and turn publishing into a loop.',
         evidence:
-          'Posting an output with “revid.ai” in the caption earns 25 credits; its affiliate pays 20% lifetime with the code auto-embedded in shared videos; generated characters persist for reuse.',
-        so: 'It closes the loop from generation to distribution — the loop Vivideo’s share button opens and never measures.',
+          'Revid persists generated characters and rewards a “revid.ai”-captioned post with 25 credits; InVideo exposes copyable example prompts; Runway teaches through quests and workflows; Pollo combines referrals with an affiliate program.',
+        so: 'The strongest products help users begin, return and distribute—not only generate once.',
         prov: 'observed',
       },
     ],
@@ -79,17 +85,10 @@ const findings = [
     group: 'What follows for Vivideo',
     items: [
       {
-        claim: 'The defensible layer is the contract, not the model.',
+        claim: 'Vivideo should win on controllable creation, then scale it.',
         evidence:
-          'Every product tested swapped underlying models freely, and model access is rentable. Runway\u2019s home agent kept selecting Seedance even when asked to switch — its confirmation dialog offered only an Approve button. None of them make approval mean anything.',
-        so: 'It is the one axis where arriving first is durable, because it is a promise about behaviour rather than a licence.',
-        prov: 'interpretation',
-      },
-      {
-        claim: 'Fix trust before buying growth.',
-        evidence:
-          'Vivideo’s own pricing anchors on $2/week but bills $99 once yearly, and cancellation still ends in an email. Referral and affiliate mechanics sit on top of that.',
-        so: 'Acquisition scales complaints exactly as efficiently as it scales signups. Sequence matters.',
+          'Several tested products route across third-party models, while their surrounding workflows remain visibly different. Vivideo can connect a clear plan, transparent routing, an editable draft, creator memory and measured publishing.',
+        so: 'Compete on accepted output per credit and user control. Repair predictability and recoverability before referrals and publishing rewards amplify the experience.',
         prov: 'interpretation',
       },
     ],
@@ -100,7 +99,7 @@ const recommendations = [
   {
     title: 'Make approval a binding Generation Contract',
     detail:
-      'Show prompt, interpreted brief, scene plan, model, duration tolerance and a maximum credit charge before charging. Never exceed the ceiling without re-approval; restore credits automatically on technical failure.',
+      'Show prompt, interpreted brief, model, maximum credit charge, duration tolerance and critical restrictions before charging. Never exceed the ceiling or switch models without re-approval; restore credits automatically on technical failure.',
     outcome: 'Trust and predictable economics',
   },
   {
@@ -138,54 +137,28 @@ let n = 0;
       <p class="eyebrow">Executive summary · 25 July – 1 August 2026</p>
       <h1>
         Six AI video products. One prompt set.<br />
-        <em>The gap is the opportunity.</em>
+        <em>Control around the model is the opportunity.</em>
       </h1>
       <p class="stand prose">
-        Every product tested can generate a passable vertical video. Not one of
-        them guarantees that the video you approved is the video you receive.
-        That gap — between the plan a user accepts and the result they are
-        charged for — is the most defensible position left in this category, and
-        it is currently unoccupied.
+        Each product produced at least one credible first run. The more durable
+        differences appeared around generation: how the product plans and
+        prices the work, routes the model, helps users correct a draft, remembers
+        creator context and turns publishing into repeat use or acquisition.
       </p>
     </header>
 
-    <!-- Hero: the thesis, drawn. Three measured instances from Vivideo's own runs. -->
     <section class="hero" aria-labelledby="gap">
-      <h2 id="gap" class="hero-title">Approved <span>vs.</span> delivered</h2>
+      <h2 id="gap" class="hero-title">The controllable creation opportunity</h2>
       <p class="hero-note">
-        Three instances measured in Vivideo, one in HeyGen — the pattern is the
-        category's; the numbers are ours. The rule marks what the user agreed to.
+        Duration drift remains documented in the benchmark tables. Here it sits
+        where it belongs: one signal inside a larger product-control problem.
       </p>
-      <div class="hero-bars">
-        <Divergence
-          label="Credit estimate shown before an auto-generation"
-          approved={9}
-          delivered={15}
-          unit=" cr"
-          source="AGENT run, 2026-07-25 · same run: 15s requested, 21s delivered"
-        />
-        <Divergence
-          label="Agent plan approved at"
-          approved={12}
-          delivered={21}
-          unit=" cr"
-          source="AGENT run, 2026-07-25"
-        />
-        <Divergence
-          label="Duration shown in the agent plan preview"
-          approved={18}
-          delivered={34}
-          unit="s"
-          source="AGENT-01"
-        />
-        <Divergence
-          label="HeyGen: duration shown in its agent plan"
-          approved={18}
-          delivered={45}
-          unit="s"
-          source="HeyGen, exploratory agent run"
-        />
-      </div>
+      <ol class="control-chain">
+        <li><span class="num">01</span><strong>Plan</strong><p>Make cost, model, limits and expected output explicit.</p></li>
+        <li><span class="num">02</span><strong>Generate</strong><p>Keep routing, prompt and settings visible.</p></li>
+        <li><span class="num">03</span><strong>Correct</strong><p>Fix one scene or attribute without paying to restart.</p></li>
+        <li><span class="num">04</span><strong>Publish</strong><p>Connect sharing to creator memory and measurable loops.</p></li>
+      </ol>
     </section>
 
     <section aria-labelledby="ten">
@@ -329,10 +302,51 @@ let n = 0;
     font-size: 0.8rem;
     color: var(--ink-soft);
   }
-  .hero-bars {
+  .control-chain {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
-    gap: 0.2rem 2.4rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule-strong);
+  }
+  .control-chain li {
+    padding: 0.8rem 0.75rem 0 0;
+  }
+  .control-chain li + li {
+    border-left: 1px solid var(--rule);
+    padding-left: 0.75rem;
+  }
+  .control-chain span,
+  .control-chain strong {
+    display: block;
+  }
+  .control-chain span {
+    font-size: 0.65rem;
+    color: var(--subject);
+  }
+  .control-chain strong {
+    margin-top: 0.15rem;
+    font-family: var(--display);
+    font-size: 0.9rem;
+  }
+  .control-chain p {
+    margin: 0.2rem 0 0;
+    font-size: 0.76rem;
+    line-height: 1.4;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 42rem) {
+    .control-chain {
+      grid-template-columns: 1fr 1fr;
+    }
+    .control-chain li:nth-child(3) {
+      border-left: 0;
+    }
+    .control-chain li:nth-child(n + 3) {
+      border-top: 1px solid var(--rule);
+    }
   }
 
   .sec-title {
@@ -534,11 +548,27 @@ let n = 0;
       font-size: 6pt;
       margin-bottom: 5pt;
     }
-    .hero-bars {
+    .control-chain {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 0 8pt;
       max-width: none;
+    }
+    .control-chain li {
+      padding: 3pt 3pt 0 0;
+    }
+    .control-chain li + li {
+      padding-left: 4pt;
+    }
+    .control-chain span {
+      font-size: 5pt;
+    }
+    .control-chain strong {
+      font-size: 6.5pt;
+    }
+    .control-chain p {
+      font-size: 5.6pt;
+      line-height: 1.2;
     }
 
     .sec-title {

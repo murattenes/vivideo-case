@@ -447,7 +447,7 @@ Vivideo's support-assisted cancellation ending is particularly damaging because 
 
 Support with:
 
-- One Vivideo credit/duration mismatch.
+- One compact Vivideo predictability example covering the credit ceiling and plan mismatch; treat duration as supporting evidence, not the main finding.
 - One cross-product review theme about credits or unusable generations.
 - A note that the same prompt did not isolate model quality because product orchestration differed.
 

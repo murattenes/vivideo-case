@@ -340,8 +340,8 @@
           "model": null,
           "autoSelected": true,
           "requested": "n/a",
-          "actual": "16s",
-          "note": "Conventional presenter-style result; no major failure recorded.",
+          "actual": "17s",
+          "note": "Conventional presenter-style result; no major failure recorded. (Compare file said 16s; ffprobe reads 17.0s — the video wins.)",
           "flag": null
         }
       ]

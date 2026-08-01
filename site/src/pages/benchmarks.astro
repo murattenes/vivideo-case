@@ -1,8 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
+import BenchmarkCard from '../components/BenchmarkCard.astro';
 import data from '../data/benchmarks.json';
+import media from '../data/media-manifest.json';
 
 const { prompts, products } = data;
+const slugFor: Record<string, string> = {
+  'AGENT-01': 'agent01', 'AD-01': 'ad01', 'T2V-01': 't2v01',
+  'I2V-01': 'i2v01', 'AVATAR-01': 'avatar01',
+};
+const mediaFor = (promptId: string, productId: string) =>
+  (media.items as Record<string, any>)[`${productId}-${slugFor[promptId]}`];
 
 const productName = (id: string) => (products as Record<string, { name: string; baseline: boolean }>)[id]?.name ?? id;
 const isBaseline = (id: string) => (products as Record<string, { name: string; baseline: boolean }>)[id]?.baseline ?? false;
@@ -86,12 +94,29 @@ const isBaseline = (id: string) => (products as Record<string, { name: string; b
             </table>
           </div>
 
-          <p class="evidence-note">
-            <span class="eyebrow">Evidence</span> All six generated outputs and
-            the full screen recordings for {prompt.id} are preserved. Video
-            evidence links are being attached — outputs will stream on demand
-            rather than embedding thirty videos on this page.
-          </p>
+          <div class="evidence">
+            <p class="evidence-note">
+              <span class="eyebrow">Evidence</span> First-run outputs, streamed
+              on demand from Google Drive — nothing loads until clicked. Where
+              a full session recording exists, it is linked beneath the card.
+            </p>
+            <div class="cards">
+              {prompt.rows.map((r) => {
+                const m = mediaFor(prompt.id, r.product);
+                return (
+                  <BenchmarkCard
+                    id={`${r.product}-${slugFor[prompt.id]}`}
+                    productName={productName(r.product)}
+                    baseline={isBaseline(r.product)}
+                    driveId={m?.driveId ?? null}
+                    poster={m?.poster ?? ''}
+                    durationSec={m?.durationSec ?? 0}
+                    sessionRecordingId={m?.sessionRecordingId ?? null}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </section>
       ))
     }
@@ -267,13 +292,27 @@ const isBaseline = (id: string) => (products as Record<string, { name: string; b
     white-space: nowrap;
   }
 
+  .evidence {
+    margin-top: 0.9rem;
+  }
   .evidence-note {
-    margin: 0.7rem 0 0;
+    margin: 0 0 0.6rem;
     font-size: 0.76rem;
     color: var(--ink-soft);
   }
   .evidence-note .eyebrow {
     margin-right: 0.45rem;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+    gap: 0.7rem;
+    max-width: 74rem;
+  }
+  @media (min-width: 60rem) {
+    .cards {
+      grid-template-columns: repeat(6, 1fr);
+    }
   }
 
   .reading {
@@ -300,3 +339,17 @@ const isBaseline = (id: string) => (products as Record<string, { name: string; b
     color: var(--ink);
   }
 </style>
+
+<script>
+  // Swap a poster button for Drive's /preview iframe on demand. One handler
+  // for all thirty cards; zero video bytes move before a click.
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.bc-play[data-drive-id]');
+    if (!btn) return;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://drive.google.com/file/d/${btn.dataset.driveId}/preview`;
+    iframe.allow = 'autoplay; fullscreen';
+    iframe.title = btn.dataset.label ?? 'Benchmark output';
+    btn.replaceWith(iframe);
+  });
+</script>

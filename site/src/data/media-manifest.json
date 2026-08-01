@@ -1,0 +1,185 @@
+{
+ "_note": "driveId = generated output on Google Drive (public, anyone-with-link). sessionRecordingId = full screen recording of the run where one exists (vivideo has none). Posters extracted locally with ffmpeg; durationSec is ffprobe ground truth.",
+ "items": {
+  "heygen-agent01": {
+   "driveId": "10wZA47I5IIZJdbcx1llj6Ccj3Jx7z5_n",
+   "poster": "posters/heygen-agent01.jpg",
+   "durationSec": 21.3,
+   "sessionRecordingId": "1MEYG0-OvnyekJElEmth9GVYPrCNc5JkL"
+  },
+  "heygen-ad01": {
+   "driveId": "1NMXHiQ4t1kSTWWpJOGQ0mEYAN5gHZqCn",
+   "poster": "posters/heygen-ad01.jpg",
+   "durationSec": 15.9,
+   "sessionRecordingId": "139oybte8ZwEwEdwOvctVvPLoLSnq9caO"
+  },
+  "heygen-t2v01": {
+   "driveId": "1Jf7Jbq6-IdLPhoJcTTaMOHyO5yYrMduV",
+   "poster": "posters/heygen-t2v01.jpg",
+   "durationSec": 10.0,
+   "sessionRecordingId": "1kXzCGAo7B6etna9zft38SQU9h50KvwaJ"
+  },
+  "heygen-i2v01": {
+   "driveId": "19LzOAL8iuII2y3pP-V_5GJIVDgd3lLr9",
+   "poster": "posters/heygen-i2v01.jpg",
+   "durationSec": 12.0,
+   "sessionRecordingId": "1KeGeT0jh_wAH0PLGQBbpr9P0LiydW7fj"
+  },
+  "heygen-avatar01": {
+   "driveId": "1qh7KUWG9FrrDGo-P4Hx-qXhqeEVurJaa",
+   "poster": "posters/heygen-avatar01.jpg",
+   "durationSec": 14.8,
+   "sessionRecordingId": "1KOGuk6t_wwz7flL9uLMD7dfJ4sIFw1z6"
+  },
+  "invideo-agent01": {
+   "driveId": "1mJ3lvcOonyHfJAgK6O3NtZXs-9dRwbsQ",
+   "poster": "posters/invideo-agent01.jpg",
+   "durationSec": 15.1,
+   "sessionRecordingId": "1Bd00ZxBywWOM1LGb-ypAHB0GT4uXJMtR"
+  },
+  "invideo-ad01": {
+   "driveId": "1nCzNL1Y1VrhzzsPQlpfkmE8CCG2WOg2n",
+   "poster": "posters/invideo-ad01.jpg",
+   "durationSec": 15.1,
+   "sessionRecordingId": "1vpoxAX3rWjXZNhIDyone1qN2wrJAikFk"
+  },
+  "invideo-t2v01": {
+   "driveId": "18X5N56QZny-To97Cd9SLlhZdYgfzW5dB",
+   "poster": "posters/invideo-t2v01.jpg",
+   "durationSec": 8.1,
+   "sessionRecordingId": "1FTKX-I5r2Sm_Lk0R76c65kw7vG18bxN8"
+  },
+  "invideo-i2v01": {
+   "driveId": "19nhc0gP4ppml5Yp4f6mhAX_0FpN-n3Xk",
+   "poster": "posters/invideo-i2v01.jpg",
+   "durationSec": 12.1,
+   "sessionRecordingId": "1nTxJw_ndWcMFG5onweO2kJpB6f-bA_c3"
+  },
+  "invideo-avatar01": {
+   "driveId": "1JHFuwZ4C27RS1da7ZimtSbt7vkMVcrjE",
+   "poster": "posters/invideo-avatar01.jpg",
+   "durationSec": 18.5,
+   "sessionRecordingId": "15Dj008i53djt4-M6LFk1ujbYGZE6HwLD"
+  },
+  "pollo-agent01": {
+   "driveId": "1k3HkSXjUjud1VK8xiUrR_6kFUZKlbKhZ",
+   "poster": "posters/pollo-agent01.jpg",
+   "durationSec": 15.0,
+   "sessionRecordingId": "1MYozBYiruTr93LRGO9NLmWYxy9zAS4U1"
+  },
+  "pollo-ad01": {
+   "driveId": "1tX30QdQHNRvL8N8XDD01cTOGz6HrKyad",
+   "poster": "posters/pollo-ad01.jpg",
+   "durationSec": 15.0,
+   "sessionRecordingId": "1WK8kZjGBK_D8mGGSOl_ah662rBzCZ2p7"
+  },
+  "pollo-t2v01": {
+   "driveId": "1s1AkdQ1nDfbLCl9JbOm39QLizBtt1wi9",
+   "poster": "posters/pollo-t2v01.jpg",
+   "durationSec": 6.1,
+   "sessionRecordingId": "1MQ5Iw4fsrXOIcjsXvUT_3AWpyhS0cvyR"
+  },
+  "pollo-i2v01": {
+   "driveId": "1DNsWj_omdI1IU8CfbvUUF5zaaiIE82g2",
+   "poster": "posters/pollo-i2v01.jpg",
+   "durationSec": 15.0,
+   "sessionRecordingId": "1OP7LQ1VYKX_Id3t-g0SE4IgS0OosupRJ"
+  },
+  "pollo-avatar01": {
+   "driveId": "1YE-YZ45d-8c6sWnon5qhLt7-ofs6SQc3",
+   "poster": "posters/pollo-avatar01.jpg",
+   "durationSec": 20.0,
+   "sessionRecordingId": "1owPe0IKFVCMqwxFfPb0dSU4SI3OAiQJT"
+  },
+  "revid-agent01": {
+   "driveId": "1sc40u24jrZzQqga4P6ucL2wrxYFo8np8",
+   "poster": "posters/revid-agent01.jpg",
+   "durationSec": 17.7,
+   "sessionRecordingId": "1kAA-AGKGLXwJi05I-dlq4BvuyEX2C96k"
+  },
+  "revid-ad01": {
+   "driveId": "1ct9lSKetG-vw7_806kJNYfaP_Wwf83nd",
+   "poster": "posters/revid-ad01.jpg",
+   "durationSec": 13.9,
+   "sessionRecordingId": "1ly0Yau8cyXnaF8lpDj6SLERQ9-VfK1ft"
+  },
+  "revid-t2v01": {
+   "driveId": "15trItZ_GpQgcsuzZsxlS3WA37N-KNMiv",
+   "poster": "posters/revid-t2v01.jpg",
+   "durationSec": 8.0,
+   "sessionRecordingId": "18LIZYOZqQFEJaDvjR-GVsq_oIvK_MpwR"
+  },
+  "revid-i2v01": {
+   "driveId": "1KvmRpgpkJbhDmpgWl2BTl_olcKEZTHar",
+   "poster": "posters/revid-i2v01.jpg",
+   "durationSec": 10.0,
+   "sessionRecordingId": "1dtcLJlFksQxM1fJ2JQq1kTo6oXmsoNnK"
+  },
+  "revid-avatar01": {
+   "driveId": "1vFY8qc-9-_ofEH2YRVZNe8pt8Su0Io7A",
+   "poster": "posters/revid-avatar01.jpg",
+   "durationSec": 17.8,
+   "sessionRecordingId": "1kGNMSHCfh7s6IE1A0Ub-WkaG5tfWE9J5"
+  },
+  "runway-agent01": {
+   "driveId": "1L5pumNM8YtD-Qv4kKXDAT-lrvJ_G6lWz",
+   "poster": "posters/runway-agent01.jpg",
+   "durationSec": 10.0,
+   "sessionRecordingId": "1P2J3EQ77WvqPOvE95_yjeb3bPafzioLf"
+  },
+  "runway-ad01": {
+   "driveId": "1GMCVqdvRYYlqBWJuqtH23ExGGWPkZSVc",
+   "poster": "posters/runway-ad01.jpg",
+   "durationSec": 15.0,
+   "sessionRecordingId": "1owo8XXwkV1kMOUbVkg8ok6J8wPnBUs4Y"
+  },
+  "runway-t2v01": {
+   "driveId": "1PCIKkUrSNLAzThFEnH23P_tSld9f2vhb",
+   "poster": "posters/runway-t2v01.jpg",
+   "durationSec": 6.0,
+   "sessionRecordingId": "1qC6E9Flbf6tnPKJProNeg3XdWlUPNQ_b"
+  },
+  "runway-i2v01": {
+   "driveId": "1LvsBL9BqQQiP1UhFbQqppiZ0t8QlqIr6",
+   "poster": "posters/runway-i2v01.jpg",
+   "durationSec": 10.0,
+   "sessionRecordingId": "1X5wKQRCwK53bhlo9SfXXK56QuNAZe3mf"
+  },
+  "runway-avatar01": {
+   "driveId": "1FMoxesDTHGX2Y6QH1ePg3Yyat3rOzn2E",
+   "poster": "posters/runway-avatar01.jpg",
+   "durationSec": 17.0,
+   "sessionRecordingId": "1v05zuGG1OPo_UAzFvNAKg8-xYX63_rZI"
+  },
+  "vivideo-agent01": {
+   "driveId": "14QI_ERTr4v9YoETKbNpjLt9rff6QiEQH",
+   "poster": "posters/vivideo-agent01.jpg",
+   "durationSec": 33.5,
+   "sessionRecordingId": null
+  },
+  "vivideo-ad01": {
+   "driveId": "1ruoTivI4DucTPR7YJiJt0rS50LbSJS_F",
+   "poster": "posters/vivideo-ad01.jpg",
+   "durationSec": 6.0,
+   "sessionRecordingId": null
+  },
+  "vivideo-t2v01": {
+   "driveId": "1MMNXQAjI5sBjDxaNE7Nj4dlEuLt5c1d3",
+   "poster": "posters/vivideo-t2v01.jpg",
+   "durationSec": 9.4,
+   "sessionRecordingId": null
+  },
+  "vivideo-i2v01": {
+   "driveId": "14xzzV4g-evVXcEl-keI59zY-6geBlp7X",
+   "poster": "posters/vivideo-i2v01.jpg",
+   "durationSec": 11.0,
+   "sessionRecordingId": null
+  },
+  "vivideo-avatar01": {
+   "driveId": "1shOiaXN8V8groM6S22px9g7J4NH-Zb2q",
+   "poster": "posters/vivideo-avatar01.jpg",
+   "durationSec": 16.0,
+   "sessionRecordingId": null
+  }
+ }
+}

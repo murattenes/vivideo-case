@@ -1,0 +1,159 @@
+---
+/**
+ * Evidence card for one benchmark output.
+ *
+ * The video lives on Google Drive and costs zero bytes until clicked: the
+ * card renders a locally-extracted poster frame, and the click swaps it for
+ * Drive's /preview iframe. Known trade-offs, accepted by design: Google's
+ * player chrome is visible, no autoplay, no synchronized multi-play.
+ */
+import { asset } from '../lib/url';
+
+interface Props {
+  id: string;
+  productName: string;
+  baseline?: boolean;
+  driveId: string | null;
+  poster: string;
+  durationSec: number;
+  sessionRecordingId?: string | null;
+}
+
+const { id, productName, baseline = false, driveId, poster, durationSec, sessionRecordingId } = Astro.props;
+---
+
+<figure class="bc" data-baseline={baseline ? 'y' : undefined}>
+  {
+    driveId ? (
+      <button
+        type="button"
+        class="bc-play"
+        data-drive-id={driveId}
+        data-label={`${productName} output`}
+        aria-label={`Play ${productName} output (${durationSec}s), streams from Google Drive`}
+      >
+        <img src={asset(poster)} alt="" width="540" height="960" loading="lazy" />
+        <span class="bc-btn" aria-hidden="true">▶</span>
+      </button>
+    ) : (
+      <div class="bc-pending">evidence link pending</div>
+    )
+  }
+  <figcaption class="bc-meta">
+    <span class="bc-name">{productName}</span>
+    <span class="bc-dur num">{durationSec}s</span>
+    {
+      sessionRecordingId && (
+        <a
+          class="bc-sr"
+          href={`https://drive.google.com/file/d/${sessionRecordingId}/view`}
+          rel="noopener"
+          target="_blank"
+        >
+          session recording ↗
+        </a>
+      )
+    }
+  </figcaption>
+</figure>
+
+<style>
+  .bc {
+    margin: 0;
+  }
+  .bc-play {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 1px solid var(--rule);
+    background: var(--ink);
+    cursor: pointer;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+  }
+  [data-baseline='y'] .bc-play {
+    border-color: var(--subject);
+    border-width: 2px;
+  }
+  .bc-play img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.92;
+  }
+  .bc-play:hover img {
+    opacity: 1;
+  }
+  .bc-btn {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 1.1rem;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+  }
+  .bc-play:hover .bc-btn {
+    color: var(--subject-wash);
+  }
+  .bc-play:focus-visible {
+    outline: 2px solid var(--subject);
+    outline-offset: 2px;
+  }
+
+  /* When the iframe is swapped in, it inherits this box. */
+  .bc :global(iframe) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    border: 1px solid var(--rule);
+    background: #000;
+  }
+
+  .bc-pending {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 9 / 16;
+    border: 1px dashed var(--rule-strong);
+    color: var(--ink-soft);
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0.5rem;
+  }
+
+  .bc-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin-top: 0.35rem;
+    font-size: 0.72rem;
+  }
+  .bc-name {
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  [data-baseline='y'] .bc-name {
+    color: var(--subject);
+  }
+  .bc-dur {
+    color: var(--ink-soft);
+  }
+  .bc-sr {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--ink-soft);
+    text-decoration-color: var(--rule-strong);
+    white-space: nowrap;
+  }
+  .bc-sr:hover {
+    color: var(--subject);
+  }
+</style>

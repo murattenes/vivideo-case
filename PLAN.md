@@ -11,8 +11,8 @@ _Revision 3. Freshness checker is now **fully deterministic — no API calls**. 
 | 1 — Repo scaffold | ✅ **Done** |
 | 2 — Minimal deploy | ✅ **Done** — live at https://murattenes.github.io/vivideo-case/ |
 | 3 — Pricing data model | ✅ **Done** |
-| 4 — Freshness checker (no API) | ☐ Not started |
-| 5 — Executive summary | ☐ Not started |
+| 4 — Freshness checker (no API) | ⏸️ **Deferred** by request — foundation built & verified in Phase 3; finish after the site presents well |
+| 5 — Design system + executive summary | ✅ **Done** — https://murattenes.github.io/vivideo-case/executive-summary/ |
 | 6 — Remaining content | ☐ Not started |
 | 7 — Media pipeline | ☐ Not started |
 | 8 — Privacy pass | ☐ Not started |
@@ -340,7 +340,38 @@ Each product record carries `checkedAt`, `lastSuccessfulAt`, `sourceUrl`, `sourc
 
 ---
 
-## Phase 5 — Executive summary (`/executive-summary/`)
+## Phase 5 — Design system + executive summary ✅ DONE
+
+**Live: https://murattenes.github.io/vivideo-case/executive-summary/**
+
+### Design direction
+
+Derived from the subject, not a template. The analysis is about the gap between what an AI video product promises and what it delivers — so the **signature element is a divergence bar**: approved value as the track, delivered value drawn over it, overshoot visibly breaking past the rule. The shape of the finding is the finding.
+
+- **Colour encodes identity, not mood.** Purple is reserved exclusively for Vivideo, so the baseline product is separable from the five competitors on every page. A single signal orange appears *only* inside divergence data, never as decoration.
+- **Type:** Bricolage Grotesque (display) · IBM Plex Serif (body) · IBM Plex Mono (durations, credits, prices). Plex carries engineering-documentation DNA suiting the stated audience, and avoids both the cream/serif and Inter-sans defaults.
+- **Provenance is structural:** every claim is tagged `observed` / `review claim` / `interpretation`.
+
+Files: `src/styles/global.css` (tokens), `src/components/Divergence.astro` (signature), `src/layouts/Base.astro` (chrome + fonts).
+
+### Verified
+
+| Check | Result |
+|---|---|
+| Ten findings, numbered sequentially across four groups | 01–10 ✓ |
+| Five recommendations | ✓ |
+| Provenance markers | 7 observed · 3 review claim · 3 interpretation |
+| Print to A4 | **exactly 1 page** (verified by rendering PDF and counting) |
+| Print body size | 6.3 pt — legible, confirmed by rendering to image |
+| Horizontal overflow @ 375 px | **0 elements** (CDP device emulation) |
+| Horizontal overflow @ 320 px | **0 elements** |
+
+Getting to one page took three attempts. Shrinking the base font did nothing because every print rule set absolute `pt` sizes; the fix was a **three-column findings layout** plus print rules inside `Divergence.astro` to stop the hero bars rendering at screen scale.
+
+*Note: an early "mobile is broken" reading was a false alarm — Chrome clamps `--window-size` to a 500 px minimum, so a 500 px layout was being cropped into a 375 px image. Device emulation via CDP is the reliable check.*
+
+<details>
+<summary>Original Phase 5 detail</summary>
 
 Its own route, print CSS, one page at A4. Contents: the 10 things Vivideo must know · the top 5 recommendations · a short methodology caveat · links to supporting evidence.
 
@@ -364,6 +395,10 @@ Keep these apart so model quality is never mistaken for product quality:
 4. Pricing and credit transparency
 5. Retention and cancellation
 6. Distribution and growth mechanisms
+
+</details>
+
+**Outstanding:** the homepage is still the Phase 2 deployment probe. Replace in Phase 6.
 
 ---
 

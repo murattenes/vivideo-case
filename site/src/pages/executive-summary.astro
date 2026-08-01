@@ -36,7 +36,7 @@ const findings = [
       {
         claim: 'Approval is not binding.',
         evidence:
-          'An estimate of 9 credits charged 15. A plan approved at 12 charged 21. A plan preview of 18 seconds delivered 34.',
+          'An estimate of 9 credits charged 15. A plan approved at 12 charged 21. A plan preview of 18 seconds delivered 34. A separate 6-credit estimate charged exactly 6 — the estimates are not consistently inflated, they are unreliable.',
         so: 'The most fixable trust defect we found, and upstream of most of the complaints in Vivideo’s own reviews.',
         prov: 'observed',
       },
@@ -81,7 +81,7 @@ const findings = [
       {
         claim: 'The defensible layer is the contract, not the model.',
         evidence:
-          'Every product tested swapped underlying models freely, and model access is rentable. None of them guarantee that the plan you approved is the thing you receive.',
+          'Every product tested swapped underlying models freely, and model access is rentable. Runway\u2019s home agent kept selecting Seedance even when asked to switch — its confirmation dialog offered only an Approve button. None of them make approval mean anything.',
         so: 'It is the one axis where arriving first is durable, because it is a promise about behaviour rather than a licence.',
         prov: 'interpretation',
       },
@@ -153,8 +153,8 @@ let n = 0;
     <section class="hero" aria-labelledby="gap">
       <h2 id="gap" class="hero-title">Approved <span>vs.</span> delivered</h2>
       <p class="hero-note">
-        Three instances measured in Vivideo during benchmark runs. The rule
-        marks what the user agreed to.
+        Three instances measured in Vivideo, one in HeyGen — the pattern is the
+        category's; the numbers are ours. The rule marks what the user agreed to.
       </p>
       <div class="hero-bars">
         <Divergence
@@ -162,7 +162,7 @@ let n = 0;
           approved={9}
           delivered={15}
           unit=" cr"
-          source="AGENT run, 2026-07-25"
+          source="AGENT run, 2026-07-25 · same run: 15s requested, 21s delivered"
         />
         <Divergence
           label="Agent plan approved at"
@@ -177,6 +177,13 @@ let n = 0;
           delivered={34}
           unit="s"
           source="AGENT-01"
+        />
+        <Divergence
+          label="HeyGen: duration shown in its agent plan"
+          approved={18}
+          delivered={45}
+          unit="s"
+          source="HeyGen, exploratory agent run"
         />
       </div>
     </section>
@@ -323,7 +330,9 @@ let n = 0;
     color: var(--ink-soft);
   }
   .hero-bars {
-    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: 0.2rem 2.4rem;
   }
 
   .sec-title {
@@ -527,8 +536,8 @@ let n = 0;
     }
     .hero-bars {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0 10pt;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0 8pt;
       max-width: none;
     }
 

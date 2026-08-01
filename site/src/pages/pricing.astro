@@ -1,0 +1,393 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Curated view over the two-observation pricing model. researchObservation is
+// immutable hands-on data; latestCheck is what the page-watcher read on
+// 2026-08-01. A field unknown during research and known now renders as "not
+// recorded during testing", never as a detected change.
+const rows = [
+  {
+    id: 'vivideo',
+    tested: 'MAX plan (all benchmark runs)',
+    paid: '—',
+    current: 'Pro $2/wk billed $99/yr · Max $4/wk billed $199/yr · weekly option $9 / $19 per wk',
+    status: 'observed 2026-08-01',
+    note: 'Pricing not recorded during the research window — the current column is the watcher’s first read, not a change.',
+  },
+  {
+    id: 'heygen',
+    tested: 'Creator · $29/mo',
+    paid: '$29.00',
+    current: 'Price ladder $0 / $29 / $49 / $149 — $29 still present',
+    status: 'observed 2026-08-01',
+    note: 'Free tier watermarks output; 1080p, download and editing gated behind upgrades (observed in testing).',
+  },
+  {
+    id: 'invideo',
+    tested: 'Plus · $20/mo',
+    paid: '$20.00 (charged TRY 985.87)',
+    current: 'Not readable by automation',
+    status: 'page is client-rendered',
+    note: 'No prices or plan names exist in the static HTML — page-level change detection works, price values need a manual check.',
+  },
+  {
+    id: 'pollo',
+    tested: 'Lite · $15/mo',
+    paid: '$15.00',
+    current: 'Not reachable by automation',
+    status: 'HTTP 403 to non-browser clients',
+    note: 'Cloudflare blocks automated fetches; verify manually in a browser.',
+  },
+  {
+    id: 'revid',
+    tested: 'Growth · $39/mo',
+    paid: '$39.00',
+    current: 'Price ladder $39 / $99 / $199 — $39 still present',
+    status: 'observed 2026-08-01',
+    note: 'Most expensive tested plan; pricing link sits below the homepage fold.',
+  },
+  {
+    id: 'runway',
+    tested: 'Standard · $15/mo',
+    paid: '$15.00 (charged TRY 886.84 incl. VAT)',
+    current: 'Price ladder includes $12–$228 across tiers — $15 still present',
+    status: 'observed 2026-08-01',
+    note: 'Free allocation permitted image generation but not the expected video access (observed in testing).',
+  },
+];
+
+const names: Record<string, string> = {
+  vivideo: 'Vivideo', heygen: 'HeyGen', invideo: 'InVideo AI',
+  pollo: 'Pollo AI', revid: 'Revid.ai', runway: 'Runway',
+};
+
+const creditFeel = [
+  { id: 'heygen', plan: 'Creator $29', feel: 'Generous — roughly 11 videos produced with allowance remaining.' },
+  { id: 'invideo', plan: 'Plus $20', feel: 'Workable with discipline — the base allowance buys about six 15s Seedance 2.0 videos; the agent’s strong default models burn it faster. The free tier died during agent setup.' },
+  { id: 'revid', plan: 'Growth $39', feel: 'Generous, at the highest price — and topped up by quests (+10) and publishing (+25).' },
+  { id: 'runway', plan: 'Standard $15', feel: 'Sufficient — credits remained after five benchmark videos, helped by quest earnings.' },
+  { id: 'pollo', plan: 'Lite $15', feel: 'Restrictive — roughly 5 videos, and only on Pollo’s cheapest in-house models.' },
+  { id: 'vivideo', plan: 'MAX', feel: 'Ran out mid-testing: AD-01 had to be cut to 6 seconds because remaining credits couldn’t cover the requested 20.' },
+];
+
+const cancellation = [
+  { id: 'pollo', friction: 1, frictionLabel: 'Lowest', path: 'Billing page → Cancel. One reason question, then confirmation.', retention: 'None observed', outcome: 'Completed in-product' },
+  { id: 'revid', friction: 2, frictionLabel: 'Medium', path: 'Settings → Stripe billing portal. One reason question.', retention: '20% off for one month', outcome: 'Completed via Stripe; end date shown' },
+  { id: 'runway', friction: 3, frictionLabel: 'Medium-high', path: 'Plans & Billing → reason + feedback → separate billing page.', retention: 'One free month, with another credit refresh', outcome: 'Completed after the external step' },
+  { id: 'heygen', friction: 4, frictionLabel: 'High', path: 'Cancellation runs through a chat: why leaving, what’s missing, freeze offer.', retention: 'One-month plan freeze', outcome: 'Completed with explicit confirmation' },
+  { id: 'invideo', friction: 4, frictionLabel: 'Highest survey', path: 'Multi-step survey — reason, desired improvement, next tool — that rejects meaningless answers.', retention: 'None observed', outcome: 'Completed after submitting the survey' },
+  { id: 'vivideo', friction: 5, frictionLabel: 'Highest outcome', path: 'Loss-framing screen → reason → help step → 50 bonus credits →', retention: '50 bonus credits', outcome: 'Not completable in-product: the flow ends by asking the user to email support' },
+];
+
+const spend = [
+  { product: 'HeyGen', plan: 'Creator', price: '$29.00' },
+  { product: 'InVideo AI', plan: 'Plus', price: '$20.00 (TRY 985.87 charged)' },
+  { product: 'Pollo AI', plan: 'Lite', price: '$15.00' },
+  { product: 'Revid.ai', plan: 'Growth', price: '$39.00' },
+  { product: 'Runway', plan: 'Standard', price: '$15.00 (TRY 886.84 charged, incl. VAT)' },
+];
+---
+
+<Base title="Pricing & cancellation — Vivideo competitor analysis">
+  <div class="shell">
+    <header class="head">
+      <p class="eyebrow">Pricing · credits · cancellation</p>
+      <h1>What plans cost, and what leaving costs</h1>
+      <p class="stand">
+        Every price below was either paid with a real card during testing or
+        read from the live pricing page on 1 August 2026 — the two are kept
+        separate so a gap in the research can never masquerade as a price
+        change.
+      </p>
+    </header>
+
+    <section aria-labelledby="snap-h">
+      <h2 id="snap-h">Plans: tested vs. currently listed</h2>
+      <div class="scroll-x">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Tested during research</th>
+              <th scope="col">Paid</th>
+              <th scope="col">Pricing page reads now</th>
+              <th scope="col">Check status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              rows.map((r) => (
+                <tr class={r.id === 'vivideo' ? 'baseline' : ''}>
+                  <th scope="row" class="p-name">{names[r.id]}</th>
+                  <td>{r.tested}</td>
+                  <td class="n">{r.paid}</td>
+                  <td>
+                    {r.current}
+                    <span class="cell-note">{r.note}</span>
+                  </td>
+                  <td class="n status">{r.status}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="fineprint">
+        Snapshot data: <code>site/src/data/pricing.json</code> — every field
+        carries an immutable research observation and a dated latest check,
+        with <code>unknown</code> stated rather than guessed. Automated checks
+        honestly report two failures: Pollo blocks non-browser clients (HTTP
+        403) and InVideo renders pricing client-side.
+      </p>
+    </section>
+
+    <section class="framing" aria-labelledby="framing-h">
+      <h2 id="framing-h">The pricing-psychology finding</h2>
+      <div class="framing-card">
+        <p class="framing-lede">
+          <strong>Vivideo’s own pricing anchors on the week and bills by the
+          year.</strong>
+        </p>
+        <p>
+          The headline reads <span class="num">$2/week</span> (Pro) and
+          <span class="num">$4/week</span> (Max) under a “Save up to 79%”
+          banner — but the charge is <span class="num">$99</span> or
+          <span class="num">$199</span>, once, for a year. The genuinely weekly
+          option costs <span class="num">$9</span>/<span class="num">$19</span>
+          per week: 4.5× the anchored rate. This is the same
+          pay-attention-after-commitment pattern the category’s reviews complain
+          about — and Vivideo’s reviewers specifically allege the free video
+          required payment to view.
+          <span class="prov" data-kind="observed">observed</span>
+        </p>
+      </div>
+    </section>
+
+    <section aria-labelledby="feel-h">
+      <h2 id="feel-h">How the credits actually felt</h2>
+      <p class="sec-note">
+        Same five benchmark videos attempted everywhere; “feel” is one tester’s
+        recorded experience, not a normalized rate.
+      </p>
+      <div class="scroll-x">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Plan</th>
+              <th scope="col">Credit experience</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              creditFeel.map((c) => (
+                <tr class={c.id === 'vivideo' ? 'baseline' : ''}>
+                  <th scope="row" class="p-name">{names[c.id]}</th>
+                  <td class="n">{c.plan}</td>
+                  <td>{c.feel}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="cancel-h">
+      <h2 id="cancel-h">Cancellation friction, ranked</h2>
+      <p class="sec-note">
+        Every subscription above was actually cancelled, on camera. Ordered
+        from easiest exit to hardest.
+      </p>
+      <div class="scroll-x">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Friction</th>
+              <th scope="col">Path</th>
+              <th scope="col">Retention offer</th>
+              <th scope="col">Outcome</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              cancellation.map((c) => (
+                <tr class={c.id === 'vivideo' ? 'baseline' : ''}>
+                  <th scope="row" class="p-name">{names[c.id]}</th>
+                  <td>
+                    <span class="friction" data-level={c.friction}>{c.frictionLabel}</span>
+                  </td>
+                  <td>{c.path}</td>
+                  <td>{c.retention}</td>
+                  <td class={c.id === 'vivideo' ? 'outcome-bad' : ''}>{c.outcome}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="fineprint">
+        In every completed flow, paid access and remaining credits continued to
+        the end of the billing period. Recordings exist for all six flows; they
+        contain billing details and stay in private storage.
+      </p>
+    </section>
+
+    <section aria-labelledby="spend-h">
+      <h2 id="spend-h">Spend report</h2>
+      <p class="sec-note">
+        Five short-term monthly subscriptions, purchased solely to run the
+        benchmark set. All five were cancelled; access ran to period end.
+      </p>
+      <div class="scroll-x">
+        <table class="spend">
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Plan</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              spend.map((s) => (
+                <tr>
+                  <td>{s.product}</td>
+                  <td>{s.plan}</td>
+                  <td class="n">{s.price}</td>
+                </tr>
+              ))
+            }
+            <tr class="total">
+              <td colspan="2">Total</td>
+              <td class="n">US$118.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fineprint">
+        TRY figures are the documented checkout charges at the applicable
+        exchange rate (Runway’s includes VAT) and are not added to the USD
+        total. Receipts are private evidence; checkout captures contain billing
+        data and are not published.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 46rem;
+  }
+  .head h1 {
+    margin: 0.6rem 0 0.8rem;
+  }
+  .stand {
+    font-size: var(--step-1);
+    color: var(--ink-mid);
+    margin: 0;
+  }
+
+  section {
+    margin-top: 2.6rem;
+  }
+  section h2 {
+    margin-bottom: 0.5rem;
+  }
+  .sec-note {
+    margin: 0 0 0.8rem;
+    font-size: 0.83rem;
+    color: var(--ink-soft);
+    max-width: 46rem;
+  }
+
+  tr.baseline th,
+  tr.baseline td {
+    background: var(--subject-wash);
+  }
+  .p-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  tr.baseline .p-name {
+    color: var(--subject);
+  }
+
+  .cell-note {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+  }
+  .status {
+    white-space: nowrap;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+  }
+
+  .fineprint {
+    margin: 0.7rem 0 0;
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+    max-width: 52rem;
+  }
+  .fineprint code {
+    font-family: var(--mono);
+    font-size: 0.9em;
+  }
+
+  .framing-card {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--diverge);
+    padding: 1.1rem 1.3rem;
+    max-width: 52rem;
+  }
+  .framing-lede {
+    margin: 0 0 0.4rem;
+    font-size: var(--step-1);
+    font-family: var(--display);
+    letter-spacing: -0.01em;
+  }
+  .framing-card p:last-child {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+    line-height: 1.6;
+  }
+  .framing-card .prov {
+    margin-left: 0.35rem;
+  }
+
+  .friction {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.15em 0.45em;
+    border: 1px solid var(--rule-strong);
+    white-space: nowrap;
+  }
+  .friction[data-level='1'] {
+    border-color: var(--within);
+    color: var(--within);
+  }
+  .friction[data-level='4'],
+  .friction[data-level='5'] {
+    border-color: var(--diverge);
+    color: var(--diverge);
+  }
+  .outcome-bad {
+    color: var(--diverge);
+    font-weight: 600;
+  }
+
+  .spend .total td {
+    border-top: 2px solid var(--ink);
+    font-weight: 600;
+  }
+</style>

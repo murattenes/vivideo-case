@@ -1,0 +1,465 @@
+---
+import Base from '../layouts/Base.astro';
+import { route } from '../lib/url';
+
+const recs = [
+  {
+    n: 1,
+    title: 'Make approval a binding Generation Contract',
+    problem:
+      'Vivideo showed 9 credits and charged 15; approved 12 and charged 21; previewed 18 seconds and delivered 34. A separate 6-credit estimate charged exactly 6 — the estimates are unreliable, not consistently inflated, which is worse for trust. HeyGen’s plan diverged too (18s plan → 45s delivered). Credit complaints recur in the reviews of all six products.',
+    what: [
+      'Before charging: show prompt, interpreted brief, scene plan, target duration with tolerance, selected model and why, maximum credit charge, resolution/watermark status, and the failure-restoration rule.',
+      'After approval: never exceed the ceiling without re-asking; keep duration within tolerance; correct a material mismatch without a second charge; restore credits automatically on technical failure; keep the contract and the actual result in project history.',
+    ],
+    steal: 'HeyGen’s guided brief and pre-generation plan — improved by making the approved values binding, which HeyGen does not.',
+    metrics:
+      'Zero generations over the approved ceiling · >95% within duration tolerance · credit-related support tickets · automatic restoration rate · first-output acceptance · paid regeneration rate.',
+  },
+  {
+    n: 2,
+    title: 'Treat every generated video as an editable draft',
+    problem:
+      'Vivideo exposes no clearly accessible post-generation editor: an imperfect result is accept-or-regenerate, at full price. Reviews across the category complain about paying repeatedly to fix flawed output.',
+    what: [
+      'A focused social-video correction layer, not a timeline editor: replace or regenerate one scene (cost shown first), trim/reorder scenes, edit script and captions, swap voice, adjust music, replace product assets, edit the CTA, convert aspect ratio, keep versions.',
+      'Flow becomes: guided brief → editable plan → generated draft → targeted corrections → export or publish.',
+    ],
+    steal:
+      'Revid’s post-generation editing and InVideo’s clip-assembly — scoped to fixing the common AI failures, because scene regeneration is also cheaper for Vivideo than full regeneration.',
+    metrics:
+      'Imperfect outputs fixed without full regeneration · scene-level vs full regeneration rate · draft-to-export conversion · credits per accepted output · first-project completion.',
+  },
+  {
+    n: 3,
+    title: 'Make model routing intelligent but visible',
+    problem:
+      'Pollo shows model breadth becoming clutter. InVideo’s agent defaults to strong, expensive models. Runway’s agent kept choosing Seedance even when asked to switch — its dialog offered only an Approve button. Opaque routing plus real money is the trust leak.',
+    what: [
+      'Four modes: Fast & affordable / Balanced / Best quality / Choose manually. Each shows model name, credit ceiling, expected time, supported duration and resolution, why it fits, known limitations.',
+      'Lock the approved model. A fallback requires consent and shows the new cost. Route by task over time: avatar → best lip-sync; packshot → best source fidelity; cinematic → motion-focused.',
+    ],
+    steal:
+      'Pollo’s breadth without its clutter; the InVideo and Runway defaults as the cautionary tales.',
+    metrics:
+      'Accepted output per credit by mode · model-override rate · fallback frequency and consent rate · cost delta between recommended and manual.',
+  },
+  {
+    n: 4,
+    title: 'Package outcomes and preserve creator memory',
+    problem:
+      'Revid exposes 156 tools that are mostly one generator re-skinned; Pollo’s library crowds its UI; an empty prompt box assumes the user already knows what the product can make. Meanwhile Revid quietly built the right primitive: characters that persist to the profile.',
+    what: [
+      '10–15 curated recipes — product image → ad, URL → product video, UGC-style ad, educational short, faceless explainer, avatar announcement, podcast/article → short, text-or-PDF → “brainrot”-style study short, music-to-video, multi-platform variations — each with example output, inputs, credit range, recommended mode, editable prompt.',
+      'Persistent creator memory: brand kit, saved characters and voices, default CTA, audiences, platforms, caption style, reusable product assets. The agent asks only what changed.',
+    ],
+    steal:
+      'InVideo’s Explore-with-copyable-prompts as the recipe surface; Revid’s reusable characters expanded into full creator context.',
+    metrics:
+      'Recipe → generation conversion · time to first generation · first-output acceptance by recipe · repeat use of saved assets · sessions starting from a recipe vs empty prompt.',
+  },
+  {
+    n: 5,
+    title: 'Turn sharing into a measurable distribution engine',
+    problem:
+      'Vivideo has a share button and no loop: nothing measures or rewards what a share produces. Competitors run referral (Pollo 50/200), publishing rewards (Revid +25), quests (Runway) and affiliates (Pollo ≤30%).',
+    what: [
+      'Referral paid on activation and upgrade, not signup. Publishing rewards tied to measured downstream value, not upload count. Quests that teach high-value behaviour: complete a brand kit, correct one scene instead of regenerating, publish in two formats, reuse a character.',
+      'Affiliate program last, once first-output acceptance and retention are healthy — paid traffic into an untrusted funnel amplifies complaints.',
+    ],
+    steal:
+      'Pollo’s two-sided economics, Revid’s publishing loop, Runway’s quests — each with measurement attached.',
+    metrics:
+      'Shares per export · share→visit→signup conversion · referred-user first-video completion · quest completion vs retention · affiliate cohort refund rate.',
+  },
+];
+
+const hygiene = [
+  'Show a playable, watermarked preview before requiring an upgrade.',
+  'Disclose watermark, resolution, credit and export restrictions before generation.',
+  'Keep the original prompt and generation settings visible afterwards.',
+  'Show estimated vs. actual credit use on every generation.',
+  'Restore credits automatically for clear technical failures.',
+  'Provide a self-service cancellation that completes in-product.',
+  'Make cancellation feedback optional.',
+  'Confirm the subscription end date immediately.',
+];
+
+const steal = [
+  'HeyGen’s guided brief and plan — made binding.',
+  'Revid’s reusable characters — expanded into creator and brand memory.',
+  'Runway’s quests, prompt education and 4K upscale — tied to publishing outcomes.',
+  'Pollo’s referral and affiliate mechanics — rewarding activated users.',
+  'InVideo’s Explore gallery and copyable prompts — connected to recipes.',
+  'Revid’s publishing rewards — with downstream value measured.',
+  'Focused post-generation correction — without building a professional editor.',
+];
+
+const avoid = [
+  'Credit estimates that differ from actual charges.',
+  'Material duration drift after approval.',
+  'Full regeneration as the only correction path.',
+  'Hidden prompts, models or settings.',
+  'Expensive automatic model selection without consent.',
+  'Charging for obvious technical failures.',
+  'Disclosing restrictions only at export.',
+  'Pay-before-preview funnels.',
+  'Hundreds of near-identical novelty tools.',
+  'Rewarding low-quality or spam activity.',
+  'Mandatory cancellation surveys.',
+  'Support-assisted cancellation as the only exit.',
+];
+
+const attack = [
+  'Be the AI-video agent where approval has contractual meaning.',
+  'Make imperfect results recoverable without full paid regeneration.',
+  'Offer the clearest model–cost–speed–quality relationship in the category.',
+  'Own the most trustworthy first-video experience end to end.',
+  'Connect creation, creator memory, publishing and performance in one workflow.',
+  'Compete on accepted output per credit — not model count.',
+];
+
+const roadmap = [
+  { phase: 'Now', focus: 'Trust foundation', items: 'Generation Contract · prompt history · credit ceiling and restoration · early restriction disclosure · watermarked preview · self-service cancellation' },
+  { phase: 'Next', focus: 'Controllable creation', items: 'Guided planning · focused scene correction · transparent routing modes · fallback consent' },
+  { phase: 'Expand', focus: 'Activation & retention', items: 'Curated recipes · public use-case pages · creator memory · reusable assets' },
+  { phase: 'Scale', focus: 'Distribution', items: 'Referrals on activation · meaningful quests · publishing rewards · remixable templates · affiliate program' },
+];
+
+const threats = [
+  {
+    title: 'End-to-end agents compress the workflow',
+    detail:
+      'InVideo, HeyGen and Revid fold scripting, generation, editing and publishing into one flow. If “idea to published post” is solved elsewhere, a generator with sharing is a feature, not a product.',
+    watch: 'Watch: InVideo/HeyGen shipping publishing analytics; Revid speeding up generation.',
+  },
+  {
+    title: 'Multi-model platforms erase model differentiation',
+    detail:
+      'Pollo sells whichever model is currently best through one interface. Any advantage built on model access is rentable by competitors within weeks.',
+    watch: 'Watch: aggregator pricing per generation falling; new models appearing on Pollo within days of release.',
+  },
+  {
+    title: 'Loop economies compound while quality converges',
+    detail:
+      'Referral, affiliate, publishing, quest and template loops (Pollo, Revid, Runway) compound acquisition even when output quality is similar. A better generator without loops loses on distribution arithmetic.',
+    watch: 'Watch: Revid affiliate volume; Pollo referral-driven signup share; template/remix galleries appearing.',
+  },
+];
+---
+
+<Base title="Strategy — Vivideo competitor analysis">
+  <div class="shell">
+    <header class="head">
+      <p class="eyebrow">Strategy · steal / avoid / attack · sequenced</p>
+      <h1>
+        Become the trustworthy social-video agent —<br />
+        <em>not another model marketplace.</em>
+      </h1>
+      <p class="stand">
+        Model access is rentable; every product tested proves it. The durable
+        position is the layer between a user’s intent and a publishable video:
+        approved plan → transparent routing → editable draft → measured
+        publishing. Priced not in model count but in
+        <strong>accepted output per credit</strong>.
+      </p>
+    </header>
+
+    <section aria-labelledby="recs-h">
+      <h2 id="recs-h" class="sec-title"><span class="eyebrow">Five recommendations, in build order</span></h2>
+      <div class="recs">
+        {
+          recs.map((r) => (
+            <article class="rec" id={`rec-${r.n}`}>
+              <h3>
+                <span class="rec-n num">{r.n}</span>
+                {r.title}
+              </h3>
+              <p class="rec-problem">
+                <span class="eyebrow">Problem observed</span> {r.problem}
+              </p>
+              <ul class="rec-what">
+                {r.what.map((w) => (
+                  <li>{w}</li>
+                ))}
+              </ul>
+              <p class="rec-steal">
+                <span class="eyebrow">Steal from</span> {r.steal}
+              </p>
+              <p class="rec-metrics">
+                <span class="eyebrow">Measure</span> {r.metrics}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+      <p class="seq">
+        Recommendations 1–3 repair the core product; 4–5 scale it. Distribution
+        amplifies whatever experience exists — running the sequence backwards
+        buys complaints at scale.
+      </p>
+    </section>
+
+    <section aria-labelledby="hygiene-h">
+      <h2 id="hygiene-h" class="sec-title"><span class="eyebrow">Non-negotiable trust hygiene — smaller than strategy, before strategy</span></h2>
+      <ul class="hygiene">
+        {hygiene.map((h) => <li>{h}</li>)}
+      </ul>
+    </section>
+
+    <section aria-labelledby="saa-h">
+      <h2 id="saa-h" class="sec-title"><span class="eyebrow">Steal / Avoid / Attack</span></h2>
+      <div class="saa">
+        <div class="saa-col" data-kind="steal">
+          <h3>Steal</h3>
+          <ul>{steal.map((s) => <li>{s}</li>)}</ul>
+        </div>
+        <div class="saa-col" data-kind="avoid">
+          <h3>Avoid</h3>
+          <ul>{avoid.map((s) => <li>{s}</li>)}</ul>
+        </div>
+        <div class="saa-col" data-kind="attack">
+          <h3>Attack</h3>
+          <ul>{attack.map((s) => <li>{s}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="road-h">
+      <h2 id="road-h" class="sec-title"><span class="eyebrow">Roadmap</span></h2>
+      <div class="scroll-x">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Phase</th>
+              <th scope="col">Focus</th>
+              <th scope="col">Ships</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              roadmap.map((r) => (
+                <tr>
+                  <th scope="row" class="phase num">{r.phase}</th>
+                  <td>{r.focus}</td>
+                  <td class="items">{r.items}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="threats-h">
+      <h2 id="threats-h" class="sec-title"><span class="eyebrow">Three threats in the next 12 months — with indicators to watch</span></h2>
+      <div class="threats">
+        {
+          threats.map((t) => (
+            <article class="threat">
+              <h3>{t.title}</h3>
+              <p>{t.detail}</p>
+              <p class="watch">{t.watch}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <p class="closing">
+      A visible, binding plan; a recoverable draft; transparent routing;
+      persistent creator context; measurable publishing loops. That converts
+      Vivideo from another generator into the trusted operating system for
+      social video. Evidence for every claim above:
+      <a href={route('benchmarks')}>benchmarks</a> ·
+      <a href={route('pricing')}>pricing</a> ·
+      <a href={route('reviews')}>reviews</a> ·
+      <a href={route('distribution')}>distribution</a>.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+  }
+  .head h1 {
+    margin: 0.6rem 0 0.9rem;
+  }
+  .head h1 em {
+    font-style: normal;
+    color: var(--subject);
+  }
+  .stand {
+    font-size: var(--step-1);
+    color: var(--ink-mid);
+    margin: 0;
+  }
+  .stand strong {
+    color: var(--ink);
+  }
+
+  section {
+    margin-top: 2.8rem;
+  }
+  .sec-title {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+
+  .recs {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .rec {
+    max-width: 56rem;
+  }
+  .rec h3 {
+    display: flex;
+    gap: 0.6rem;
+    align-items: baseline;
+    font-size: var(--step-1);
+    margin: 0 0 0.5rem;
+  }
+  .rec-n {
+    color: var(--subject);
+    font-weight: 600;
+  }
+  .rec p,
+  .rec-what li {
+    font-size: 0.87rem;
+    line-height: 1.55;
+    color: var(--ink-mid);
+  }
+  .rec p {
+    margin: 0 0 0.45rem;
+  }
+  .rec .eyebrow {
+    display: inline-block;
+    margin-right: 0.4rem;
+  }
+  .rec-what {
+    margin: 0 0 0.45rem;
+    padding-left: 1.1rem;
+  }
+  .rec-what li + li {
+    margin-top: 0.25rem;
+  }
+  .rec-metrics {
+    font-size: 0.78rem !important;
+    color: var(--ink-soft) !important;
+  }
+  .seq {
+    margin: 1.4rem 0 0;
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+    border-left: 3px solid var(--subject);
+    padding-left: 0.85rem;
+    max-width: 44rem;
+  }
+
+  .hygiene {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 0.45rem 1.6rem;
+    max-width: 56rem;
+  }
+  .hygiene li {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    padding-left: 1rem;
+    position: relative;
+  }
+  .hygiene li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--rule-strong);
+  }
+
+  .saa {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+  .saa-col {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--rule-strong);
+    padding: 1rem 1.1rem;
+  }
+  .saa-col[data-kind='steal'] {
+    border-top-color: var(--within);
+  }
+  .saa-col[data-kind='avoid'] {
+    border-top-color: var(--diverge);
+  }
+  .saa-col[data-kind='attack'] {
+    border-top-color: var(--subject);
+  }
+  .saa-col h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+  }
+  .saa-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .saa-col li {
+    font-size: 0.8rem;
+    color: var(--ink-mid);
+    line-height: 1.45;
+  }
+
+  .phase {
+    font-weight: 600;
+    color: var(--subject);
+    white-space: nowrap;
+  }
+  .items {
+    color: var(--ink-mid);
+  }
+
+  .threats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1rem;
+  }
+  .threat {
+    border: 1px solid var(--rule);
+    background: var(--paper-raised);
+    padding: 1rem 1.1rem;
+  }
+  .threat h3 {
+    margin: 0 0 0.4rem;
+    font-size: 0.98rem;
+  }
+  .threat p {
+    margin: 0 0 0.4rem;
+    font-size: 0.84rem;
+    color: var(--ink-mid);
+    line-height: 1.5;
+  }
+  .watch {
+    font-size: 0.75rem !important;
+    color: var(--ink-soft) !important;
+    font-family: var(--mono);
+  }
+
+  .closing {
+    margin: 3rem 0 0;
+    padding-top: 1.2rem;
+    border-top: 2px solid var(--ink);
+    font-size: 0.95rem;
+    color: var(--ink-mid);
+    max-width: 52rem;
+    line-height: 1.6;
+  }
+</style>

@@ -1,0 +1,302 @@
+---
+import Base from '../layouts/Base.astro';
+import data from '../data/benchmarks.json';
+
+const { prompts, products } = data;
+
+const productName = (id: string) => (products as Record<string, { name: string; baseline: boolean }>)[id]?.name ?? id;
+const isBaseline = (id: string) => (products as Record<string, { name: string; baseline: boolean }>)[id]?.baseline ?? false;
+---
+
+<Base title="Benchmarks — Vivideo competitor analysis">
+  <div class="shell">
+    <header class="head">
+      <p class="eyebrow">Benchmarks · five fixed prompts · six products</p>
+      <h1>Same prompts, thirty first runs</h1>
+      <p class="stand">
+        Every product received the same five prompts and the same source assets,
+        on a paid plan, with the full session screen-recorded. The first output
+        was kept — no retries, no cherry-picking.
+      </p>
+    </header>
+
+    <aside class="caveat" aria-label="How to read these tables">
+      <p>
+        <strong>One run per product per workflow.</strong> This is directional
+        case-study evidence, not a statistical ranking — a single run can be
+        lucky or unlucky.
+        <strong>Workflow labels matter:</strong> an <span class="wf" data-wf="agent">agent</span> row
+        (the product planned, chose models, assembled) is not comparable to a
+        <span class="wf" data-wf="manual">manual</span> row (we picked the model
+        and settings) on output quality alone. And the same visible prompt never
+        isolates model quality — products rewrite prompts, route models, and
+        post-process differently. No single winner is claimed.
+      </p>
+    </aside>
+
+    <nav class="jump" aria-label="Jump to prompt">
+      {prompts.map((p) => <a class="num" href={`#${p.slug}`}>{p.id}</a>)}
+    </nav>
+
+    {
+      prompts.map((prompt) => (
+        <section class="prompt" id={prompt.slug} aria-labelledby={`${prompt.slug}-h`}>
+          <div class="prompt-head">
+            <h2 id={`${prompt.slug}-h`}>
+              <span class="num prompt-id">{prompt.id}</span>
+              {prompt.name}
+            </h2>
+            <p class="prompt-goal">{prompt.goal}</p>
+          </div>
+
+          <div class="scroll-x">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Product</th>
+                  <th scope="col">Workflow</th>
+                  <th scope="col">Model</th>
+                  <th scope="col">Requested → delivered</th>
+                  <th scope="col">First-run note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {prompt.rows.map((r) => (
+                  <tr class={isBaseline(r.product) ? 'baseline' : ''}>
+                    <th scope="row" class="p-name">
+                      {productName(r.product)}
+                    </th>
+                    <td>
+                      <span class="wf" data-wf={r.workflow}>{r.workflow}</span>
+                      {r.autoSelected && r.model && <span class="auto">auto</span>}
+                    </td>
+                    <td class="n">{r.model ?? '—'}</td>
+                    <td class="n dur" data-dev={r.flag === 'duration' ? 'y' : 'n'}>
+                      {r.requested} → <strong>{r.actual}</strong>
+                    </td>
+                    <td class="note">
+                      {r.flag === 'constraint' && (
+                        <span class="constraint">constraint violated</span>
+                      )}
+                      {r.note}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p class="evidence-note">
+            <span class="eyebrow">Evidence</span> All six generated outputs and
+            the full screen recordings for {prompt.id} are preserved. Video
+            evidence links are being attached — outputs will stream on demand
+            rather than embedding thirty videos on this page.
+          </p>
+        </section>
+      ))
+    }
+
+    <section class="reading" aria-labelledby="reading-h">
+      <h2 id="reading-h">What the thirty runs add up to</h2>
+      <ul>
+        <li>
+          <strong>Duration misses cluster where the product decides.</strong>
+          Vivideo's 34s on a 15–20s ask, HeyGen's 21s and 15s misses, Revid's
+          14s on a 17s ask — every one sits on a run where the product planned
+          or auto-selected. Where we set the duration ourselves on a manual
+          model, it was delivered exactly, every time.
+        </li>
+        <li>
+          <strong>Prohibitions fail harder than requests.</strong> The
+          T2V-01 violations — Vivideo narrating a no-audio prompt, Revid's
+          stationary boat — have no user workaround. You can ask again for
+          more; you cannot ask harder for less.
+        </li>
+        <li>
+          <strong>Source fidelity is the hardest test.</strong> I2V-01's
+          PAUSE→PLAY text change was completed by nobody. InVideo came closest
+          by preserving the scene and motion; Vivideo and HeyGen both broke the
+          scene itself.
+        </li>
+        <li>
+          <strong>The model column explains less than the workflow column.</strong>
+          Seedance 2.0 variants appear behind InVideo's cleanest runs and
+          Runway's self-capped 10s run alike. Orchestration — what the product
+          did around the model — is what varied.
+        </li>
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 46rem;
+  }
+  .head h1 {
+    margin: 0.6rem 0 0.8rem;
+  }
+  .stand {
+    font-size: var(--step-1);
+    color: var(--ink-mid);
+    margin: 0;
+  }
+
+  .caveat {
+    margin: 1.6rem 0 0;
+    padding: 0.9rem 1.1rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--ink);
+    max-width: 52rem;
+  }
+  .caveat p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+  }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 1.6rem 0 0.4rem;
+  }
+  .jump a {
+    font-size: 0.72rem;
+    text-decoration: none;
+    border: 1px solid var(--rule-strong);
+    padding: 0.25rem 0.6rem;
+    color: var(--ink-soft);
+  }
+  .jump a:hover {
+    border-color: var(--subject);
+    color: var(--subject);
+  }
+
+  .prompt {
+    margin-top: 2.6rem;
+    scroll-margin-top: 1rem;
+  }
+  .prompt-head h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+  .prompt-id {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--subject);
+    border: 1px solid currentColor;
+    padding: 0.15rem 0.5rem;
+  }
+  .prompt-goal {
+    margin: 0.4rem 0 1rem;
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+    max-width: 46rem;
+  }
+
+  tr.baseline th,
+  tr.baseline td {
+    background: var(--subject-wash);
+  }
+  .p-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  tr.baseline .p-name {
+    color: var(--subject);
+  }
+
+  .wf {
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.12em 0.4em;
+    border: 1px solid var(--rule-strong);
+  }
+  .wf[data-wf='agent'] {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .wf[data-wf='manual'] {
+    color: var(--ink-soft);
+  }
+  .auto {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--ink-soft);
+    margin-left: 0.3rem;
+  }
+
+  .dur {
+    white-space: nowrap;
+  }
+  .dur strong {
+    font-weight: 600;
+  }
+  .dur[data-dev='y'] strong {
+    color: var(--diverge);
+    background: var(--diverge-wash);
+    padding: 0.05em 0.3em;
+  }
+
+  .note {
+    min-width: 18rem;
+    color: var(--ink-mid);
+  }
+  .constraint {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--diverge);
+    border: 1px solid var(--diverge);
+    padding: 0.1em 0.4em;
+    margin-right: 0.45rem;
+    vertical-align: 1px;
+    white-space: nowrap;
+  }
+
+  .evidence-note {
+    margin: 0.7rem 0 0;
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+  }
+  .evidence-note .eyebrow {
+    margin-right: 0.45rem;
+  }
+
+  .reading {
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 2px solid var(--ink);
+    max-width: 52rem;
+  }
+  .reading ul {
+    margin: 0.8rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.8rem;
+  }
+  .reading li {
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--rule);
+  }
+  .reading strong {
+    color: var(--ink);
+  }
+</style>

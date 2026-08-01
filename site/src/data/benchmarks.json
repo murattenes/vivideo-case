@@ -1,0 +1,376 @@
+{
+  "_source": "Canonical numbers from the five *-compare.md files (first-run observations). Where my-observations.md differs, the compare files win per the source-of-truth hierarchy; observation-only details are used as narrative context, not table data.",
+  "prompts": [
+    {
+      "id": "AGENT-01",
+      "slug": "agent-01",
+      "name": "One-prompt educational short",
+      "goal": "Test an agent or guided idea-to-complete-video workflow: a 15–20s vertical short explaining why leaves change colour in autumn, with hook, captions, voice and music.",
+      "requestedLabel": "15–20s",
+      "rows": [
+        {
+          "product": "vivideo",
+          "workflow": "agent",
+          "model": null,
+          "autoSelected": true,
+          "requested": "15–20s",
+          "actual": "34s",
+          "note": "Plan preview showed 18s; delivered 34s. Despite the mismatch, the most complete first-run result of the six.",
+          "flag": "duration"
+        },
+        {
+          "product": "heygen",
+          "workflow": "agent",
+          "model": null,
+          "autoSelected": true,
+          "requested": "15–20s",
+          "actual": "21s",
+          "note": "One second past the requested range; generation took ~11 minutes.",
+          "flag": "duration"
+        },
+        {
+          "product": "invideo",
+          "workflow": "manual",
+          "model": "Seedance 2.0",
+          "autoSelected": false,
+          "requested": "15–20s",
+          "actual": "15s",
+          "note": "Matched the requested range; no major failure recorded.",
+          "flag": null
+        },
+        {
+          "product": "pollo",
+          "workflow": "manual",
+          "model": "Pollo 2.5",
+          "autoSelected": false,
+          "requested": "15–20s",
+          "actual": "15s",
+          "note": "Basic visuals, no burned-in subtitles, unclear narration.",
+          "flag": null
+        },
+        {
+          "product": "revid",
+          "workflow": "manual",
+          "model": "Pro",
+          "autoSelected": true,
+          "requested": "15–20s",
+          "actual": "18s",
+          "note": "Four shots combined; voice and visual style changed between them.",
+          "flag": null
+        },
+        {
+          "product": "runway",
+          "workflow": "agent",
+          "model": "Seedance 2.0 Mini",
+          "autoSelected": true,
+          "requested": "10s",
+          "actual": "10s",
+          "note": "Agent chose a 10s workflow on its own. Usable visuals; separately added voice felt unintegrated.",
+          "flag": null
+        }
+      ]
+    },
+    {
+      "id": "AD-01",
+      "slug": "ad-01",
+      "name": "Product advertisement",
+      "goal": "Test product-image fidelity and ad structure: a 20s vertical ad for a fictional cold-brew can, using a supplied packshot that must not be redesigned, with three exact product facts and a fixed hook and CTA.",
+      "requestedLabel": "20s",
+      "rows": [
+        {
+          "product": "vivideo",
+          "workflow": "manual",
+          "model": "Veo 3.1 Fast",
+          "autoSelected": false,
+          "requested": "6s",
+          "actual": "6s",
+          "note": "Remaining credits only allowed a 6-second result, limiting prompt coverage.",
+          "flag": null
+        },
+        {
+          "product": "heygen",
+          "workflow": "agent",
+          "model": null,
+          "autoSelected": true,
+          "requested": "20s",
+          "actual": "15s",
+          "note": "Coherent multi-scene ad structure, five seconds short of the request.",
+          "flag": "duration"
+        },
+        {
+          "product": "invideo",
+          "workflow": "manual",
+          "model": "Seedance 2.0 Fast",
+          "autoSelected": false,
+          "requested": "15s",
+          "actual": "15s",
+          "note": "Coherent motion and music; omitted the voiceover.",
+          "flag": null
+        },
+        {
+          "product": "pollo",
+          "workflow": "manual",
+          "model": "WAN 2.7",
+          "autoSelected": false,
+          "requested": "15s",
+          "actual": "15s",
+          "note": "Mostly placed text over the product image rather than building a multi-scene ad.",
+          "flag": "constraint"
+        },
+        {
+          "product": "revid",
+          "workflow": "manual",
+          "model": "Pro",
+          "autoSelected": true,
+          "requested": "17s",
+          "actual": "14s",
+          "note": "Complete advertisement; no major first-run failure.",
+          "flag": "duration"
+        },
+        {
+          "product": "runway",
+          "workflow": "manual",
+          "model": "Grok Imagine",
+          "autoSelected": false,
+          "requested": "15s",
+          "actual": "15s",
+          "note": "Complete clip, weak ad structure, limited product treatment.",
+          "flag": null
+        }
+      ]
+    },
+    {
+      "id": "T2V-01",
+      "slug": "t2v-01",
+      "name": "Manual text-to-video",
+      "goal": "Compare raw generation: one continuous 6s shot of a paper boat in a rain-filled gutter. No cuts, people, text, captions, logos — and no audio.",
+      "requestedLabel": "6s · no audio",
+      "rows": [
+        {
+          "product": "vivideo",
+          "workflow": "agent",
+          "model": null,
+          "autoSelected": true,
+          "requested": "n/a",
+          "actual": "9s",
+          "note": "Behaved like a shaking still image, and added spoken narration although the prompt prohibited audio.",
+          "flag": "constraint"
+        },
+        {
+          "product": "heygen",
+          "workflow": "agent",
+          "model": null,
+          "autoSelected": true,
+          "requested": "n/a",
+          "actual": "10s",
+          "note": "Complete clip; no major failure recorded.",
+          "flag": null
+        },
+        {
+          "product": "invideo",
+          "workflow": "manual",
+          "model": "Seedance 2.0 Fast",
+          "autoSelected": false,
+          "requested": "8s",
+          "actual": "8s",
+          "note": "Coherent motion; no major visual failure.",
+          "flag": null
+        },
+        {
+          "product": "pollo",
+          "workflow": "manual",
+          "model": "Pollo 2.5",
+          "autoSelected": false,
+          "requested": "6s",
+          "actual": "6s",
+          "note": "Matched the selected duration; no major failure.",
+          "flag": null
+        },
+        {
+          "product": "revid",
+          "workflow": "manual",
+          "model": "Pro",
+          "autoSelected": true,
+          "requested": "8s",
+          "actual": "8s",
+          "note": "The paper boat stayed stationary instead of floating through the gutter.",
+          "flag": "constraint"
+        },
+        {
+          "product": "runway",
+          "workflow": "manual",
+          "model": "Gen 4.5",
+          "autoSelected": false,
+          "requested": "6s",
+          "actual": "6s",
+          "note": "Matched the selected duration; no major failure.",
+          "flag": null
+        }
+      ]
+    },
+    {
+      "id": "I2V-01",
+      "slug": "i2v-01",
+      "name": "Image-to-video",
+      "goal": "Isolate motion and source fidelity from a supplied still: slow push-in, pinwheel completes one rotation, and the mug's printed word changes PAUSE → PLAY with everything else preserved.",
+      "requestedLabel": "10–15s",
+      "rows": [
+        {
+          "product": "vivideo",
+          "workflow": "agent",
+          "model": null,
+          "autoSelected": true,
+          "requested": "10s",
+          "actual": "11s",
+          "note": "The mug text never changed from PAUSE to PLAY, and the pinwheel stopped instead of completing the rotation.",
+          "flag": "constraint"
+        },
+        {
+          "product": "heygen",
+          "workflow": "agent",
+          "model": null,
+          "autoSelected": true,
+          "requested": "10–15s",
+          "actual": "12s",
+          "note": "Pinwheel dropped from its position; camera departed from the requested stable push-in.",
+          "flag": "constraint"
+        },
+        {
+          "product": "invideo",
+          "workflow": "manual",
+          "model": "Seedance 2.0 Fast",
+          "autoSelected": false,
+          "requested": "12s",
+          "actual": "12s",
+          "note": "Preserved the scene and completed the requested motion — the cleanest run of the six.",
+          "flag": null
+        },
+        {
+          "product": "pollo",
+          "workflow": "manual",
+          "model": "Pollo 2.5",
+          "autoSelected": false,
+          "requested": "15s",
+          "actual": "15s",
+          "note": "Complete result; no major first-run failure recorded.",
+          "flag": null
+        },
+        {
+          "product": "revid",
+          "workflow": "manual",
+          "model": "Pro",
+          "autoSelected": true,
+          "requested": "10s",
+          "actual": "10s",
+          "note": "Complete result; no major first-run failure recorded.",
+          "flag": null
+        },
+        {
+          "product": "runway",
+          "workflow": "manual",
+          "model": "Gen 4.5",
+          "autoSelected": false,
+          "requested": "10s",
+          "actual": "10s",
+          "note": "Limited motion and temporal inconsistency across the shot.",
+          "flag": "constraint"
+        }
+      ]
+    },
+    {
+      "id": "AVATAR-01",
+      "slug": "avatar-01",
+      "name": "Avatar explainer",
+      "goal": "Test stock-avatar workflows with an exact 4-sentence script that must be read word-for-word: lip sync, voice, gestures, caption accuracy.",
+      "requestedLabel": "exact script",
+      "rows": [
+        {
+          "product": "vivideo",
+          "workflow": "agent",
+          "model": null,
+          "autoSelected": true,
+          "requested": "n/a",
+          "actual": "16s",
+          "note": "Initially proposed 30s; after the plan was edited, produced a complete 16s presenter result.",
+          "flag": null
+        },
+        {
+          "product": "heygen",
+          "workflow": "agent",
+          "model": null,
+          "autoSelected": true,
+          "requested": "n/a",
+          "actual": "14s",
+          "note": "Prepared avatar available before generation; complete presenter video.",
+          "flag": null
+        },
+        {
+          "product": "invideo",
+          "workflow": "agent",
+          "model": null,
+          "autoSelected": true,
+          "requested": "n/a",
+          "actual": "18s",
+          "note": "Complete presenter video; no major failure recorded.",
+          "flag": null
+        },
+        {
+          "product": "pollo",
+          "workflow": "manual",
+          "model": null,
+          "autoSelected": true,
+          "requested": "n/a",
+          "actual": "20s",
+          "note": "Created the presenter from the image supplied during testing.",
+          "flag": null
+        },
+        {
+          "product": "revid",
+          "workflow": "manual",
+          "model": "Pro",
+          "autoSelected": true,
+          "requested": "n/a",
+          "actual": "18s",
+          "note": "Corrected run using the prepared avatar, without the earlier version's extra B-roll.",
+          "flag": null
+        },
+        {
+          "product": "runway",
+          "workflow": "manual",
+          "model": null,
+          "autoSelected": true,
+          "requested": "n/a",
+          "actual": "16s",
+          "note": "Conventional presenter-style result; no major failure recorded.",
+          "flag": null
+        }
+      ]
+    }
+  ],
+  "products": {
+    "vivideo": {
+      "name": "Vivideo",
+      "baseline": true
+    },
+    "heygen": {
+      "name": "HeyGen",
+      "baseline": false
+    },
+    "invideo": {
+      "name": "InVideo AI",
+      "baseline": false
+    },
+    "pollo": {
+      "name": "Pollo AI",
+      "baseline": false
+    },
+    "revid": {
+      "name": "Revid.ai",
+      "baseline": false
+    },
+    "runway": {
+      "name": "Runway",
+      "baseline": false
+    }
+  }
+}

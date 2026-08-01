@@ -1,67 +1,261 @@
 ---
 import Base from '../layouts/Base.astro';
-import { asset, route } from '../lib/url';
+import Divergence from '../components/Divergence.astro';
+import { route } from '../lib/url';
 
-const probeSrc = asset('base-path-probe.svg');
-const baseUrl = import.meta.env.BASE_URL;
+const stats = [
+  { n: '6', label: 'products, tested on paid plans' },
+  { n: '5', label: 'fixed prompts, run everywhere' },
+  { n: '30', label: 'first-run outputs kept' },
+  { n: '59', label: 'user reviews coded' },
+  { n: '$118', label: 'spent on subscriptions' },
+  { n: '8', label: 'days, 25 Jul – 1 Aug' },
+];
+
+const sections = [
+  {
+    href: 'executive-summary',
+    title: 'Executive summary',
+    hook: 'The 10 things to know and the 5 recommendations, on one printable page.',
+    kicker: 'Start here',
+  },
+  {
+    href: 'benchmarks',
+    title: 'Benchmarks',
+    hook: 'Five prompts × six products: workflow, model, requested vs. delivered duration, first-run notes.',
+    kicker: '30 runs',
+  },
+  {
+    href: 'competitors',
+    title: 'Competitors',
+    hook: 'Six deep-dive profiles: strongest mechanism, weakness, and what each one means for Vivideo.',
+    kicker: '6 profiles',
+  },
+  {
+    href: 'pricing',
+    title: 'Pricing & cancellation',
+    hook: 'What plans cost, how credits actually felt, and how hard each product makes leaving.',
+    kicker: 'incl. friction table',
+  },
+  {
+    href: 'reviews',
+    title: 'Reviews',
+    hook: 'Themes identified in a 59-review sample across Trustpilot, App Store, Reddit, Product Hunt, Capterra.',
+    kicker: 'coded sample',
+  },
+  {
+    href: 'distribution',
+    title: 'Distribution',
+    hook: 'Referral economics, publishing rewards, quests, and who actually has a growth loop.',
+    kicker: 'loops, not features',
+  },
+  {
+    href: 'strategy',
+    title: 'Strategy',
+    hook: 'Steal / Avoid / Attack, a sequenced roadmap, and the three 12-month threats.',
+    kicker: 'the "so what"',
+  },
+  {
+    href: 'methodology',
+    title: 'Methodology',
+    hook: 'The prompt set, shared assets, capability boundary, spend report, and the limits of one run.',
+    kicker: 'read the caveats',
+  },
+];
 ---
 
 <Base title="Vivideo competitor analysis">
-  <h1>Vivideo competitor analysis</h1>
-  <p class="lede">
-    First-hand product teardown of six AI video platforms — Vivideo, Pollo AI,
-    InVideo AI, Revid.ai, HeyGen, and Runway — using five fixed benchmark
-    prompts, paid accounts, and recorded sessions.
-  </p>
+  <div class="shell">
+    <header class="hero">
+      <p class="eyebrow">Case study · competitor product analysis · 2026</p>
+      <h1>
+        Six AI video products promise a plan.<br />
+        <em>We measured what they deliver.</em>
+      </h1>
+      <p class="stand">
+        First-hand teardown of Vivideo against Pollo AI, InVideo AI, Revid.ai,
+        HeyGen and Runway — same five prompts, paid accounts, every session
+        recorded. The recurring finding isn't that outputs vary. It's that
+        <strong>approval doesn't bind</strong>: estimates, durations and models
+        drift after the user says yes.
+      </p>
 
-  <section class="probe">
-    <h2>Deployment check</h2>
-    <p>
-      This page exists to verify the GitHub Pages sub-path configuration before
-      real content is added. The image below is served from <code>public/</code>.
-      If it renders on the deployed URL, asset paths resolve correctly.
-    </p>
+      <div class="hero-proof">
+        <Divergence
+          label="Vivideo: agent plan approved at"
+          approved={12}
+          delivered={21}
+          unit=" cr"
+          source="one of four measured divergences — see the summary"
+        />
+      </div>
 
-    <img src={probeSrc} alt="Base path probe: public/ asset resolved, base path is correct" width="240" height="64" />
+      <p class="cta-row">
+        <a class="cta" href={route('executive-summary')}>Read the executive summary</a>
+        <a class="cta ghost" href={route('benchmarks')}>See the benchmark runs</a>
+      </p>
+    </header>
 
-    <table>
-      <tbody>
-        <tr>
-          <th scope="row">BASE_URL</th>
-          <td><code>{baseUrl}</code></td>
-        </tr>
-        <tr>
-          <th scope="row">Resolved asset</th>
-          <td><code>{probeSrc}</code></td>
-        </tr>
-        <tr>
-          <th scope="row">Resolved route</th>
-          <td><code>{route('benchmarks')}</code></td>
-        </tr>
-      </tbody>
-    </table>
+    <ul class="stats" aria-label="Scope of testing">
+      {
+        stats.map((s) => (
+          <li>
+            <span class="stat-n num">{s.n}</span>
+            <span class="stat-l">{s.label}</span>
+          </li>
+        ))
+      }
+    </ul>
 
-    <p class="note">
-      A broken image here, or a leading double slash in either resolved value,
-      means <code>base</code> in <code>astro.config.mjs</code> disagrees with the
-      repository name. Fix that before building further pages — every asset and
-      link inherits it.
-    </p>
-  </section>
+    <nav class="grid" aria-label="Report sections">
+      {
+        sections.map((s) => (
+          <a class="card" href={route(s.href)}>
+            <span class="card-kicker eyebrow">{s.kicker}</span>
+            <span class="card-title">{s.title}</span>
+            <span class="card-hook">{s.hook}</span>
+          </a>
+        ))
+      }
+    </nav>
 
-  <style>
-    .lede { font-size: 1.0625rem; color: var(--ink-soft); max-width: 44rem; }
-    .probe {
-      margin-top: 2rem;
-      padding: 1.25rem;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-    }
-    .probe h2 { margin-top: 0; }
-    .probe img { display: block; margin: 1rem 0; max-width: 100%; height: auto; }
-    .probe table { margin-top: 0.5rem; }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.875em; }
-    .note { font-size: 0.875rem; color: var(--ink-soft); margin-bottom: 0; }
-  </style>
+    <aside class="legend">
+      <h2 class="eyebrow">How claims are marked throughout</h2>
+      <p>
+        <span class="prov" data-kind="observed">observed</span> first-hand and recorded
+        &nbsp;·&nbsp;
+        <span class="prov" data-kind="claim">review claim</span> user allegation, not verified fact
+        &nbsp;·&nbsp;
+        <span class="prov" data-kind="interpretation">interpretation</span> our strategic reading
+      </p>
+    </aside>
+  </div>
 </Base>
+
+<style>
+  .hero {
+    max-width: 46rem;
+    padding-top: 0.5rem;
+  }
+  .hero h1 {
+    margin: 0.6rem 0 1rem;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--subject);
+  }
+  .stand {
+    font-size: var(--step-1);
+    line-height: 1.55;
+    color: var(--ink-mid);
+    margin: 0 0 1.4rem;
+  }
+  .stand strong {
+    color: var(--ink);
+  }
+
+  .hero-proof {
+    max-width: 30rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin: 0;
+  }
+  .cta {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    padding: 0.6rem 1.05rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+  }
+  .cta:hover {
+    background: var(--subject);
+    border-color: var(--subject);
+  }
+  .cta.ghost {
+    background: transparent;
+    color: var(--ink);
+  }
+  .cta.ghost:hover {
+    background: var(--paper-raised);
+    color: var(--subject);
+    border-color: var(--subject);
+  }
+
+  .stats {
+    list-style: none;
+    margin: 2.75rem 0 0;
+    padding: 1.1rem 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+    gap: 0.9rem 1.5rem;
+  }
+  .stat-n {
+    display: block;
+    font-size: var(--step-2);
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .stat-l {
+    display: block;
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+    line-height: 1.35;
+    margin-top: 0.15rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1rem 1.05rem 1.1rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    text-decoration: none;
+    transition: border-color 120ms ease;
+  }
+  .card:hover {
+    border-color: var(--subject);
+  }
+  .card:hover .card-title {
+    color: var(--subject);
+  }
+  .card-kicker {
+    color: var(--ink-soft);
+  }
+  .card-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--step-1);
+    letter-spacing: -0.015em;
+  }
+  .card-hook {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+
+  .legend {
+    margin-top: 2.25rem;
+  }
+  .legend p {
+    margin: 0.4rem 0 0;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+</style>

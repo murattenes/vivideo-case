@@ -1,0 +1,251 @@
+---
+import Base from '../layouts/Base.astro';
+
+const loops = [
+  {
+    id: 'referral',
+    title: 'Referral & affiliate — paid acquisition through users and partners',
+    entries: [
+      {
+        product: 'Pollo AI',
+        detail:
+          'Two-sided referral: 50 credits to each side at signup, 200 to each side when the invited user upgrades. Invitation link shareable to Facebook, X, WhatsApp, LinkedIn and Telegram. Separately, an affiliate program advertises up to 30% commission on an attributed first purchase, renewal or upgrade.',
+        prov: 'observed',
+        standout: true,
+      },
+      {
+        product: 'Revid.ai',
+        detail:
+          'Affiliate program pays a share of each referred subscription. Recorded as 20% in testing notes; an earlier research note said 50% — the precise rate is treated as unverified until read from a dated official page.',
+        prov: 'observed',
+      },
+    ],
+  },
+  {
+    id: 'publish',
+    title: 'Shareable-output & publishing — the product rides the content',
+    entries: [
+      {
+        product: 'Revid.ai',
+        detail:
+          'Publishing through Revid earns 25 credits — a direct user-generated-content loop. Quest-like creation and publishing actions add +10.',
+        prov: 'observed',
+        standout: true,
+      },
+      {
+        product: 'HeyGen',
+        detail:
+          'Direct sharing to X and LinkedIn after generation; free outputs carry a HeyGen watermark, so every shared free video is an ad.',
+        prov: 'observed',
+      },
+      {
+        product: 'Pollo AI',
+        detail: 'Free export keeps a Pollo watermark; watermark-free download is a member benefit.',
+        prov: 'observed',
+      },
+      {
+        product: 'Vivideo',
+        detail:
+          'Social sharing exists after generation — the loop is open but nothing measures or rewards what happens after the share.',
+        prov: 'observed',
+      },
+    ],
+  },
+  {
+    id: 'discovery',
+    title: 'Public discovery — being findable before signup',
+    entries: [
+      {
+        product: 'Revid.ai',
+        detail:
+          'Repurpose, Viral Search and Channel Watchers surface trending source material — search-led acquisition built into the product. A very large use-case catalogue (156 tools counted) doubles as landing-page surface, though most entries are the same generator re-skinned.',
+        prov: 'observed',
+      },
+      {
+        product: 'Pollo AI',
+        detail: 'Use-case library grouped by marketing, e-commerce, social media and music.',
+        prov: 'observed',
+      },
+      {
+        product: 'InVideo AI',
+        detail:
+          'The Explore gallery shows finished examples by category — UGC Ads, Product Ads, Explainer, Anime, Cinematic and more — with prompts that can be inspected and copied. Counts as public acquisition only where reachable without login; in-product it is an activation mechanism.',
+        prov: 'observed',
+      },
+    ],
+  },
+  {
+    id: 'activation',
+    title: 'Activation & retention — getting users to create again',
+    entries: [
+      {
+        product: 'Runway',
+        detail:
+          'Quests pay credits for continued creation (they funded part of the benchmark testing), prompt tips teach technique (“try camera lens types like macro or wide angle”), a 4K upscale action follows generation, and workflow templates run from simple to complex.',
+        prov: 'observed',
+        standout: true,
+      },
+      {
+        product: 'Revid.ai',
+        detail: 'Generated characters persist to the user profile for reuse — accumulated creator context as a retention asset.',
+        prov: 'observed',
+      },
+      {
+        product: 'InVideo AI',
+        detail: 'Copyable example prompts collapse the blank-page problem into “edit something that already works.”',
+        prov: 'observed',
+      },
+    ],
+  },
+];
+---
+
+<Base title="Distribution — Vivideo competitor analysis">
+  <div class="shell">
+    <header class="head">
+      <p class="eyebrow">Distribution · growth mechanisms observed first-hand</p>
+      <h1>Who has a loop, and who has a share button</h1>
+      <p class="stand">
+        Monetization is not distribution: a paywall or credit pack creates no
+        exposure. What counts here is anything that brings the next user in —
+        referral economics, published output, discoverable use-cases — or
+        brings the same user back.
+      </p>
+    </header>
+
+    <div class="loops">
+      {
+        loops.map((loop) => (
+          <section class="loop" id={loop.id} aria-labelledby={`${loop.id}-h`}>
+            <h2 id={`${loop.id}-h`}>{loop.title}</h2>
+            <div class="entries">
+              {loop.entries.map((e) => (
+                <article class="entry" data-standout={e.standout ? 'y' : undefined}>
+                  <h3>{e.product}</h3>
+                  <p>
+                    {e.detail}
+                    <span class="prov" data-kind={e.prov}>{e.prov}</span>
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <section class="synthesis" aria-labelledby="syn-h">
+      <h2 id="syn-h">What this means for Vivideo</h2>
+      <ul>
+        <li>
+          <strong>Strongest observed multi-loop system: Revid</strong> —
+          affiliate acquisition, trend-led discovery, creator rewards and
+          publishing incentives connect. Its review sample shows the risk:
+          loops compound bad support as efficiently as good product.
+        </li>
+        <li>
+          <strong>Clearest low-cost loop: Pollo's referral</strong> — the 50/200
+          two-sided structure pays where value is created (signup small,
+          upgrade large) and costs credits, not cash.
+        </li>
+        <li>
+          <strong>Strongest activation: Runway's quests and education</strong> —
+          they measurably funded more creation during our own testing, which is
+          the point.
+        </li>
+        <li>
+          <strong>Vivideo's position:</strong> the share action exists and
+          nothing else does. Recommendation 5 sequences the loop build-out —
+          after the trust repairs, referral on activation, publishing rewards
+          with downstream measurement, quests that teach high-value behaviour.
+        </li>
+      </ul>
+      <p class="fineprint">
+        Evidence: referral, use-case and Explore screenshots are preserved in
+        the research set; cropped versions (account details removed) are being
+        prepared for this page. Screenshot-verified numbers: Pollo 50/200
+        referral credits and up-to-30% affiliate.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 46rem;
+  }
+  .head h1 {
+    margin: 0.6rem 0 0.8rem;
+  }
+  .stand {
+    font-size: var(--step-1);
+    color: var(--ink-mid);
+    margin: 0;
+  }
+
+  .loop {
+    margin-top: 2.4rem;
+  }
+  .loop h2 {
+    font-size: var(--step-1);
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--rule-strong);
+    margin-bottom: 0.9rem;
+  }
+
+  .entries {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 0.8rem;
+  }
+  .entry {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 0.9rem 1rem;
+  }
+  .entry[data-standout='y'] {
+    border-left: 3px solid var(--within);
+  }
+  .entry h3 {
+    margin: 0 0 0.35rem;
+    font-size: 0.95rem;
+  }
+  .entry p {
+    margin: 0;
+    font-size: 0.84rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+  }
+  .entry .prov {
+    margin-left: 0.4rem;
+  }
+
+  .synthesis {
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 2px solid var(--ink);
+    max-width: 52rem;
+  }
+  .synthesis ul {
+    list-style: none;
+    margin: 0.8rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .synthesis li {
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--rule);
+  }
+  .synthesis strong {
+    color: var(--ink);
+  }
+  .fineprint {
+    margin: 1rem 0 0;
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+  }
+</style>

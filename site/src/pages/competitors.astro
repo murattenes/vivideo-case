@@ -1,0 +1,299 @@
+---
+import Base from '../layouts/Base.astro';
+
+const profiles = [
+  {
+    id: 'vivideo',
+    name: 'Vivideo',
+    baseline: true,
+    role: 'Baseline — the product under analysis',
+    planTested: 'MAX',
+    positioning:
+      'One-prompt Video Agent plus manual generation modes (text-to-video, image-to-video, first/last-frame, multi-image), with model selection, avatars, voices, brand options and post-generation social sharing.',
+    strongest:
+      'The agent produced the most complete first-run educational short of all six products — when it works, the end-to-end flow is genuinely good.',
+    weakness:
+      'Approval binds nothing: credit estimates (9→15, 12→21) and plan durations (18s→34s) drifted after consent. The submitted prompt is not visible after generation, one item showed a wrong relative timestamp, and cancellation ends in an email to support.',
+    firstRun:
+      'Strongest AGENT-01 of the six; weakest T2V-01 (shaking still image plus narration on a no-audio prompt) and a failed I2V-01 (no text change, stopped pinwheel).',
+    implication:
+      'The gaps are trust and control, not capability. Fixing the contract between plan and delivery is cheaper than any model upgrade — and it is the one fix competitors have not made either.',
+  },
+  {
+    id: 'heygen',
+    name: 'HeyGen',
+    role: 'Avatar and AI-presenter specialist',
+    planTested: 'Creator · $29/mo',
+    positioning:
+      'Guided agent that asks pre-generation questions and shows a plan; the most mature avatar/presenter pipeline of the six. One primary model plus a Seedance toggle.',
+    strongest:
+      'The guided brief. Asking a few questions before generating produced the most coherent multi-scene structures — and its avatar quality is the one thing its own reviewers consistently praise.',
+    weakness:
+      'Its plan diverges too (an 18s plan delivered 45s in one run; AGENT-01 overshot the range; AD-01 undershot by 5s), generation is slow (~11 min), and if you idle after the plan it proceeds on its own. Free tier watermarks, gates 1080p, download and editing behind upgrade prompts.',
+    firstRun:
+      'Complete results on every prompt; duration misses on AGENT-01 and AD-01; displaced pinwheel on I2V-01. Credits felt generous — roughly 11 videos with allowance remaining.',
+    implication:
+      'Steal the guided brief and pre-generation plan — then make the approved values binding, which HeyGen never does. Its divergence proves planning without commitment is theatre.',
+  },
+  {
+    id: 'pollo',
+    name: 'Pollo AI',
+    role: 'Multi-model generation platform',
+    planTested: 'Lite · $15/mo',
+    positioning:
+      'One interface over many underlying models, with a large tool/use-case library grouped by marketing, e-commerce, social media and music.',
+    strongest:
+      'Distribution mechanics: two-sided referral (50 credits each at signup, 200 each at upgrade, shareable to six destinations), an affiliate program advertising up to 30%, and watermarked free export. Also the shortest, most direct cancellation flow of the six.',
+    weakness:
+      'Credits are restrictive — roughly 5 videos on the cheapest in-house models. The interface felt crowded during testing, the duration selector silently overrides the prompt, and its reviewers complain about prompt adherence and double monetization (subscribing, then still buying credits).',
+    firstRun:
+      'Complete on T2V/I2V/AVATAR; AD-01 mostly placed text over the product image instead of building an ad; AGENT-01 had basic visuals and unclear narration. The dedicated product-promotion tool worked better than the raw prompt path.',
+    implication:
+      'Proof that model breadth is real but not sufficient — and that a distribution loop can be built by a product whose credits users complain about. Take the referral economics, skip the tool sprawl.',
+  },
+  {
+    id: 'invideo',
+    name: 'InVideo AI',
+    role: 'Mature end-to-end video agent',
+    planTested: 'Plus · $20/mo (charged TRY 985.87)',
+    positioning:
+      'A prompt-to-finished-video agent that generates short clips and assembles them into complete videos, with an Explore gallery of examples whose prompts can be inspected and copied.',
+    strongest:
+      'The agent’s assembly. Generating short Seedance clips from frames and stitching them produced the cleanest I2V run and range-accurate durations. The Explore gallery with copyable prompts is the best blank-page cure of the six.',
+    weakness:
+      'The free allowance died during agent setup, before a single generation. The agent defaults to strong, expensive models — good output, fast credit burn. Cancellation used a multi-step survey that rejected meaningless free-text answers.',
+    firstRun:
+      'No major recorded failure on any of the five prompts — the most consistent performer, with the caveat that AD-01 omitted the voiceover.',
+    implication:
+      'The value benchmark: its base plan buys roughly six 15s Seedance 2.0 videos. Steal the examples-with-prompts gallery, and treat its expensive-by-default routing as the cautionary tale for recommendation 3.',
+  },
+  {
+    id: 'revid',
+    name: 'Revid.ai',
+    role: 'Direct short-form / social-video competitor',
+    planTested: 'Growth · $39/mo',
+    positioning:
+      'Social-native: Repurpose, Viral Search and Channel Watchers surface trending source material; media types include static and gameplay; post-generation editing exists; generated characters persist to the user profile.',
+    strongest:
+      'The loop economy. Publishing on Revid earns 25 credits, quest-like actions earn +10, characters are reusable, and an affiliate program pays a share of referred subscriptions. It is the only product where creation, publishing and acquisition connect.',
+    weakness:
+      'Generation is slow (about 5 minutes for an 8s clip), the 156-item tool catalogue is mostly the same generator re-skinned, pricing is hidden below the homepage fold, and its reviews are dominated by support complaints — five of nine coded reviews cite unresponsive support.',
+    firstRun:
+      'Complete AD-01 and I2V-01; AGENT-01 combined four shots with inconsistent voice and style; T2V-01 kept the boat stationary and ignored a flat-animation instruction.',
+    implication:
+      'The distribution blueprint — and the warning. Loops compound whatever experience exists, including bad support. Sequence trust before loops (recommendation 5).',
+  },
+  {
+    id: 'runway',
+    name: 'Runway',
+    role: 'Advanced generation and creative workflows',
+    planTested: 'Standard · $15/mo (charged TRY 886.84 incl. VAT)',
+    positioning:
+      'Creative-tooling depth: model control in the Custom area, workflow templates from simple to complex, quests that pay credits, prompt education (camera-lens tips), and a post-generation 4K upscale action.',
+    strongest:
+      'Activation mechanics. Quests funded real usage (credits remained after five benchmark videos), prompt tips teach technique, and workflows support serious pipelines.',
+    weakness:
+      'The free tier allowed image generation but not the expected video access. The Home agent kept selecting Seedance even when asked to switch models — and its dialog offered only an Approve button. Reviews centre on credits consumed by failed or stuck generations.',
+    firstRun:
+      'Complete T2V-01 and AD-01 (weak ad structure); limited motion and temporal inconsistency on I2V-01; the agent self-capped AGENT-01 at 10 seconds.',
+    implication:
+      'Steal quests, prompt education and the upscale action. Its approve-only model dialog is the exact anti-pattern recommendation 3 exists to prevent.',
+  },
+];
+
+const landscape = [
+  { name: 'VEED', note: 'editor-first AI video platform' },
+  { name: 'OpusClip', note: 'long-video clipping specialist' },
+  { name: 'Zebracat', note: 'social-video automation' },
+  { name: 'Pika', note: 'creative effects, short clips' },
+  { name: 'Synthesia', note: 'enterprise avatar / training video' },
+  { name: 'Captions', note: 'social-native avatar + auto editing' },
+  { name: 'Fliki', note: 'briefly probed: series feature for channel owners; 3 free credits; free export capped at 720p MP4' },
+];
+---
+
+<Base title="Competitors — Vivideo competitor analysis">
+  <div class="shell">
+    <header class="head">
+      <p class="eyebrow">Competitors · six deep dives, tested on paid plans</p>
+      <h1>Who does what well — and what that costs them</h1>
+      <p class="stand">
+        Each profile is built from hands-on use: onboarding, five benchmark
+        runs, upgrade prompts, and a real cancellation. Strengths are stated as
+        mechanisms, not adjectives.
+      </p>
+    </header>
+
+    <div class="profiles">
+      {
+        profiles.map((p) => (
+          <article class="profile" id={p.id} data-baseline={p.baseline ? 'y' : undefined}>
+            <header class="p-head">
+              <h2>{p.name}</h2>
+              <p class="p-role">{p.role}</p>
+              <p class="p-plan num">Plan tested: {p.planTested}</p>
+            </header>
+
+            <p class="p-pos">{p.positioning}</p>
+
+            <dl class="p-grid">
+              <div class="cell good">
+                <dt>Strongest mechanism</dt>
+                <dd>{p.strongest}</dd>
+              </div>
+              <div class="cell bad">
+                <dt>Weakness worth attacking</dt>
+                <dd>{p.weakness}</dd>
+              </div>
+              <div class="cell">
+                <dt>First-run record</dt>
+                <dd>{p.firstRun}</dd>
+              </div>
+              <div class="cell take">
+                <dt>Implication for Vivideo</dt>
+                <dd>{p.implication}</dd>
+              </div>
+            </dl>
+          </article>
+        ))
+      }
+    </div>
+
+    <section class="landscape" aria-labelledby="landscape-h">
+      <h2 id="landscape-h">Landscape, not deep-dived</h2>
+      <p class="landscape-note">
+        Kept in view but not tested against the prompt set — either a different
+        core job (clipping, enterprise training) or overlapping what the six
+        already cover.
+      </p>
+      <ul>
+        {
+          landscape.map((l) => (
+            <li>
+              <strong>{l.name}</strong> — {l.note}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 46rem;
+  }
+  .head h1 {
+    margin: 0.6rem 0 0.8rem;
+  }
+  .stand {
+    font-size: var(--step-1);
+    color: var(--ink-mid);
+    margin: 0;
+  }
+
+  .profiles {
+    display: grid;
+    gap: 1.4rem;
+    margin-top: 2rem;
+  }
+
+  .profile {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 1.4rem clamp(1rem, 3vw, 1.8rem) 1.5rem;
+    scroll-margin-top: 1rem;
+  }
+  .profile[data-baseline='y'] {
+    border-left: 3px solid var(--subject);
+  }
+  .profile[data-baseline='y'] h2 {
+    color: var(--subject);
+  }
+
+  .p-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  .p-head h2 {
+    margin: 0;
+  }
+  .p-role {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+  .p-plan {
+    margin: 0;
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule-strong);
+    padding: 0.15rem 0.5rem;
+  }
+
+  .p-pos {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    max-width: 56rem;
+  }
+
+  .p-grid {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 0.9rem 1.4rem;
+  }
+  .cell dt {
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.3rem;
+  }
+  .cell dd {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--ink-mid);
+  }
+  .cell.good dt {
+    color: var(--within);
+  }
+  .cell.bad dt {
+    color: var(--diverge);
+  }
+  .cell.take {
+    border-left: 2px solid var(--subject);
+    padding-left: 0.8rem;
+  }
+  .cell.take dt {
+    color: var(--subject);
+  }
+
+  .landscape {
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 2px solid var(--ink);
+    max-width: 52rem;
+  }
+  .landscape-note {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin: 0.4rem 0 0.8rem;
+  }
+  .landscape ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+  }
+</style>

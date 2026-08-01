@@ -1,0 +1,330 @@
+---
+import Base from '../layouts/Base.astro';
+import { route } from '../lib/url';
+
+const prompts = [
+  {
+    id: 'AGENT-01',
+    name: 'One-prompt educational short',
+    tests: 'Agent / guided idea-to-video workflow',
+    spec: '15–20s vertical explaining why leaves change colour in autumn: hook in 2s, chlorophyll → existing pigments → red pigments → takeaway. Burned-in captions, warm neutral voice, music under speech, no invented statistics.',
+  },
+  {
+    id: 'AD-01',
+    name: 'Product advertisement',
+    tests: 'Product-image fidelity and conversion structure',
+    spec: '20s vertical ad for the fictional “Drift Cold Brew”, using a supplied packshot that must not be redesigned. Three exact product facts, fixed hook (“Smooth focus, no sugar rush.”) and fixed CTA (“Find your flow with Drift.”).',
+  },
+  {
+    id: 'T2V-01',
+    name: 'Manual text-to-video',
+    tests: 'Raw generation quality with fixed settings',
+    spec: '6s continuous vertical shot: paper boat through a rain-filled gutter at blue hour, camera tracking at water level. No cuts, people, text, captions, logos — no audio.',
+  },
+  {
+    id: 'I2V-01',
+    name: 'Image-to-video',
+    tests: 'Motion control and source fidelity',
+    spec: '10–15s from a supplied still: slow push-in, pinwheel completes one clockwise turn, curtain sways once, steam drifts — and the mug’s printed word changes PAUSE → PLAY with everything else preserved.',
+  },
+  {
+    id: 'AVATAR-01',
+    name: 'Avatar explainer',
+    tests: 'Stock avatar, lip sync, exact-script adherence',
+    spec: 'A fixed 4-sentence script read word-for-word by a stock avatar: clean background, medium framing, restrained gestures, accurate burned-in captions, no music.',
+  },
+];
+
+const capability = [
+  { cap: 'Video Agent (one-prompt workflow)', has: true },
+  { cap: 'Text-to-video (manual)', has: true },
+  { cap: 'Image-to-video (manual)', has: true },
+  { cap: 'First/last-frame · multi-image modes', has: true },
+  { cap: 'Model selection', has: true },
+  { cap: 'Avatar, voice and brand options', has: true },
+  { cap: 'Social sharing after generation', has: true },
+  { cap: 'Post-generation timeline editor', has: false },
+  { cap: 'Upload-and-edit an existing video', has: false },
+  { cap: 'Long-video-to-short clipping', has: false },
+];
+
+const rules = [
+  {
+    title: 'One run per product per workflow',
+    detail:
+      'The first output was preserved before any retry or edit. Results are directional case-study evidence — a single run cannot rank models statistically, and no such ranking is claimed anywhere on this site.',
+  },
+  {
+    title: 'Same prompts, same assets, frozen before testing',
+    detail:
+      'The prompt set was versioned (v4) and frozen before the first account was created. Both source images are SHA-256-fingerprinted so any later substitution would be detectable.',
+  },
+  {
+    title: 'The same prompt does not isolate model quality',
+    detail:
+      'Products rewrite prompts, route models, assemble multiple clips, add stock assets and post-process. Agent output is compared with agent output, manual with manual, avatar with avatar.',
+  },
+  {
+    title: 'Capability gaps are gaps, not zeros',
+    detail:
+      'Vivideo’s missing editor and clipping are reported as absent capabilities. They never lower an output-quality observation for workflows that do exist.',
+  },
+  {
+    title: 'Reviews are claims; observations are observations',
+    detail:
+      'Every statement on this site carries its provenance: observed first-hand, review claim (a user allegation, not verified fact), or interpretation. App Store feedback describes mobile apps and is labelled as such.',
+  },
+  {
+    title: 'Evidence outlives the summary',
+    detail:
+      'Full screen recordings exist for onboarding, all benchmark runs and all six cancellations. Recordings that show billing details (name, email, card last-4, invoices) stay in private storage; only redacted crops can be published.',
+  },
+];
+---
+
+<Base title="Methodology — Vivideo competitor analysis">
+  <div class="shell">
+    <header class="head">
+      <p class="eyebrow">Methodology · 25 July – 1 August 2026</p>
+      <h1>How the testing was actually done</h1>
+      <p class="stand">
+        Six products, each on a paid plan bought with a real card. Five prompts,
+        frozen before testing. Every session screen-recorded, every first output
+        preserved, every subscription genuinely cancelled at the end.
+      </p>
+    </header>
+
+    <section aria-labelledby="prompts-h">
+      <h2 id="prompts-h">The five benchmark prompts</h2>
+      <p class="sec-note">
+        Prompt text was pasted verbatim where free-form prompting existed; for
+        form-based products the same requirements were mapped to the available
+        controls and the deviation recorded. Full canonical text:
+        <a href="https://github.com/murattenes/vivideo-case/blob/main/research/benchmark-prompts.md" rel="noopener">research/benchmark-prompts.md</a>.
+      </p>
+      <div class="prompt-list">
+        {
+          prompts.map((p) => (
+            <article class="prompt">
+              <h3>
+                <span class="num pid">{p.id}</span>
+                {p.name}
+              </h3>
+              <p class="tests"><span class="eyebrow">Tests</span> {p.tests}</p>
+              <p class="spec">{p.spec}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section aria-labelledby="cap-h">
+      <h2 id="cap-h">The tested Vivideo build (2026-07-25, MAX plan)</h2>
+      <p class="sec-note">
+        The competitor set and prompt design follow what this build exposed —
+        products were chosen to compare against capabilities Vivideo actually
+        has.
+      </p>
+      <div class="scroll-x">
+        <table class="cap">
+          <tbody>
+            {
+              capability.map((c) => (
+                <tr>
+                  <td>{c.cap}</td>
+                  <td class="has" data-has={c.has ? 'y' : 'n'}>
+                    {c.has ? 'present' : 'not found'}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="fineprint">
+        “Not found” means not discoverable in the tested build on 2026-07-25 —
+        Templates, Integrations, Automations and MCP Skills were visible in
+        navigation but not deep-tested. Absent capabilities are reported as
+        gaps, never as zero-quality scores.
+      </p>
+    </section>
+
+    <section aria-labelledby="rules-h">
+      <h2 id="rules-h">Rules the analysis follows</h2>
+      <div class="rules">
+        {
+          rules.map((r) => (
+            <article class="rule">
+              <h3>{r.title}</h3>
+              <p>{r.detail}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section aria-labelledby="ev-h">
+      <h2 id="ev-h">Evidence inventory</h2>
+      <div class="scroll-x">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Evidence</th>
+              <th scope="col">Count</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Generated benchmark outputs (first runs)</td>
+              <td class="n">30</td>
+              <td>Preserved; streaming links being attached to the benchmarks page</td>
+            </tr>
+            <tr>
+              <td>Full screen recordings (onboarding + runs)</td>
+              <td class="n">~25</td>
+              <td>Private storage — show account details</td>
+            </tr>
+            <tr>
+              <td>Cancellation recordings</td>
+              <td class="n">6</td>
+              <td>Private storage — show billing details; redacted crops only</td>
+            </tr>
+            <tr>
+              <td>Coded user reviews with screenshots</td>
+              <td class="n">59</td>
+              <td>Summarised on <a href={route('reviews')}>reviews</a>, with source links</td>
+            </tr>
+            <tr>
+              <td>Distribution / pricing screenshots</td>
+              <td class="n">30+</td>
+              <td>Preserved; account-identifying regions cropped before publication</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fineprint">
+        Raw research notes are in the repository:
+        <a href="https://github.com/murattenes/vivideo-case/blob/main/my-observations.md" rel="noopener">my-observations.md</a> (testing notes),
+        the five <code>*-compare.md</code> files (canonical first-run data),
+        <a href="https://github.com/murattenes/vivideo-case/blob/main/cancellation.md" rel="noopener">cancellation.md</a>,
+        <a href="https://github.com/murattenes/vivideo-case/blob/main/distribution.md" rel="noopener">distribution.md</a> and
+        <a href="https://github.com/murattenes/vivideo-case/blob/main/recommendations.md" rel="noopener">recommendations.md</a>.
+        Where documents disagree, the recording or original output wins, then
+        dated screenshots, then the comparison files.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 46rem;
+  }
+  .head h1 {
+    margin: 0.6rem 0 0.8rem;
+  }
+  .stand {
+    font-size: var(--step-1);
+    color: var(--ink-mid);
+    margin: 0;
+  }
+
+  section {
+    margin-top: 2.6rem;
+  }
+  section h2 {
+    margin-bottom: 0.5rem;
+  }
+  .sec-note {
+    margin: 0 0 1rem;
+    font-size: 0.83rem;
+    color: var(--ink-soft);
+    max-width: 48rem;
+  }
+
+  .prompt-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 0.9rem;
+  }
+  .prompt {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 1rem 1.1rem;
+  }
+  .prompt h3 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    margin: 0 0 0.4rem;
+    font-size: 0.95rem;
+  }
+  .pid {
+    font-size: 0.66rem;
+    font-weight: 600;
+    color: var(--subject);
+    border: 1px solid currentColor;
+    padding: 0.1rem 0.4rem;
+    white-space: nowrap;
+  }
+  .tests {
+    margin: 0 0 0.35rem;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+  .tests .eyebrow {
+    margin-right: 0.35rem;
+  }
+  .spec {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    line-height: 1.5;
+  }
+
+  .cap {
+    max-width: 40rem;
+  }
+  .has {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .has[data-has='y'] {
+    color: var(--within);
+  }
+  .has[data-has='n'] {
+    color: var(--diverge);
+  }
+
+  .rules {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 0.9rem;
+  }
+  .rule h3 {
+    margin: 0 0 0.3rem;
+    font-size: 0.92rem;
+  }
+  .rule p {
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+  }
+
+  .fineprint {
+    margin: 0.8rem 0 0;
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+    max-width: 52rem;
+    line-height: 1.55;
+  }
+  .fineprint code {
+    font-family: var(--mono);
+    font-size: 0.9em;
+  }
+</style>

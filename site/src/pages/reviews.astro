@@ -1,0 +1,462 @@
+---
+import Base from '../layouts/Base.astro';
+
+/**
+ * 59 reviews were hand-selected and coded on 2026-08-01 across Trustpilot,
+ * Apple App Store, Reddit, Product Hunt, Capterra and G2. The sample was
+ * DELIBERATELY mixed (positive and negative sought for each product), so
+ * sentiment ratios are not representative and are not shown. What the sample
+ * supports: which themes users raise, with direct examples.
+ */
+const products = [
+  {
+    id: 'vivideo',
+    name: 'Vivideo',
+    examined: 9,
+    sources: [
+      { label: 'Trustpilot (vivideo.ai)', url: 'https://www.trustpilot.com/review/vivideo.ai' },
+      { label: 'Trustpilot (app.vivideo.ai)', url: 'https://www.trustpilot.com/review/app.vivideo.ai' },
+      { label: 'Capterra', url: 'https://www.capterra.com/p/10034820/Vivideo/' },
+    ],
+    sourceNote:
+      'Vivideo has two separate Trustpilot profiles; their aggregate scores are kept separate and never combined.',
+    themes: [
+      { label: 'Pricing trust', count: 4 },
+      { label: 'Export / preview paywall', count: 3 },
+      { label: 'Credit confusion', count: 2 },
+      { label: 'Free-plan limits', count: 2 },
+    ],
+    cards: [
+      {
+        ref: 'VIV-REV-08',
+        source: 'Trustpilot · 1★',
+        sentiment: 'negative',
+        text: 'Payment was required before the generated draft could be previewed.',
+      },
+      {
+        ref: 'VIV-REV-09',
+        source: 'Capterra · 5★',
+        sentiment: 'positive',
+        text: 'Praised the ease of creating ideas and the free trial, while finding the credit system and the disappearance of free credits difficult to understand.',
+      },
+    ],
+    reading:
+      'The dominant theme is pay-before-preview: reviewers repeatedly allege the advertised free video required payment to view or download. Even the positive Capterra review qualifies its praise with credit confusion.',
+  },
+  {
+    id: 'heygen',
+    name: 'HeyGen',
+    examined: 10,
+    sources: [
+      { label: 'Trustpilot', url: 'https://www.trustpilot.com/review/heygen.com' },
+      { label: 'G2', url: 'https://www.g2.com/products/heygen/reviews' },
+      { label: 'Apple App Store', url: null },
+    ],
+    sourceNote: 'App Store cards are preserved as screenshots in the evidence set.',
+    themes: [
+      { label: 'Avatar quality (mostly praise)', count: 3 },
+      { label: 'Billing / subscription', count: 3 },
+      { label: 'Plan limits & price value', count: 2 },
+      { label: 'Credit confusion', count: 2 },
+    ],
+    cards: [
+      {
+        ref: 'HEY-REV-04',
+        source: 'App Store · 5★',
+        sentiment: 'positive',
+        text: 'Praised how simply a lifelike avatar could be made from an uploaded image and recorded voice.',
+      },
+      {
+        ref: 'HEY-REV-10',
+        source: 'App Store · 1★',
+        sentiment: 'negative',
+        text: 'Said the change from unlimited use to credits substantially reduced the subscription’s value — and cancelled over it.',
+      },
+    ],
+    reading:
+      'A split identity: the avatar capability is loved, while the commercial layer — price increases without notice, plan changes, credit depletion — draws the anger.',
+  },
+  {
+    id: 'pollo',
+    name: 'Pollo AI',
+    examined: 10,
+    sources: [
+      { label: 'Trustpilot', url: 'https://www.trustpilot.com/review/pollo.ai' },
+      { label: 'G2 (context only)', url: 'https://www.g2.com/sellers/pollo-ai' },
+      { label: 'Apple App Store', url: null },
+    ],
+    sourceNote: 'The G2 page is an AI-generated aggregate and is not counted as direct review evidence.',
+    themes: [
+      { label: 'Pricing value / double monetization', count: 2 },
+      { label: 'Credit confusion', count: 2 },
+      { label: 'Prompt adherence', count: 2 },
+      { label: 'Source fidelity (faces changed)', count: 2 },
+    ],
+    cards: [
+      {
+        ref: 'POL-REV-04',
+        source: 'App Store · 5★',
+        sentiment: 'positive',
+        text: 'Praised the ease of starting video generation and the access to many different AI models.',
+      },
+      {
+        ref: 'POL-REV-08',
+        source: 'App Store · 1★',
+        sentiment: 'negative',
+        text: '“Deceptive pricing, double monetization, and broken credits system” — subscribing still required buying additional generation credits.',
+      },
+    ],
+    reading:
+      'Interesting contradiction with our own testing: we found the UI crowded, but reviewers call it easy to use. Where reviews and testing agree is credits — too few, consumed too fast, and still upsold after subscribing.',
+  },
+  {
+    id: 'invideo',
+    name: 'InVideo AI',
+    examined: 10,
+    sources: [
+      { label: 'Trustpilot', url: 'https://www.trustpilot.com/review/ai.invideo.io' },
+      { label: 'Reddit r/videography', url: 'https://www.reddit.com/r/videography/comments/1tor62z/invideo_ai_review_poor_results_and_experience/' },
+      { label: 'Apple App Store', url: null },
+    ],
+    sourceNote: 'App Store feedback describes the mobile app; the benchmark tested the web workflow.',
+    themes: [
+      { label: 'Usability (mostly praise)', count: 4 },
+      { label: 'Credit confusion', count: 2 },
+      { label: 'Customer support (praise)', count: 2 },
+      { label: 'Output quality', count: 2 },
+    ],
+    cards: [
+      {
+        ref: 'INV-REV-02',
+        source: 'App Store · 5★',
+        sentiment: 'positive',
+        text: 'Praised the combined video, audio, voice, image and effects workflow as an all-in-one studio.',
+      },
+      {
+        ref: 'INV-REV-06',
+        source: 'Reddit',
+        sentiment: 'mixed',
+        text: 'Liked the agent initially — then it regenerated clips without approval and depleted the credits they had added.',
+      },
+    ],
+    reading:
+      'The most positive sample of the six, with a specific recurring exception: the agent acting without approval — regenerating, re-spending — which is exactly the consent problem seen in testing.',
+  },
+  {
+    id: 'revid',
+    name: 'Revid.ai',
+    examined: 9,
+    sources: [
+      { label: 'Trustpilot', url: 'https://www.trustpilot.com/review/revid.ai' },
+      { label: 'Product Hunt', url: 'https://www.producthunt.com/products/revid-ai/reviews' },
+      { label: 'Reddit', url: 'https://www.reddit.com/r/DigitalMarketing/comments/1pjze7f/what_do_you_think_about_ai_video_generators_like/' },
+    ],
+    sourceNote: 'One Reddit commenter who had not used the product was excluded from the sample.',
+    themes: [
+      { label: 'Customer support (unresponsive)', count: 5 },
+      { label: 'Prompt adherence', count: 3 },
+      { label: 'Credit confusion', count: 2 },
+    ],
+    cards: [
+      {
+        ref: 'REV-REV-06',
+        source: 'Product Hunt · 4★',
+        sentiment: 'positive',
+        text: 'Praised a simple workflow and transparent credit handling for regular music-video production.',
+      },
+      {
+        ref: 'REV-REV-02',
+        source: 'Trustpilot · 1★',
+        sentiment: 'negative',
+        text: 'Said no usable cancellation flow was available and support did not respond.',
+      },
+    ],
+    reading:
+      'Five of nine coded reviews cite unresponsive support — the heaviest single-theme concentration in the whole sample. For a product whose growth model depends on affiliates and publishing loops, that is the compounding risk.',
+  },
+  {
+    id: 'runway',
+    name: 'Runway',
+    examined: 11,
+    sources: [
+      { label: 'Trustpilot (unclaimed profile)', url: 'https://www.trustpilot.com/review/runwayml.com' },
+      { label: 'Reddit r/runwayml', url: 'https://www.reddit.com/r/runwayml/comments/1hjuqft/is_runway_ai_worth_it/' },
+      { label: 'Apple App Store', url: null },
+    ],
+    sourceNote:
+      'The Trustpilot profile is unclaimed and heavily negative; its aggregate is not treated as comparable to other platforms’ scores.',
+    themes: [
+      { label: 'Credit confusion / transparency', count: 4 },
+      { label: 'Charges for failed generations', count: 3 },
+      { label: 'Reliability & speed', count: 2 },
+      { label: 'Pricing value', count: 2 },
+    ],
+    cards: [
+      {
+        ref: 'RUN-REV-05',
+        source: 'App Store · 5★',
+        sentiment: 'positive',
+        text: 'Praised the generated results while noting the limited monthly free usage.',
+      },
+      {
+        ref: 'RUN-REV-02',
+        source: 'Trustpilot · 1★',
+        sentiment: 'negative',
+        text: 'Two videos stuck at zero percent; the consumed credits were not restored.',
+      },
+    ],
+    reading:
+      'The purest concentration of the category’s core complaint: paying for generations that failed, stalled, or missed the prompt — with credits gone either way.',
+  },
+];
+
+const crossThemes = [
+  { theme: 'Credit opacity & fast depletion', where: 'All six products' },
+  { theme: 'Paying for failed or unusable generations', where: 'Runway, Pollo, HeyGen, Vivideo, InVideo' },
+  { theme: 'Prompt-adherence and source-fidelity failures', where: 'Pollo, Revid, Runway, InVideo' },
+  { theme: 'Billing, cancellation, refund and support frustration', where: 'Revid, HeyGen, Vivideo, InVideo, Runway' },
+  { theme: 'Pay-before-preview / export paywalls', where: 'Vivideo, Revid, Pollo (watermark), HeyGen (download gate)' },
+  { theme: 'Ease of use and speed to first result (positive)', where: 'InVideo, Pollo, HeyGen, Vivideo' },
+];
+---
+
+<Base title="Reviews — Vivideo competitor analysis">
+  <div class="shell">
+    <header class="head">
+      <p class="eyebrow">User reviews · 59 coded · collected 2026-08-01</p>
+      <h1>Themes identified in the selected review sample</h1>
+      <p class="stand">
+        A hand-selected qualitative sample — 9 to 11 direct reviews per product
+        from Trustpilot, the App Store, Reddit, Product Hunt, Capterra and G2 —
+        deliberately including both praise and complaints.
+      </p>
+    </header>
+
+    <aside class="caveat">
+      <p>
+        <strong>What these counts can and cannot say.</strong> The sample was
+        selected, not randomly drawn, so counts describe which themes appear in
+        the sample — never which product “has more complaints.” Every review is
+        a <span class="prov" data-kind="claim">review claim</span>: a user
+        allegation, not verified fact. App Store feedback describes mobile
+        apps; the benchmarks tested web products.
+      </p>
+    </aside>
+
+    <section aria-labelledby="cross-h">
+      <h2 id="cross-h">Themes that recur across products</h2>
+      <div class="scroll-x">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Theme</th>
+              <th scope="col">Appears in the sample for</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              crossThemes.map((t) => (
+                <tr>
+                  <td>{t.theme}</td>
+                  <td class="where">{t.where}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="products">
+      {
+        products.map((p) => (
+          <section class="product" id={p.id} aria-labelledby={`${p.id}-h`}>
+            <header class="prod-head">
+              <h2 id={`${p.id}-h`} class={p.id === 'vivideo' ? 'is-subject' : ''}>{p.name}</h2>
+              <span class="num examined">{p.examined} reviews examined</span>
+            </header>
+
+            <div class="prod-grid">
+              <div class="themes">
+                <h3 class="eyebrow">Themes in this sample</h3>
+                <ul>
+                  {p.themes.map((t) => (
+                    <li>
+                      <span class="t-label">{t.label}</span>
+                      <span class="t-count num">{t.count}×</span>
+                    </li>
+                  ))}
+                </ul>
+                <p class="sources">
+                  {p.sources.map((s, i) => (
+                    <>
+                      {i > 0 && ' · '}
+                      {s.url ? <a href={s.url} rel="noopener">{s.label}</a> : s.label}
+                    </>
+                  ))}
+                </p>
+                <p class="source-note">{p.sourceNote}</p>
+              </div>
+
+              <div class="cards">
+                {p.cards.map((c) => (
+                  <blockquote class="review" data-sentiment={c.sentiment}>
+                    <p>{c.text}</p>
+                    <footer>
+                      <span class="num">{c.ref}</span> · {c.source} ·{' '}
+                      <span class="sentiment">{c.sentiment}</span>
+                    </footer>
+                  </blockquote>
+                ))}
+                <p class="reading">{p.reading}</p>
+              </div>
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+  }
+  .head h1 {
+    margin: 0.6rem 0 0.8rem;
+  }
+  .stand {
+    font-size: var(--step-1);
+    color: var(--ink-mid);
+    margin: 0;
+  }
+
+  .caveat {
+    margin: 1.6rem 0 0;
+    padding: 0.9rem 1.1rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--ink);
+    max-width: 52rem;
+  }
+  .caveat p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+  }
+
+  section {
+    margin-top: 2.4rem;
+  }
+  .where {
+    color: var(--ink-soft);
+  }
+
+  .product {
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule-strong);
+    scroll-margin-top: 1rem;
+  }
+  .prod-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    margin-bottom: 0.9rem;
+  }
+  .prod-head h2 {
+    margin: 0;
+  }
+  .prod-head h2.is-subject {
+    color: var(--subject);
+  }
+  .examined {
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+  }
+
+  .prod-grid {
+    display: grid;
+    grid-template-columns: minmax(15rem, 1fr) minmax(19rem, 1.6fr);
+    gap: 1.2rem 2.4rem;
+  }
+  @media (max-width: 44rem) {
+    .prod-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .themes ul {
+    list-style: none;
+    margin: 0.5rem 0 0.8rem;
+    padding: 0;
+    display: grid;
+    gap: 0.3rem;
+  }
+  .themes li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.84rem;
+    border-bottom: 1px dashed var(--rule);
+    padding-bottom: 0.3rem;
+  }
+  .t-count {
+    color: var(--ink-soft);
+    font-size: 0.76rem;
+  }
+  .sources {
+    margin: 0;
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+  }
+  .source-note {
+    margin: 0.35rem 0 0;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  .review {
+    margin: 0 0 0.7rem;
+    padding: 0.8rem 1rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-left-width: 3px;
+  }
+  .review[data-sentiment='negative'] {
+    border-left-color: var(--diverge);
+  }
+  .review[data-sentiment='positive'] {
+    border-left-color: var(--within);
+  }
+  .review[data-sentiment='mixed'] {
+    border-left-color: var(--rule-strong);
+  }
+  .review p {
+    margin: 0 0 0.4rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .review footer {
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    font-family: var(--mono);
+  }
+  .sentiment {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.62rem;
+  }
+
+  .reading {
+    margin: 0.4rem 0 0;
+    font-size: 0.84rem;
+    color: var(--ink-mid);
+    border-left: 2px solid var(--rule);
+    padding-left: 0.75rem;
+    line-height: 1.55;
+  }
+</style>

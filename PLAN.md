@@ -4,10 +4,12 @@ _Revision 3. Freshness checker is now **fully deterministic — no API calls**. 
 
 ## Progress
 
+**Repo:** https://github.com/murattenes/vivideo-case (public) · **Pages URL:** https://murattenes.github.io/vivideo-case/
+
 | Phase | Status |
 |---|---|
 | 1 — Repo scaffold | ✅ **Done** |
-| 2 — Minimal deploy | ⏳ Local build verified; awaiting GitHub remote |
+| 2 — Minimal deploy | ⏳ Pushed, CI `build` green. **Blocked:** enable Settings → Pages → Source = GitHub Actions |
 | 3 — Pricing data model | ☐ Not started |
 | 4 — Freshness checker (no API) | ☐ Not started |
 | 5 — Executive summary | ☐ Not started |
@@ -148,9 +150,38 @@ Same rule for nav links, evidence images, and any fetched data file. Set `site` 
 
 ---
 
-## Phase 2 — Minimal deploy
+## Phase 2 — Minimal deploy ⏳ IN PROGRESS
 
 Ship one page with a nav link and one image before writing real content. Confirms `base`, the Actions workflow, and Pages settings in one pass, and catches the path bug from Phase 1 while there is one asset to fix instead of forty.
+
+### Done
+
+- `astro.config.mjs` set to `murattenes` / `vivideo-case`; rebuilt and verified every emitted path is `/vivideo-case/…` with no double slashes.
+- `.github/workflows/deploy.yml` — `withastro`-style build + `actions/deploy-pages@v4`, `concurrency: pages` with `cancel-in-progress: false`. No secrets, no untrusted input interpolated into `run:` steps.
+- Pre-commit privacy scan across all staged files: no personal email, no credential-shaped strings, no card/billing digits.
+- **Initial commit `408ee06` pushed.** 48 files, **5.8 MB**, zero videos, nothing over 5 MB. Git identity uses the GitHub noreply address, so no personal email in commit metadata.
+- CI run #1: **`build` succeeded (16s)** — Astro config, `npm ci` lockfile path, and artifact upload all confirmed working.
+
+### Blocked on one repo setting
+
+`deploy` failed with `Failed to create deployment (status: 404) … Ensure GitHub Pages has been enabled`. Verified independently: `GET /repos/murattenes/vivideo-case/pages` → **404**, so Pages has never been enabled.
+
+**Fix (user, web UI):** Settings → Pages → Build and deployment → **Source = GitHub Actions**. Then re-run the job.
+
+### Deferred, non-blocking
+
+`actions/checkout@v4`, `setup-node@v4`, `upload-artifact@v4`, `deploy-pages@v4` emit Node 20 deprecation warnings (GitHub force-runs them on Node 24). Cosmetic. Bump to `@v5` releases opportunistically, not as its own commit.
+
+### Deleted research scaffolding — noted, not restored
+
+17 files were removed from the workspace before the first commit (11 of 12 `data/` CSVs, `research/templates/`, `research/notes/`, `scoring-rubric.md`, `evidence-guide.md`, `review-coding-guide.md`) — deliberate cleanup, matching handoff §15. All primary evidence verified intact: 30 generated outputs, 6 cancellation recordings, 37 review screenshots, 30 competitor screenshots, 1.8 GB.
+
+Nine of the CSVs were header-only. **Two held real content, captured before deletion and to be carried into the site data model rather than restored as CSVs:**
+
+- **Vivideo capability boundary** (2026-07-25, MAX Plan): video agent, text-to-video, image-to-video, model selection, avatar+voice, brand controls = `true`; post-generation editor, existing-video upload, long-video clipping = `false`. This is the evidence behind recommendations #2 and #3.
+- **Evidence records** for `VIVI-GEN-001/002` screenshots, including the note that both display account name and credit balance and must be sanitized before publication.
+
+**Follow-up:** top-level `README.md` still documents the old research-kit workflow and points at deleted files (`data/`, `research/scoring-rubric.md`). It is the repo's front page — replace it during Phase 6.
 
 ---
 

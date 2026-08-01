@@ -13,7 +13,7 @@ _Revision 3. Freshness checker is now **fully deterministic — no API calls**. 
 | 3 — Pricing data model | ✅ **Done** |
 | 4 — Freshness checker (no API) | ⏸️ **Deferred** by request — foundation built & verified in Phase 3; finish after the site presents well |
 | 5 — Design system + executive summary | ✅ **Done** — https://murattenes.github.io/vivideo-case/executive-summary/ |
-| 6 — Remaining content | ☐ Not started |
+| 6 — Remaining content | ✅ **Done** — all 9 pages live |
 | 7 — Media pipeline | ☐ Not started |
 | 8 — Privacy pass | ☐ Not started |
 | 9 — Deploy | ☐ Not started |
@@ -402,7 +402,31 @@ Keep these apart so model quality is never mistaken for product quality:
 
 ---
 
-## Phase 6 — Remaining content
+## Phase 6 — Remaining content ✅ DONE
+
+All nine routes live and verified HTTP 200 (run #5): `/` `/executive-summary/` `/benchmarks/` `/competitors/` `/pricing/` `/reviews/` `/distribution/` `/strategy/` `/methodology/`.
+
+### Built
+
+- **Homepage** replaced the deployment probe: thesis, one divergence bar, stat strip, section grid, provenance legend.
+- **Benchmarks** renders `benchmarks.json` (canonical numbers from the five compare files) with **two distinct failure markers**: orange duration highlight only where a numeric request was missed; a `constraint violated` chip where an explicit requirement broke (no-audio narrated, PAUSE→PLAY unchanged, stationary boat). Caught mid-build: one flag for both had wrongly highlighted Revid's on-target 8s. One-run caveat + agent-vs-manual comparability sit at the top of the page.
+- **Competitors**: six profiles (strongest mechanism / weakness / first-run record / implication) + landscape incl. briefly-probed Fliki.
+- **Pricing**: tested-vs-current with honest watcher failures, weekly-anchor finding, credit-feel table, ranked cancellation friction, spend report.
+- **Reviews**: "themes identified in the selected review sample" framing, per-product theme counts + representative cards, cross-product themes. Revid affiliate left **unverified** (notes say 20%, earlier note said 50%).
+- **Distribution**: four loop types, observed mechanisms, synthesis.
+- **Strategy**: five recommendations (problem / steal / measure), trust hygiene, Steal/Avoid/Attack, roadmap, three threats **with watch indicators** (fills the handoff §14 gap).
+- **Methodology**: prompt set, tested-build capability boundary (carried from deleted `capability-matrix.csv`), rules, evidence inventory.
+
+### Exec summary strengthened from `my-observations.md`
+
+Fourth hero bar (HeyGen 18s plan → 45s delivered) proves divergence is category-wide; the accurate 6-credit estimate sharpens finding 04 to "unreliable, not consistently inflated"; Runway's approve-only dialog added to finding 09. **Print re-verified: still exactly 1 A4 page.** `my-observations.md` committed as raw first-hand evidence, linked from methodology.
+
+### Verified
+
+9 pages build · **0 broken internal links** (crawler over dist) · print = 1 page · live 200s on all routes.
+
+### Original Phase 6 table
+
 
 | Page | Source | Work |
 |---|---|---|

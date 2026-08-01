@@ -28,24 +28,38 @@ only when a snapshot actually changes, so an unchanged week produces no commit.
 ## Sample run
 
 ```
-Pricing watcher — 6 target(s), 2026-08-02T…
-
-  vivideo   unchanged  4 prices, views=[default]           9b796588cc6b
-  heygen    unchanged  7 prices, views=[default,yearly]    4a5cee9a6ec4
-  invideo   unchanged  8 prices, views=[default]           001d56a625e4
-  pollo     unchanged  6 prices, views=[default,monthly]   71fe7ed57ad8
-  revid     unchanged  3 prices, views=[default]           87b6f6f2b798
-  runway    unchanged 10 prices, views=[default,monthly]   b3217967c8f5
+  vivideo   unchanged  2/2 plans +yearly
+      PRO          monthly $9        yearly $2 ($99/yr)
+      MAX          monthly $19       yearly $4 ($199/yr)
+  heygen    unchanged  3/3 plans +yearly
+      Free         monthly $0        yearly $0
+      Creator      monthly $29       yearly $24 ($288/yr)
+      Pro          monthly $49       yearly $41 ($488/yr)
+  invideo   unchanged  4/4 plans +yearly
+      Plus         monthly $20       yearly $17 ($200/yr)
+      Max          monthly $100      yearly $85 ($1000/yr)
+      Generative   monthly $200      yearly $170 ($2000/yr)
+      Elite        monthly $1000     yearly $900 ($10800/yr)
+  pollo     unchanged  3/3 plans (monthly only)
+      LITE         monthly $15.00    yearly —
+  revid     unchanged  3/3 plans +yearly
+      HOBBY        monthly $39       yearly $32 ($384/yr)
+      GROWTH       monthly $39       yearly $32 ($384/yr)
+      ULTRA        monthly $199      yearly $166 ($1992/yr)
+  runway    unchanged  4/4 plans +yearly
+      Standard     monthly $15       yearly $12
+      Pro          monthly $35       yearly $28
+      Max          monthly $95       yearly $76
 
 6/6 readable
 ```
 
-When something moves, the field-level diff prints inline:
+Every figure above was checked against a pricing-page screenshot taken the
+same day. When something moves, the change prints per plan and field:
 
 ```
-  heygen    CHANGED   7 prices, views=[default,yearly]     4a5cee9a6ec4
-      + default: $29
-      − default: $19
+  heygen    CHANGED   3/3 plans +yearly
+      ~ Creator monthly: $29 -> $19
 ```
 
 ## How it works
@@ -118,12 +132,38 @@ additionally compared price-by-price, so a yearly-only move is still caught.
   preserved the prior snapshot and `lastSuccessfulAt`, and did **not** appear
   in the diff.
 
+## Six bugs this shook out
+
+Worth recording, because each produced *plausible but wrong* numbers rather
+than an obvious failure:
+
+1. **HeyGen served Turkish.** It geolocates, so plan names came back as
+   `Oluşturucu` / `$29 / ay` and name matching fell through to the nearest
+   heading — which is how "Pricing FAQs" became a plan. Fixed by forcing
+   `Accept-Language: en-US`.
+2. **Plan names cannot be inferred.** "Text nearest the price" produced FAQ
+   headings, taglines ("For exploring"), and off-by-one card names. Names are
+   now declared per site.
+3. **Two sites load already showing yearly.** Trusting the default state
+   silently swapped the monthly and yearly columns for Vivideo and InVideo.
+   The monthly view is now selected explicitly before reading.
+4. **Revid fakes its strikethrough.** The original price uses a Tailwind
+   `::after` bar with `opacity-50`, so computed `text-decoration` is `none`
+   and DOM detection missed it — reading `$99` as Growth's current price
+   instead of `$39`. Current price is now the lower of a discounted pair.
+5. **Annual totals read as headline rates.** "$288 billed annually" and
+   "Save $36/year" sit directly under the price; both were being picked up as
+   the price itself.
+6. **Pollo animates its price change.** Sampling at a fixed delay caught
+   `$ $15.00` mid-transition. The view is now polled until stable.
+
 ## Known limits
 
-- **Plan names are best-effort.** The six pages share no markup conventions, so
-  names are inferred from the text nearest each price. Prices are the reliable
-  signal; a name can occasionally attach to the wrong card. The linked pricing
-  page is always the authority.
+- **Pollo's annual view is not automatable.** The toggle accepts the click —
+  the click is confirmed to register — but the view never switches under
+  automation. Monthly is captured reliably every run. Annual pricing was
+  verified by screenshot on 2026-08-02: LITE $10.00, PRO $14.50, ULTRA $109.00
+  per month billed annually. This is surfaced on the site rather than hidden.
 - **Cloudflare may still block CI.** Pollo works from a residential IP. GitHub
   Actions runners use datacenter IPs, which Cloudflare treats more harshly — if
   it blocks there, the run reports `fetch_failed` for Pollo and keeps its last

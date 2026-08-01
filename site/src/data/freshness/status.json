@@ -1,68 +1,71 @@
 {
- "checkedAt": "2026-08-01T21:29:15.151Z",
+ "checkedAt": "2026-08-01T22:06:42.258Z",
  "products": {
   "vivideo": {
-   "status": "first_run",
-   "checkedAt": "2026-08-01T21:29:15.151Z",
-   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "status": "unchanged",
+   "checkedAt": "2026-08-01T22:06:42.258Z",
+   "lastSuccessfulAt": "2026-08-01T22:06:42.258Z",
    "sourceUrl": "https://vivideo.ai/pricing",
-   "priceCount": 4,
-   "views": [
-    "default"
-   ]
+   "plansFound": 2,
+   "plansExpected": 2,
+   "yearlyCaptured": true,
+   "yearlyNotAutomatable": false,
+   "yearlyNote": null
   },
   "heygen": {
-   "status": "first_run",
-   "checkedAt": "2026-08-01T21:29:15.151Z",
-   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "status": "unchanged",
+   "checkedAt": "2026-08-01T22:06:42.258Z",
+   "lastSuccessfulAt": "2026-08-01T22:06:42.258Z",
    "sourceUrl": "https://www.heygen.com/pricing",
-   "priceCount": 7,
-   "views": [
-    "default",
-    "yearly"
-   ]
+   "plansFound": 3,
+   "plansExpected": 3,
+   "yearlyCaptured": true,
+   "yearlyNotAutomatable": false,
+   "yearlyNote": null
   },
   "invideo": {
-   "status": "first_run",
-   "checkedAt": "2026-08-01T21:29:15.151Z",
-   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "status": "unchanged",
+   "checkedAt": "2026-08-01T22:06:42.258Z",
+   "lastSuccessfulAt": "2026-08-01T22:06:42.258Z",
    "sourceUrl": "https://invideo.io/pricing/",
-   "priceCount": 8,
-   "views": [
-    "default"
-   ]
+   "plansFound": 4,
+   "plansExpected": 4,
+   "yearlyCaptured": true,
+   "yearlyNotAutomatable": false,
+   "yearlyNote": null
   },
   "pollo": {
-   "status": "first_run",
-   "checkedAt": "2026-08-01T21:29:15.151Z",
-   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "status": "unchanged",
+   "checkedAt": "2026-08-01T22:06:42.258Z",
+   "lastSuccessfulAt": "2026-08-01T22:06:42.258Z",
    "sourceUrl": "https://pollo.ai/pricing",
-   "priceCount": 6,
-   "views": [
-    "default",
-    "monthly"
-   ]
+   "plansFound": 3,
+   "plansExpected": 3,
+   "yearlyCaptured": false,
+   "yearlyNotAutomatable": true,
+   "yearlyNote": "The Annual toggle does not switch under automation. Monthly is captured automatically; annual pricing was verified by screenshot on 2026-08-02 — LITE $10.00, PRO $14.50, ULTRA $109.00 per month billed annually."
   },
   "revid": {
-   "status": "first_run",
-   "checkedAt": "2026-08-01T21:29:15.151Z",
-   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "status": "unchanged",
+   "checkedAt": "2026-08-01T22:06:42.258Z",
+   "lastSuccessfulAt": "2026-08-01T22:06:42.258Z",
    "sourceUrl": "https://www.revid.ai/pricing",
-   "priceCount": 3,
-   "views": [
-    "default"
-   ]
+   "plansFound": 3,
+   "plansExpected": 3,
+   "yearlyCaptured": true,
+   "yearlyNotAutomatable": false,
+   "yearlyNote": null
   },
   "runway": {
-   "status": "first_run",
-   "checkedAt": "2026-08-01T21:29:15.151Z",
-   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "status": "unchanged",
+   "checkedAt": "2026-08-01T22:06:42.258Z",
+   "lastSuccessfulAt": "2026-08-01T22:06:42.258Z",
    "sourceUrl": "https://runway.com/pricing",
-   "priceCount": 10,
-   "views": [
-    "default",
-    "monthly"
-   ]
+   "plansFound": 4,
+   "plansExpected": 4,
+   "yearlyCaptured": true,
+   "yearlyNotAutomatable": false,
+   "yearlyNote": null
   }
  }
 }

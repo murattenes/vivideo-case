@@ -25,16 +25,6 @@ const rows = order.map((id) => {
   const s = (status.products as Record<string, any>)[id] ?? {};
   const c = (current.products as Record<string, any>)[id] ?? null;
   const d = (diff.products as Record<string, any>)[id] ?? null;
-  // Dedupe plan rows; the extractor emits one entry per price occurrence.
-  const plansFor = (view: string) => {
-    const seen = new Set<string>();
-    return (c?.views?.[view]?.plans ?? []).filter((p: any) => {
-      const k = `${p.name}|${p.price}`;
-      if (seen.has(k)) return false;
-      seen.add(k);
-      return true;
-    });
-  };
   return {
     id,
     name: names[id],
@@ -43,12 +33,10 @@ const rows = order.map((id) => {
     lastSuccessfulAt: s.lastSuccessfulAt ?? null,
     url: s.sourceUrl ?? c?.sourceUrl ?? '',
     note: s.note ?? null,
-    views: Object.keys(c?.views ?? {}),
-    plans: Object.fromEntries(Object.keys(c?.views ?? {}).map((v) => [v, plansFor(v)])),
-    prices: Object.fromEntries(
-      Object.entries(c?.views ?? {}).map(([v, val]: [string, any]) => [v, val.prices]),
-    ),
-    changes: d?.changes ?? [],
+    plans: (c?.plans ?? []) as any[],
+    hasYearly: Boolean(c?.hasYearlyView),
+    yearlyNote: s.yearlyNote ?? null,
+    changes: (d?.changes ?? []) as any[],
     hash: c?.hash ?? null,
   };
 });
@@ -115,38 +103,59 @@ const counts = {
               <div class="changes">
                 {r.changes.map((c: any) => (
                   <p>
-                    <span class="eyebrow">{c.view}</span>
-                    {c.added.length > 0 && (
-                      <span class="added">+ {c.added.join('  ')}</span>
-                    )}
-                    {c.removed.length > 0 && (
-                      <span class="removed">− {c.removed.join('  ')}</span>
+                    <span class="eyebrow">{c.plan}</span>
+                    {c.note ? (
+                      <span class="added">{c.note}</span>
+                    ) : (
+                      <>
+                        <span class="removed">{c.field}: {c.from ?? '—'}</span>
+                        <span class="added">→ {c.to ?? '—'}</span>
+                      </>
                     )}
                   </p>
                 ))}
               </div>
             )}
 
-            <div class="views">
-              {r.views.map((v) => (
-                <div class="view">
-                  <h3 class="eyebrow">
-                    {v === 'default' ? 'as the page loads' : v}
-                  </h3>
-                  <ul class="plans">
-                    {r.plans[v].slice(0, 8).map((p: any) => (
-                      <li>
-                        <span class="pl-name">{p.name ?? '—'}</span>
-                        <span class="pl-price num">
-                          {p.price}
-                          {p.period ? <span class="pl-per">/{p.period}</span> : null}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+            {r.plans.length > 0 && (
+              <table class="plans">
+                <thead>
+                  <tr>
+                    <th scope="col">Plan</th>
+                    <th scope="col">Monthly</th>
+                    <th scope="col">Yearly</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {r.plans.map((p: any) => (
+                    <tr>
+                      <th scope="row" class="pl-name">{p.name}</th>
+                      <td class="n">
+                        {p.monthly?.price ?? '—'}
+                        {p.monthly?.price && p.monthly?.period && (
+                          <span class="per">/{p.monthly.period}</span>
+                        )}
+                      </td>
+                      <td class="n">
+                        {p.yearly?.price ? (
+                          <>
+                            {p.yearly.price}
+                            {p.yearly.period && <span class="per">/{p.yearly.period}</span>}
+                            {p.yearly.billedTotal && (
+                              <span class="total">billed {p.yearly.billedTotal}/yr</span>
+                            )}
+                          </>
+                        ) : (
+                          <span class="per">not captured</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            {r.yearlyNote && <p class="ynote">{r.yearlyNote}</p>}
 
             <p class="meta num">
               checked {fmt(r.checkedAt)} · last success {fmt(r.lastSuccessfulAt)}
@@ -181,20 +190,20 @@ const counts = {
         <div>
           <h3>Monthly and yearly</h3>
           <p>
-            Where a billing toggle exists it is clicked and the second view
-            captured, so a yearly-only price move is visible. Toggle clicks are
-            not perfectly reliable, so the change gate hashes the default view
-            only — a view that failed to capture can never be mistaken for a
-            price change.
+            The monthly view is selected explicitly rather than trusted —
+            two sites load already showing yearly, which silently inverted the
+            columns. The billing toggle is then flipped and the yearly view
+            captured, including the annual total where the card states one.
           </p>
         </div>
         <div>
-          <h3>Plan names are best-effort</h3>
+          <h3>Names declared, not guessed</h3>
           <p>
-            The six pages share no markup conventions, so names are inferred
-            from the text nearest each price. Prices are the reliable signal;
-            a name may occasionally attach to the wrong card. The linked
-            pricing page is always the authority.
+            Plan names are declared per site rather than inferred — inferring
+            them produced FAQ headings and taglines instead. Discounted cards
+            show two prices; the current one is read as the lower of the pair,
+            because one site fakes its strikethrough with a CSS pseudo-element
+            that reports no text decoration.
           </p>
         </div>
       </div>
@@ -289,6 +298,31 @@ const counts = {
   }
   .added { color: var(--within); }
   .removed { color: var(--diverge); }
+
+  table.plans {
+    width: 100%;
+    font-size: 0.82rem;
+  }
+  table.plans th[scope='col'] {
+    font-size: 0.62rem;
+  }
+  .per {
+    color: var(--ink-soft);
+    font-size: 0.86em;
+    margin-left: 0.15rem;
+  }
+  .total {
+    display: block;
+    color: var(--ink-soft);
+    font-size: 0.72rem;
+  }
+  .ynote {
+    margin: 0.6rem 0 0;
+    font-size: 0.76rem;
+    color: var(--ink-mid);
+    background: var(--subject-wash);
+    padding: 0.5rem 0.7rem;
+  }
 
   .views {
     display: grid;

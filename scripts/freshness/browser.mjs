@@ -104,6 +104,16 @@ export async function launch({ port = 9222 + Math.floor(Math.random() * 500) } =
 
   await send('Page.enable');
   await send('Runtime.enable');
+  // Force English. HeyGen geolocates and was serving Turkish ("Oluşturucu",
+  // "$29 / ay"), which broke plan-name matching and leaked FAQ headings in.
+  await send('Emulation.setUserAgentOverride', {
+    userAgent: USER_AGENT,
+    acceptLanguage: 'en-US,en;q=0.9',
+  });
+  await send('Network.enable').catch(() => {});
+  await send('Network.setExtraHTTPHeaders', {
+    headers: { 'Accept-Language': 'en-US,en;q=0.9' },
+  }).catch(() => {});
   // Hide the automation flag before any page script runs.
   await send('Page.addScriptToEvaluateOnNewDocument', {
     source: `Object.defineProperty(navigator, 'webdriver', { get: () => undefined });`,

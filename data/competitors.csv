@@ -1,0 +1,13 @@
+competitor_id,name,website,category,deep_dive,role_in_case,testing_order,selection_reason,notes
+vivideo,Vivideo,https://vivideo.ai,ai-social-video,true,baseline,1,"Baseline for every applicable benchmark and workflow comparison",
+pollo,Pollo AI,https://pollo.ai,multi-model-generation,true,manual-generation-platform,2,"Benchmarks model choice text/image generation settings and credits against Vivideo Manual mode",
+invideo,InVideo AI,https://invideo.io,prompt-to-finished-video,true,video-agent-platform,3,"Mature prompt-to-complete-video Agent workflow",
+revid,Revid.ai,https://www.revid.ai,short-form-social-video,true,direct-competitor,4,"Direct comparison for social-native scripts generation publishing and automation",
+heygen,HeyGen,https://www.heygen.com,avatar-video,true,avatar-specialist,5,"Specialist benchmark for avatars voices UGC and presenter workflows",
+veed,VEED,https://www.veed.io,ai-editor,false,landscape-only,,"Editor-first platform expanding into AI generation","Moved out after the tested Vivideo build showed no comparable timeline editor"
+opusclip,OpusClip,https://www.opus.pro,long-video-clipping,false,landscape-only,,"Long-form clipping specialist required for the broader market map","Not part of the scored benchmark because Vivideo lacks clipping"
+zebracat,Zebracat,https://www.zebracat.ai,social-video-automation,false,landscape-only,,"Social-video agent and automation alternative",
+runway,Runway,https://runwayml.com,generative-video-model,true,advanced-generation-platform,6,"Benchmarks model control agent behavior generative quality workflow depth and credit use",
+pika,Pika,https://pika.art,generative-video-model,false,landscape-only,,"Creative-effects and short generative-clip reference",
+synthesia,Synthesia,https://www.synthesia.io,avatar-video,false,landscape-only,,"Enterprise avatar and training-video reference",
+captions,Captions,https://www.captions.ai,ai-video-editor,false,landscape-only,,"Social-native avatar and automatic-editing alternative",

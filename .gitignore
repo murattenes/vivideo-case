@@ -1,0 +1,52 @@
+# ─────────────────────────────────────────────────────────────
+# PRIVATE EVIDENCE — never commit
+# These exceed GitHub's 100MB file limit and/or contain personal
+# billing data (name, email, card last-4, invoice IDs).
+# Git history is permanent: one bad commit poisons every push.
+# ─────────────────────────────────────────────────────────────
+competitors/
+cancellation/
+research/evidence/
+tmp/
+
+# All video, anywhere, no exceptions
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+
+# Review screenshots (large; some show account context)
+reviews/**/*.png
+reviews/**/*.jpg
+reviews/**/*.jpeg
+
+# ─────────────────────────────────────────────────────────────
+# Build + tooling
+# ─────────────────────────────────────────────────────────────
+node_modules/
+dist/
+.astro/
+.output/
+.vercel/
+.netlify/
+
+# Env + secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+**/.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp

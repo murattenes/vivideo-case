@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import { asset, route } from '../lib/url';
+
+const probeSrc = asset('base-path-probe.svg');
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<Base title="Vivideo competitor analysis">
+  <h1>Vivideo competitor analysis</h1>
+  <p class="lede">
+    First-hand product teardown of six AI video platforms — Vivideo, Pollo AI,
+    InVideo AI, Revid.ai, HeyGen, and Runway — using five fixed benchmark
+    prompts, paid accounts, and recorded sessions.
+  </p>
+
+  <section class="probe">
+    <h2>Deployment check</h2>
+    <p>
+      This page exists to verify the GitHub Pages sub-path configuration before
+      real content is added. The image below is served from <code>public/</code>.
+      If it renders on the deployed URL, asset paths resolve correctly.
+    </p>
+
+    <img src={probeSrc} alt="Base path probe: public/ asset resolved, base path is correct" width="240" height="64" />
+
+    <table>
+      <tbody>
+        <tr>
+          <th scope="row">BASE_URL</th>
+          <td><code>{baseUrl}</code></td>
+        </tr>
+        <tr>
+          <th scope="row">Resolved asset</th>
+          <td><code>{probeSrc}</code></td>
+        </tr>
+        <tr>
+          <th scope="row">Resolved route</th>
+          <td><code>{route('benchmarks')}</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="note">
+      A broken image here, or a leading double slash in either resolved value,
+      means <code>base</code> in <code>astro.config.mjs</code> disagrees with the
+      repository name. Fix that before building further pages — every asset and
+      link inherits it.
+    </p>
+  </section>
+
+  <style>
+    .lede { font-size: 1.0625rem; color: var(--ink-soft); max-width: 44rem; }
+    .probe {
+      margin-top: 2rem;
+      padding: 1.25rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .probe h2 { margin-top: 0; }
+    .probe img { display: block; margin: 1rem 0; max-width: 100%; height: auto; }
+    .probe table { margin-top: 0.5rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.875em; }
+    .note { font-size: 0.875rem; color: var(--ink-soft); margin-bottom: 0; }
+  </style>
+</Base>

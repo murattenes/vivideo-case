@@ -1,0 +1,162 @@
+---
+import { route } from '../lib/url';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Competitor product analysis for Vivideo — first-hand benchmark testing across six AI video platforms.' } = Astro.props;
+
+const nav = [
+  { label: 'Overview', href: '' },
+  { label: 'Executive summary', href: 'executive-summary' },
+  { label: 'Benchmarks', href: 'benchmarks' },
+  { label: 'Competitors', href: 'competitors' },
+  { label: 'Pricing', href: 'pricing' },
+  { label: 'Reviews', href: 'reviews' },
+  { label: 'Distribution', href: 'distribution' },
+  { label: 'Strategy', href: 'strategy' },
+  { label: 'Freshness', href: 'freshness' },
+  { label: 'Methodology', href: 'methodology' },
+];
+
+const current = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <a class="wordmark" href={route('')}>Vivideo <span>competitor analysis</span></a>
+      <nav aria-label="Sections">
+        <ul>
+          {nav.map(({ label, href }) => {
+            const target = route(href);
+            const isCurrent = current === target;
+            return (
+              <li>
+                <a href={target} aria-current={isCurrent ? 'page' : undefined}>{label}</a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        First-hand testing conducted 2026-07-25 → 2026-08-01. Single run per
+        product and workflow — directional evidence, not a statistical ranking.
+      </p>
+    </footer>
+
+    <style is:global>
+      :root {
+        --ink: #16151a;
+        --ink-soft: #57545f;
+        --line: #e2dfe4;
+        --bg: #fbfaf9;
+        --accent: #6d28d9;
+        --max: 68rem;
+      }
+
+      * { box-sizing: border-box; }
+
+      html { -webkit-text-size-adjust: 100%; }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+      }
+
+      .skip {
+        position: absolute;
+        left: -9999px;
+      }
+      .skip:focus {
+        left: 1rem;
+        top: 1rem;
+        background: #fff;
+        padding: 0.5rem 0.75rem;
+        z-index: 10;
+      }
+
+      .site-header {
+        border-bottom: 1px solid var(--line);
+        padding: 1rem 1.25rem;
+      }
+
+      .wordmark {
+        display: inline-block;
+        font-weight: 650;
+        text-decoration: none;
+        color: var(--ink);
+        margin-bottom: 0.75rem;
+      }
+      .wordmark span { font-weight: 400; color: var(--ink-soft); }
+
+      .site-header nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem 1rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        font-size: 0.875rem;
+      }
+
+      .site-header nav a {
+        color: var(--ink-soft);
+        text-decoration: none;
+        padding: 0.15rem 0;
+        border-bottom: 2px solid transparent;
+      }
+      .site-header nav a:hover { color: var(--ink); }
+      .site-header nav a[aria-current='page'] {
+        color: var(--ink);
+        border-bottom-color: var(--accent);
+      }
+
+      main {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--line);
+        padding: 1.5rem 1.25rem;
+        color: var(--ink-soft);
+        font-size: 0.8125rem;
+      }
+      .site-footer p { max-width: var(--max); margin: 0 auto; }
+
+      h1 { font-size: clamp(1.6rem, 4vw, 2.25rem); line-height: 1.2; margin: 0 0 0.5rem; }
+      h2 { font-size: 1.25rem; margin: 2.5rem 0 0.75rem; }
+
+      table { border-collapse: collapse; width: 100%; font-size: 0.9375rem; }
+      th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+      th { font-weight: 600; }
+
+      /* Wide content scrolls inside its own container — the page body never
+         scrolls horizontally. */
+      .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    </style>
+  </body>
+</html>

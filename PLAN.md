@@ -10,7 +10,7 @@ _Revision 3. Freshness checker is now **fully deterministic — no API calls**. 
 |---|---|
 | 1 — Repo scaffold | ✅ **Done** |
 | 2 — Minimal deploy | ✅ **Done** — live at https://murattenes.github.io/vivideo-case/ |
-| 3 — Pricing data model | ⏳ In progress |
+| 3 — Pricing data model | ✅ **Done** |
 | 4 — Freshness checker (no API) | ☐ Not started |
 | 5 — Executive summary | ☐ Not started |
 | 6 — Remaining content | ☐ Not started |
@@ -197,7 +197,49 @@ Nine of the CSVs were header-only. **Two held real content, captured before dele
 
 ---
 
-## Phase 3 — Pricing data model + checker proof
+## Phase 3 — Pricing data model + checker proof ✅ DONE
+
+### Built
+
+- `site/src/data/pricing.json` — two-observation model, 6 products, **70 observations**. 21 known from research, 9 from the live check.
+- `scripts/freshness/validate-pricing.mjs` — enforces `status: observed ⇒ value present` and `status: unknown ⇒ value null`, and lists fields unknown-in-research-but-known-now so they render as *"not recorded during testing"* rather than as a detected change. **0 integrity errors.**
+- `scripts/freshness/normalize.mjs` — script/style/svg removal → pricing-region narrowing → noise stripping (build hashes, tokens, timestamps, countdown copy, social-proof counters) → sha256 + ordered price extraction. Zero dependencies.
+- `scripts/freshness/targets.mjs` — per-product URL, container selectors, noise patterns.
+- `scripts/freshness/verify-stability.mjs` — fetches N times, fails if any hash moves.
+
+### Verified against live pages, 2026-08-01
+
+```
+vivideo   STABLE   hash=f0092231d426  text=14670b  prices=10
+heygen    STABLE   hash=271444691a0c  text=13962b  prices=16
+invideo   STABLE   hash=627540ce4782  text=1290b   prices=0
+pollo     UNREACHABLE  HTTP 403 (expected)
+revid     STABLE   hash=34b105f87437  text=2131b   prices=4
+runway    STABLE   hash=b5a522a82302  text=4842b   prices=13
+→ 5/6 stable, 0 unstable, 1 unreachable
+```
+
+**Cross-validation:** extracted prices match the spend report independently — HeyGen `$29`, Revid `$39`, Runway `$15`. The extractor reads the same numbers that were actually paid.
+
+### Two limitations found — recorded, not papered over
+
+- **Pollo** — HTTP 403 to non-browser clients (Cloudflare). Automated checks fail by design. `knownBlocked: true`.
+- **InVideo** — fully client-rendered (Next.js RSC). Static HTML has **no prices and no plan names**; body text is ~2.2 KB with no "Plus", "Free", or "/mo". The `$18`/`$36` tokens in its raw source are RSC reference markers (`$L2`, `$undefined`), **not currency** — an early naive grep produced false positives here, caught by stripping scripts before extraction. `staticPricing: false`; page changes still detected, price values need a manual check.
+
+### New finding: Vivideo's own pricing
+
+Absent from all prior research — `data/pricing.csv` was empty and the handoff lists it as unknown.
+
+| Plan | Headline | Actually billed | Weekly option | Credits |
+|---|---|---|---|---|
+| Pro | `$2 /week` | `$99` once yearly | `$9/week` | 30/week |
+| Max | `$4 /week` | `$199` once yearly | `$19/week` | 100/week |
+
+Banner: *"Save up to 79%"*. Weekly-price anchoring on an annual commitment, with the weekly-billing alternative at 4.5× the yearly-equivalent rate. This is a **pricing-psychology finding** the brief explicitly asks for, and the tested plan was MAX — so $199/yr or $19/wk.
+
+<details>
+<summary>Original Phase 3 detail</summary>
+
 
 ### The two-field rule
 
@@ -225,6 +267,8 @@ The pricing page renders four columns: **observed during research · currently d
 ### Seeding the research column
 
 Documented and usable now, from `spend-report.md`: HeyGen Creator $29, InVideo Plus $20, Pollo Lite $15, Revid Growth $39, Runway Standard $15. Watermark and free-plan observations are scattered through `distribution.md` and the handoff product notes. Everything else — including all Vivideo pricing — is `unknown`.
+
+</details>
 
 ---
 

@@ -1,27 +1,33 @@
 ---
+import '../styles/global.css';
 import { route } from '../lib/url';
 
 interface Props {
   title: string;
   description?: string;
+  /** Hide site chrome — used by the printable executive summary. */
+  bare?: boolean;
 }
 
-const { title, description = 'Competitor product analysis for Vivideo — first-hand benchmark testing across six AI video platforms.' } = Astro.props;
+const {
+  title,
+  description = 'First-hand competitor product analysis for Vivideo: six AI video platforms, five fixed benchmark prompts, paid accounts, recorded sessions.',
+  bare = false,
+} = Astro.props;
 
 const nav = [
   { label: 'Overview', href: '' },
-  { label: 'Executive summary', href: 'executive-summary' },
+  { label: 'Summary', href: 'executive-summary' },
   { label: 'Benchmarks', href: 'benchmarks' },
   { label: 'Competitors', href: 'competitors' },
   { label: 'Pricing', href: 'pricing' },
   { label: 'Reviews', href: 'reviews' },
   { label: 'Distribution', href: 'distribution' },
   { label: 'Strategy', href: 'strategy' },
-  { label: 'Freshness', href: 'freshness' },
-  { label: 'Methodology', href: 'methodology' },
+  { label: 'Method', href: 'methodology' },
 ];
 
-const current = Astro.url.pathname;
+const here = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -32,59 +38,63 @@ const current = Astro.url.pathname;
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content="noindex" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
 
-    <header class="site-header">
-      <a class="wordmark" href={route('')}>Vivideo <span>competitor analysis</span></a>
-      <nav aria-label="Sections">
-        <ul>
-          {nav.map(({ label, href }) => {
-            const target = route(href);
-            const isCurrent = current === target;
-            return (
-              <li>
-                <a href={target} aria-current={isCurrent ? 'page' : undefined}>{label}</a>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-    </header>
+    {
+      !bare && (
+        <header class="chrome">
+          <div class="shell chrome-inner">
+            <a class="mark" href={route('')}>
+              <span class="mark-name">Vivideo</span>
+              <span class="mark-rest">competitor analysis</span>
+            </a>
+            <nav aria-label="Sections">
+              <ul>
+                {nav.map(({ label, href }) => {
+                  const target = route(href);
+                  return (
+                    <li>
+                      <a href={target} aria-current={here === target ? 'page' : undefined}>
+                        {label}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          </div>
+        </header>
+      )
+    }
 
     <main id="main">
       <slot />
     </main>
 
-    <footer class="site-footer">
-      <p>
-        First-hand testing conducted 2026-07-25 → 2026-08-01. Single run per
-        product and workflow — directional evidence, not a statistical ranking.
-      </p>
-    </footer>
+    {
+      !bare && (
+        <footer class="chrome foot">
+          <div class="shell">
+            <p>
+              Hands-on testing 25 July – 1 August 2026. Six products, five fixed
+              prompts, paid accounts, recorded sessions.{' '}
+              <strong>One run per product and workflow</strong> — directional
+              evidence, not a statistical ranking.
+            </p>
+          </div>
+        </footer>
+      )
+    }
 
-    <style is:global>
-      :root {
-        --ink: #16151a;
-        --ink-soft: #57545f;
-        --line: #e2dfe4;
-        --bg: #fbfaf9;
-        --accent: #6d28d9;
-        --max: 68rem;
-      }
-
-      * { box-sizing: border-box; }
-
-      html { -webkit-text-size-adjust: 100%; }
-
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--ink);
-        font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-      }
-
+    <style>
       .skip {
         position: absolute;
         left: -9999px;
@@ -92,71 +102,99 @@ const current = Astro.url.pathname;
       .skip:focus {
         left: 1rem;
         top: 1rem;
-        background: #fff;
-        padding: 0.5rem 0.75rem;
-        z-index: 10;
+        z-index: 20;
+        background: var(--paper-raised);
+        padding: 0.5rem 0.8rem;
+        border: 1px solid var(--ink);
       }
 
-      .site-header {
-        border-bottom: 1px solid var(--line);
-        padding: 1rem 1.25rem;
+      .chrome {
+        border-bottom: 1px solid var(--rule);
+        background: var(--paper-raised);
       }
 
-      .wordmark {
-        display: inline-block;
-        font-weight: 650;
-        text-decoration: none;
-        color: var(--ink);
-        margin-bottom: 0.75rem;
-      }
-      .wordmark span { font-weight: 400; color: var(--ink-soft); }
-
-      .site-header nav ul {
+      .chrome-inner {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.25rem 1rem;
+        gap: 0.6rem 2rem;
+        align-items: baseline;
+        justify-content: space-between;
+        padding-block: 0.9rem;
+      }
+
+      .mark {
+        text-decoration: none;
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.45rem;
+        font-family: var(--display);
+        font-size: 0.98rem;
+        letter-spacing: -0.015em;
+      }
+      .mark-name {
+        font-weight: 800;
+        color: var(--subject);
+      }
+      .mark-rest {
+        font-weight: 600;
+        color: var(--ink-soft);
+      }
+
+      nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.1rem 1.05rem;
         list-style: none;
         margin: 0;
         padding: 0;
-        font-size: 0.875rem;
       }
-
-      .site-header nav a {
+      nav a {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
         color: var(--ink-soft);
         text-decoration: none;
-        padding: 0.15rem 0;
+        padding-block: 0.2rem;
         border-bottom: 2px solid transparent;
       }
-      .site-header nav a:hover { color: var(--ink); }
-      .site-header nav a[aria-current='page'] {
+      nav a:hover {
         color: var(--ink);
-        border-bottom-color: var(--accent);
+      }
+      nav a[aria-current='page'] {
+        color: var(--ink);
+        border-bottom-color: var(--subject);
       }
 
       main {
-        max-width: var(--max);
-        margin: 0 auto;
-        padding: 2rem 1.25rem 4rem;
+        padding-block: clamp(2rem, 5vw, 3.5rem) 4rem;
       }
 
-      .site-footer {
-        border-top: 1px solid var(--line);
-        padding: 1.5rem 1.25rem;
+      .foot {
+        border-bottom: 0;
+        border-top: 1px solid var(--rule);
+        padding-block: 1.4rem;
+      }
+      .foot p {
+        margin: 0;
+        max-width: 46rem;
+        font-size: 0.8rem;
         color: var(--ink-soft);
-        font-size: 0.8125rem;
       }
-      .site-footer p { max-width: var(--max); margin: 0 auto; }
+      .foot strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
 
-      h1 { font-size: clamp(1.6rem, 4vw, 2.25rem); line-height: 1.2; margin: 0 0 0.5rem; }
-      h2 { font-size: 1.25rem; margin: 2.5rem 0 0.75rem; }
-
-      table { border-collapse: collapse; width: 100%; font-size: 0.9375rem; }
-      th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
-      th { font-weight: 600; }
-
-      /* Wide content scrolls inside its own container — the page body never
-         scrolls horizontally. */
-      .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      @media print {
+        .chrome,
+        .skip {
+          display: none !important;
+        }
+        main {
+          padding: 0 !important;
+        }
+      }
     </style>
   </body>
 </html>

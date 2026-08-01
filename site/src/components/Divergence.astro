@@ -1,0 +1,224 @@
+---
+/**
+ * Divergence bar — the signature element of this analysis.
+ *
+ * Draws what a product APPROVED against what it DELIVERED. The approved
+ * value is the track; the delivered value is drawn over it. When delivery
+ * overshoots, the fill visibly breaks past the end of the track — the
+ * shape of the finding is the finding.
+ *
+ * Used for approved-vs-charged credits and planned-vs-actual duration,
+ * which is where the entire "make approval binding" argument comes from.
+ */
+
+interface Props {
+  label: string;
+  approved: number;
+  delivered: number;
+  unit?: string;
+  /** How far off is acceptable before it counts as divergence. */
+  tolerance?: number;
+  source?: string;
+}
+
+const {
+  label,
+  approved,
+  delivered,
+  unit = '',
+  tolerance = 0.1,
+  source,
+} = Astro.props;
+
+const ratio = delivered / approved;
+const over = ratio > 1 + tolerance;
+const under = ratio < 1 - tolerance;
+const diverged = over || under;
+
+// Track occupies 100%. Anything beyond it overflows into the break zone.
+const TRACK = 62; // % of the row given to "approved"
+const fillPct = Math.min(ratio, 1) * TRACK;
+const overPct = over ? Math.min((ratio - 1) * TRACK, 100 - TRACK) : 0;
+
+const pctLabel = `${Math.round(ratio * 100)}%`;
+const state = over ? 'over' : under ? 'under' : 'within';
+---
+
+<figure class="dv" data-state={state}>
+  <figcaption class="dv-head">
+    <span class="dv-label">{label}</span>
+    <span class="dv-figures num">
+      <span class="dv-approved">{approved}{unit}</span>
+      <span class="dv-arrow" aria-hidden="true">→</span>
+      <span class="dv-delivered">{delivered}{unit}</span>
+      <span class="dv-pct">{pctLabel}</span>
+    </span>
+  </figcaption>
+
+  <div class="dv-rail">
+    <div class="dv-track" style={`width:${TRACK}%`}>
+      <div class="dv-fill" style={`width:${(fillPct / TRACK) * 100}%`}></div>
+    </div>
+    {over && <div class="dv-over" style={`width:${overPct}%`}></div>}
+    <div class="dv-mark" style={`left:${TRACK}%`} aria-hidden="true"></div>
+  </div>
+
+  <p class="dv-read">
+    {
+      over
+        ? `Delivered ${pctLabel} of what was approved.`
+        : under
+          ? `Delivered ${pctLabel} of what was approved.`
+          : `Within tolerance.`
+    }
+    {source && <span class="dv-source"> {source}</span>}
+  </p>
+</figure>
+
+<style>
+  .dv {
+    margin: 0 0 1.35rem;
+  }
+
+  .dv-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+  }
+
+  .dv-label {
+    font-family: var(--body);
+    font-size: var(--step--1);
+    color: var(--ink);
+  }
+
+  .dv-figures {
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+  .dv-approved {
+    color: var(--ink-soft);
+  }
+  .dv-arrow {
+    color: var(--rule-strong);
+  }
+  .dv-delivered {
+    font-weight: 600;
+  }
+  .dv-pct {
+    font-size: 0.7rem;
+    padding: 0.05em 0.35em;
+    border-radius: 2px;
+  }
+
+  [data-state='over'] .dv-delivered,
+  [data-state='over'] .dv-pct {
+    color: var(--diverge);
+  }
+  [data-state='over'] .dv-pct {
+    background: var(--diverge-wash);
+  }
+  [data-state='under'] .dv-delivered,
+  [data-state='under'] .dv-pct {
+    color: var(--diverge);
+  }
+  [data-state='within'] .dv-pct {
+    color: var(--within);
+  }
+
+  /* The rail: track = what was approved, break zone = the overrun. */
+  .dv-rail {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    height: 12px;
+  }
+
+  .dv-track {
+    background: var(--rule);
+    position: relative;
+    flex: none;
+  }
+
+  .dv-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--ink-mid);
+  }
+
+  /* Overrun continues past the track — deliberately a different, louder
+     fill so the eye reads "this broke its container". */
+  .dv-over {
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--diverge) 0 3px,
+      color-mix(in srgb, var(--diverge) 55%, white) 3px 6px
+    );
+    flex: none;
+  }
+
+  /* Hard mark at the approved ceiling. */
+  .dv-mark {
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    width: 1px;
+    background: var(--ink);
+  }
+
+  .dv-read {
+    margin: 0.4rem 0 0;
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+    font-family: var(--body);
+  }
+  .dv-source {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+  }
+
+  /* Print: the bar is supporting evidence on a one-page summary, not the
+     headline. Scale it down hard so the findings keep the page. */
+  @media print {
+    .dv {
+      margin-bottom: 5pt;
+      break-inside: avoid;
+    }
+    .dv-head {
+      display: block;
+      margin-bottom: 2pt;
+    }
+    .dv-label {
+      display: block;
+      font-size: 5.9pt;
+      line-height: 1.2;
+    }
+    .dv-figures {
+      font-size: 6.2pt;
+      gap: 0.25rem;
+    }
+    .dv-pct {
+      font-size: 5.4pt;
+    }
+    .dv-rail {
+      height: 5pt;
+    }
+    .dv-read {
+      margin-top: 1.5pt;
+      font-size: 5.4pt;
+      line-height: 1.2;
+    }
+    .dv-source {
+      font-size: 5.2pt;
+    }
+    /* Solid fill survives print colour reduction better than stripes. */
+    .dv-over {
+      background: var(--diverge);
+    }
+  }
+</style>

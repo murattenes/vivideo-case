@@ -1,0 +1,206 @@
+/* ============================================================
+   Vivideo competitor analysis — design tokens
+
+   Direction: the subject of this analysis is the gap between what
+   an AI video product promises and what it delivers. Colour encodes
+   identity (purple = Vivideo, the baseline; neutral = competitors)
+   and divergence (orange appears ONLY inside data where a delivered
+   value missed an approved one — never as decoration).
+   ============================================================ */
+
+:root {
+  /* Surface — cool white, deliberately not cream */
+  --paper: #faf9fb;
+  --paper-raised: #ffffff;
+  --rule: #e5e2ea;
+  --rule-strong: #cfcad8;
+
+  /* Ink — near-black with a faint violet cast, tying to the identity hue */
+  --ink: #14131a;
+  --ink-mid: #423d50;
+  --ink-soft: #6a6577;
+
+  /* Identity: Vivideo only. Never used for competitors. */
+  --subject: #6d28d9;
+  --subject-wash: #f2ecfd;
+
+  /* Signal: divergence between approved and delivered. Data only. */
+  --diverge: #c2410c;
+  --diverge-wash: #fdf0e9;
+  --within: #0f766e;
+
+  /* Provenance */
+  --observed: #14131a;
+  --claim: #6a6577;
+
+  --display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  --body: 'IBM Plex Serif', Georgia, 'Times New Roman', serif;
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --measure: 34rem;
+  --wide: 74rem;
+
+  --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.83rem);
+  --step-0: clamp(0.95rem, 0.92rem + 0.15vw, 1.02rem);
+  --step-1: clamp(1.1rem, 1.02rem + 0.4vw, 1.3rem);
+  --step-2: clamp(1.4rem, 1.2rem + 1vw, 2rem);
+  --step-3: clamp(2rem, 1.5rem + 2.4vw, 3.4rem);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: var(--step-0);
+  line-height: 1.62;
+  font-feature-settings: 'kern' 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Type roles ---------- */
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-3);
+}
+h2 {
+  font-size: var(--step-2);
+}
+h3 {
+  font-size: var(--step-1);
+  letter-spacing: -0.01em;
+}
+
+/* Eyebrow: identifies WHAT KIND of thing follows. Structural, not decorative. */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+.num,
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--rule-strong);
+}
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+:focus-visible {
+  outline: 2px solid var(--subject);
+  outline-offset: 3px;
+}
+
+/* ---------- Layout ---------- */
+
+.shell {
+  max-width: var(--wide);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---------- Provenance marker ----------
+   Every claim on this site is one of three kinds. The distinction is
+   load-bearing: the brief rejects analysis that blurs first-hand
+   observation with user allegation with strategic reading. */
+
+.prov {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.15em 0.45em;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  white-space: nowrap;
+  color: var(--ink-soft);
+}
+.prov[data-kind='observed'] {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.prov[data-kind='claim'] {
+  border-style: dashed;
+}
+.prov[data-kind='interpretation'] {
+  border-color: var(--subject);
+  color: var(--subject);
+}
+
+/* ---------- Tables ---------- */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: var(--step--1);
+}
+th,
+td {
+  text-align: left;
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+th {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-soft);
+  border-bottom-color: var(--rule-strong);
+}
+td.n {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

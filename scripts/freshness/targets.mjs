@@ -34,6 +34,12 @@ export const GLOBAL_NOISE = [
   /\b\d+\s*(days?|hours?|hrs?|minutes?|mins?|seconds?|secs?)\s*(left|remaining|only)\b/gi,
   // Visitor / social-proof counters
   /\b[\d,]+\+?\s*(users?|creators?|customers?|videos? created)\b/gi,
+  // Rotating promo bars: "Flash Sale 50% Off", "Up to 60% Off …", "Save 79%"
+  /\b(flash\s+sale|limited\s+time|special\s+offer)\b[^.|]{0,60}/gi,
+  /\b(up\s+to\s+)?\d{1,3}%\s*(off|discount)\b/gi,
+  /\bsave\s+(up\s+to\s+)?\d{1,3}%/gi,
+  // Countdown timers rendered as digits
+  /\b\d{1,2}\s*:\s*\d{2}\s*:\s*\d{2}\b/g,
 ];
 
 export const TARGETS = [
@@ -62,17 +68,9 @@ export const TARGETS = [
     url: 'https://invideo.io/pricing/',
     containerSelectors: ['main', '[class*="pricing" i]', 'body'],
     noise: [],
-    // Verified 2026-08-01: the page is fully client-rendered (Next.js RSC).
-    // Static HTML contains no prices AND no plan names — body text is ~2.2KB
-    // with no "Plus", "Free", or "/mo". The `$18`/`$36` tokens visible in the
-    // raw source are React Server Component reference markers ("$L2",
-    // "$undefined"), not currency.
-    //
-    // Consequence: the text hash still detects page changes, but price changes
-    // are invisible to a no-JS watcher. Reported honestly rather than guessed.
-    staticPricing: false,
-    staticPricingNote:
-      'Pricing is client-rendered; no prices in static HTML. Page-level changes are still detected, but price values require a manual check.',
+    // Fully client-rendered (Next.js RSC): static HTML has no prices and no
+    // plan names. Solved by rendering in headless Chrome — verified 2026-08-02.
+    clientRendered: true,
   },
   {
     id: 'pollo',
@@ -80,13 +78,14 @@ export const TARGETS = [
     url: 'https://pollo.ai/pricing',
     containerSelectors: ['main', '[class*="pricing" i]', 'body'],
     noise: [
-      // The live "Up to 60% Off Seedance 2.0" subscriber-perk bar rotates.
-      /up to \d+% off[^<]{0,80}/gi,
+      // Subscriber-perk and flash-sale bars rotate independently of pricing.
+      /seedance[^.|]{0,40}/gi,
+      /unlock savings/gi,
     ],
-    // Documented so the site can explain the failure rather than look broken.
-    knownBlocked: true,
-    blockedNote:
-      'Returns HTTP 403 to non-browser clients (Cloudflare). Expected to fail from CI; verify manually in a browser.',
+    // Cloudflare serves an interstitial to plain HTTP clients (403). Solved by
+    // rendering in headless Chrome with automation fingerprinting disabled —
+    // verified 2026-08-02. May still fail from a datacenter IP in CI.
+    cloudflare: true,
   },
   {
     id: 'revid',

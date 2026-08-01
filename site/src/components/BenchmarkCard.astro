@@ -25,16 +25,16 @@ const { id, productName, baseline = false, driveId, poster, durationSec, session
 <figure class="bc" data-baseline={baseline ? 'y' : undefined}>
   {
     driveId ? (
-      <button
-        type="button"
+      <a
         class="bc-play"
-        data-drive-id={driveId}
-        data-label={`${productName} output`}
-        aria-label={`Play ${productName} output (${durationSec}s), streams from Google Drive`}
+        href={`https://drive.google.com/file/d/${driveId}/view`}
+        target="_blank"
+        rel="noopener"
+        aria-label={`Open ${productName} output (${durationSec}s) in Google Drive`}
       >
         <img src={asset(poster)} alt="" width="540" height="960" loading="lazy" />
         <span class="bc-btn" aria-hidden="true">▶</span>
-      </button>
+      </a>
     ) : (
       <div class="bc-pending">evidence link pending</div>
     )
@@ -65,10 +65,8 @@ const { id, productName, baseline = false, driveId, poster, durationSec, session
     position: relative;
     display: block;
     width: 100%;
-    padding: 0;
     border: 1px solid var(--rule);
     background: var(--ink);
-    cursor: pointer;
     aspect-ratio: 9 / 16;
     overflow: hidden;
   }
@@ -101,15 +99,6 @@ const { id, productName, baseline = false, driveId, poster, durationSec, session
   .bc-play:focus-visible {
     outline: 2px solid var(--subject);
     outline-offset: 2px;
-  }
-
-  /* When the iframe is swapped in, it inherits this box. */
-  .bc :global(iframe) {
-    display: block;
-    width: 100%;
-    aspect-ratio: 9 / 16;
-    border: 1px solid var(--rule);
-    background: #000;
   }
 
   .bc-pending {

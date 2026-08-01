@@ -96,9 +96,9 @@ const isBaseline = (id: string) => (products as Record<string, { name: string; b
 
           <div class="evidence">
             <p class="evidence-note">
-              <span class="eyebrow">Evidence</span> First-run outputs, streamed
-              on demand from Google Drive — nothing loads until clicked. Where
-              a full session recording exists, it is linked beneath the card.
+              <span class="eyebrow">Evidence</span> First-run outputs. Each card opens the
+              full-resolution vertical video in Google Drive; where a full
+              session recording of the run exists, it is linked beneath.
             </p>
             <div class="cards">
               {prompt.rows.map((r) => {
@@ -339,17 +339,3 @@ const isBaseline = (id: string) => (products as Record<string, { name: string; b
     color: var(--ink);
   }
 </style>
-
-<script>
-  // Swap a poster button for Drive's /preview iframe on demand. One handler
-  // for all thirty cards; zero video bytes move before a click.
-  document.addEventListener('click', (e) => {
-    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.bc-play[data-drive-id]');
-    if (!btn) return;
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://drive.google.com/file/d/${btn.dataset.driveId}/preview`;
-    iframe.allow = 'autoplay; fullscreen';
-    iframe.title = btn.dataset.label ?? 'Benchmark output';
-    btn.replaceWith(iframe);
-  });
-</script>

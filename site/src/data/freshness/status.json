@@ -1,0 +1,68 @@
+{
+ "checkedAt": "2026-08-01T21:29:15.151Z",
+ "products": {
+  "vivideo": {
+   "status": "first_run",
+   "checkedAt": "2026-08-01T21:29:15.151Z",
+   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://vivideo.ai/pricing",
+   "priceCount": 4,
+   "views": [
+    "default"
+   ]
+  },
+  "heygen": {
+   "status": "first_run",
+   "checkedAt": "2026-08-01T21:29:15.151Z",
+   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://www.heygen.com/pricing",
+   "priceCount": 7,
+   "views": [
+    "default",
+    "yearly"
+   ]
+  },
+  "invideo": {
+   "status": "first_run",
+   "checkedAt": "2026-08-01T21:29:15.151Z",
+   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://invideo.io/pricing/",
+   "priceCount": 8,
+   "views": [
+    "default"
+   ]
+  },
+  "pollo": {
+   "status": "first_run",
+   "checkedAt": "2026-08-01T21:29:15.151Z",
+   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://pollo.ai/pricing",
+   "priceCount": 6,
+   "views": [
+    "default",
+    "monthly"
+   ]
+  },
+  "revid": {
+   "status": "first_run",
+   "checkedAt": "2026-08-01T21:29:15.151Z",
+   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://www.revid.ai/pricing",
+   "priceCount": 3,
+   "views": [
+    "default"
+   ]
+  },
+  "runway": {
+   "status": "first_run",
+   "checkedAt": "2026-08-01T21:29:15.151Z",
+   "lastSuccessfulAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://runway.com/pricing",
+   "priceCount": 10,
+   "views": [
+    "default",
+    "monthly"
+   ]
+  }
+ }
+}

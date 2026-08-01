@@ -1,0 +1,339 @@
+---
+import Base from '../layouts/Base.astro';
+import current from '../data/freshness/current.json';
+import status from '../data/freshness/status.json';
+import diff from '../data/freshness/diff.json';
+
+const names: Record<string, string> = {
+  vivideo: 'Vivideo', heygen: 'HeyGen', invideo: 'InVideo AI',
+  pollo: 'Pollo AI', revid: 'Revid.ai', runway: 'Runway',
+};
+const order = ['vivideo', 'heygen', 'invideo', 'pollo', 'revid', 'runway'];
+
+const fmt = (iso: string | null) =>
+  iso ? new Date(iso).toISOString().replace('T', ' ').slice(0, 16) + ' UTC' : '—';
+
+const statusLabel: Record<string, string> = {
+  first_run: 'baseline',
+  unchanged: 'no change',
+  changed: 'changed',
+  fetch_failed: 'check failed',
+  not_checked: 'not checked',
+};
+
+const rows = order.map((id) => {
+  const s = (status.products as Record<string, any>)[id] ?? {};
+  const c = (current.products as Record<string, any>)[id] ?? null;
+  const d = (diff.products as Record<string, any>)[id] ?? null;
+  // Dedupe plan rows; the extractor emits one entry per price occurrence.
+  const plansFor = (view: string) => {
+    const seen = new Set<string>();
+    return (c?.views?.[view]?.plans ?? []).filter((p: any) => {
+      const k = `${p.name}|${p.price}`;
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+  };
+  return {
+    id,
+    name: names[id],
+    status: s.status ?? 'not_checked',
+    checkedAt: s.checkedAt ?? null,
+    lastSuccessfulAt: s.lastSuccessfulAt ?? null,
+    url: s.sourceUrl ?? c?.sourceUrl ?? '',
+    note: s.note ?? null,
+    views: Object.keys(c?.views ?? {}),
+    plans: Object.fromEntries(Object.keys(c?.views ?? {}).map((v) => [v, plansFor(v)])),
+    prices: Object.fromEntries(
+      Object.entries(c?.views ?? {}).map(([v, val]: [string, any]) => [v, val.prices]),
+    ),
+    changes: d?.changes ?? [],
+    hash: c?.hash ?? null,
+  };
+});
+
+const counts = {
+  ok: rows.filter((r) => ['unchanged', 'changed', 'first_run'].includes(r.status)).length,
+  changed: rows.filter((r) => r.status === 'changed').length,
+  failed: rows.filter((r) => r.status === 'fetch_failed').length,
+};
+---
+
+<Base title="Freshness — Vivideo competitor analysis">
+  <div class="shell">
+    <header class="head">
+      <p class="eyebrow">Freshness · automated pricing watcher</p>
+      <h1>Is any of this still true?</h1>
+      <p class="stand">
+        A scheduled job re-reads all six pricing pages every week, extracts the
+        plans and prices, and commits a snapshot. When something moves, the
+        diff appears here. When a check fails, it says so instead of quietly
+        showing stale numbers as current.
+      </p>
+    </header>
+
+    <div class="summary">
+      <div class="sum-stat">
+        <span class="num sum-n">{counts.ok}/6</span>
+        <span class="sum-l">readable at last run</span>
+      </div>
+      <div class="sum-stat">
+        <span class="num sum-n" data-tone={counts.changed ? 'changed' : undefined}>{counts.changed}</span>
+        <span class="sum-l">changed since previous snapshot</span>
+      </div>
+      <div class="sum-stat">
+        <span class="num sum-n" data-tone={counts.failed ? 'failed' : undefined}>{counts.failed}</span>
+        <span class="sum-l">checks failed</span>
+      </div>
+      <div class="sum-stat">
+        <span class="num sum-n small">{fmt(status.checkedAt)}</span>
+        <span class="sum-l">last run</span>
+      </div>
+    </div>
+
+    <div class="products">
+      {
+        rows.map((r) => (
+          <article class="prod" data-status={r.status} data-baseline={r.id === 'vivideo' ? 'y' : undefined}>
+            <header class="prod-head">
+              <h2>{r.name}</h2>
+              <span class="badge" data-status={r.status}>{statusLabel[r.status]}</span>
+              <a class="src" href={r.url} rel="noopener" target="_blank">pricing page ↗</a>
+            </header>
+
+            {r.status === 'fetch_failed' ? (
+              <p class="failnote">
+                <strong>Could not read this page on the last run.</strong>{' '}
+                {r.note}. The figures below are from{' '}
+                {r.lastSuccessfulAt ? fmt(r.lastSuccessfulAt) : 'no successful run yet'} and are
+                shown as last-known, not current. A failed check is never reported as a price change.
+              </p>
+            ) : null}
+
+            {r.changes.length > 0 && (
+              <div class="changes">
+                {r.changes.map((c: any) => (
+                  <p>
+                    <span class="eyebrow">{c.view}</span>
+                    {c.added.length > 0 && (
+                      <span class="added">+ {c.added.join('  ')}</span>
+                    )}
+                    {c.removed.length > 0 && (
+                      <span class="removed">− {c.removed.join('  ')}</span>
+                    )}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            <div class="views">
+              {r.views.map((v) => (
+                <div class="view">
+                  <h3 class="eyebrow">
+                    {v === 'default' ? 'as the page loads' : v}
+                  </h3>
+                  <ul class="plans">
+                    {r.plans[v].slice(0, 8).map((p: any) => (
+                      <li>
+                        <span class="pl-name">{p.name ?? '—'}</span>
+                        <span class="pl-price num">
+                          {p.price}
+                          {p.period ? <span class="pl-per">/{p.period}</span> : null}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            <p class="meta num">
+              checked {fmt(r.checkedAt)} · last success {fmt(r.lastSuccessfulAt)}
+              {r.hash ? ` · ${r.hash.slice(0, 12)}` : ''}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+
+    <section class="how" aria-labelledby="how-h">
+      <h2 id="how-h">How it works, and what it cannot do</h2>
+      <div class="how-grid">
+        <div>
+          <h3>Deterministic, no model</h3>
+          <p>
+            Render the page in headless Chrome → read the plan names, prices
+            and billing periods out of the rendered text → strip promo churn →
+            hash → compare with the previous snapshot. No API keys, no
+            inference, nothing that can hallucinate a price.
+          </p>
+        </div>
+        <div>
+          <h3>Why a browser</h3>
+          <p>
+            Two pages are unreadable without one. Pollo AI returns HTTP 403 to
+            plain HTTP clients, and InVideo renders its pricing entirely in
+            JavaScript — its static HTML contains no prices at all. Both are
+            readable once a real browser executes the page.
+          </p>
+        </div>
+        <div>
+          <h3>Monthly and yearly</h3>
+          <p>
+            Where a billing toggle exists it is clicked and the second view
+            captured, so a yearly-only price move is visible. Toggle clicks are
+            not perfectly reliable, so the change gate hashes the default view
+            only — a view that failed to capture can never be mistaken for a
+            price change.
+          </p>
+        </div>
+        <div>
+          <h3>Plan names are best-effort</h3>
+          <p>
+            The six pages share no markup conventions, so names are inferred
+            from the text nearest each price. Prices are the reliable signal;
+            a name may occasionally attach to the wrong card. The linked
+            pricing page is always the authority.
+          </p>
+        </div>
+      </div>
+      <p class="fineprint">
+        Runs weekly and on demand. Snapshots, field-level diffs and an
+        append-only history live in <code>site/src/data/freshness/</code>; the
+        checker is <code>scripts/freshness/</code> with a README covering local
+        use and each status value. Verified before shipping: identical hashes
+        across repeated runs, a deliberately broken URL correctly reported as
+        <code>fetch_failed</code> with the prior snapshot preserved, and an
+        injected price change correctly surfaced as a field-level diff.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .head { max-width: 46rem; }
+  .head h1 { margin: 0.6rem 0 0.8rem; }
+  .stand { font-size: var(--step-1); color: var(--ink-mid); margin: 0; }
+
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 0.9rem 1.6rem;
+    margin: 1.8rem 0 0;
+    padding: 1rem 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+  .sum-n { display: block; font-size: var(--step-2); font-weight: 600; line-height: 1.1; }
+  .sum-n.small { font-size: 0.9rem; font-weight: 500; }
+  .sum-n[data-tone='changed'] { color: var(--diverge); }
+  .sum-n[data-tone='failed'] { color: var(--diverge); }
+  .sum-l { display: block; font-size: 0.74rem; color: var(--ink-soft); margin-top: 0.15rem; }
+
+  .products { display: grid; gap: 0.9rem; margin-top: 1.6rem; }
+  .prod {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 1rem 1.2rem 1.1rem;
+  }
+  .prod[data-baseline='y'] { border-left: 3px solid var(--subject); }
+  .prod[data-status='fetch_failed'] { border-left: 3px solid var(--diverge); }
+
+  .prod-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.6rem;
+  }
+  .prod-head h2 { margin: 0; font-size: 1.05rem; }
+  .prod[data-baseline='y'] .prod-head h2 { color: var(--subject); }
+  .src {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    padding: 0.15em 0.45em;
+    border: 1px solid var(--rule-strong);
+    color: var(--ink-soft);
+  }
+  .badge[data-status='changed'] { border-color: var(--diverge); color: var(--diverge); }
+  .badge[data-status='fetch_failed'] { border-color: var(--diverge); color: var(--diverge); border-style: dashed; }
+  .badge[data-status='unchanged'] { border-color: var(--within); color: var(--within); }
+
+  .failnote {
+    margin: 0 0 0.7rem;
+    font-size: 0.8rem;
+    color: var(--ink-mid);
+    background: var(--diverge-wash);
+    padding: 0.55rem 0.7rem;
+  }
+  .failnote strong { color: var(--diverge); }
+
+  .changes { margin: 0 0 0.7rem; }
+  .changes p {
+    margin: 0 0 0.2rem;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+  .added { color: var(--within); }
+  .removed { color: var(--diverge); }
+
+  .views {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 0.9rem 1.6rem;
+  }
+  .view h3 { margin: 0 0 0.35rem; }
+  .plans { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.22rem; }
+  .plans li {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    font-size: 0.8rem;
+    border-bottom: 1px dashed var(--rule);
+    padding-bottom: 0.2rem;
+  }
+  .pl-name { color: var(--ink-mid); }
+  .pl-price { white-space: nowrap; font-weight: 600; }
+  .pl-per { font-weight: 400; color: var(--ink-soft); font-size: 0.9em; }
+
+  .meta {
+    margin: 0.7rem 0 0;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+  }
+
+  .how {
+    margin-top: 2.6rem;
+    padding-top: 1.2rem;
+    border-top: 2px solid var(--ink);
+  }
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem 1.8rem;
+    margin-top: 0.9rem;
+  }
+  .how-grid h3 { margin: 0 0 0.25rem; font-size: 0.92rem; }
+  .how-grid p { margin: 0; font-size: 0.82rem; color: var(--ink-mid); line-height: 1.55; }
+  .fineprint {
+    margin: 1.2rem 0 0;
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+    max-width: 52rem;
+    line-height: 1.6;
+  }
+  .fineprint code { font-family: var(--mono); font-size: 0.9em; }
+</style>

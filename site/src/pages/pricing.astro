@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { route } from '../lib/url';
 
 // Curated view over the two-observation pricing model. researchObservation is
 // immutable hands-on data; latestCheck is what the page-watcher read on
@@ -26,17 +27,17 @@ const rows = [
     id: 'invideo',
     tested: 'Plus · $20/mo',
     paid: '$20.00 (charged TRY 985.87)',
-    current: 'Not readable by automation',
-    status: 'page is client-rendered',
-    note: 'No prices or plan names exist in the static HTML — page-level change detection works, price values need a manual check.',
+    current: 'Read weekly by the watcher — $17/mo tier upward, monthly and yearly',
+    status: 'client-rendered, read via headless browser',
+    note: 'Static HTML has no prices at all; rendering the page in a real browser makes them readable.',
   },
   {
     id: 'pollo',
     tested: 'Lite · $15/mo',
     paid: '$15.00',
-    current: 'Not reachable by automation',
-    status: 'HTTP 403 to non-browser clients',
-    note: 'Cloudflare blocks automated fetches; verify manually in a browser.',
+    current: 'Read weekly by the watcher — Lite $15/mo, $10/mo billed yearly',
+    status: 'Cloudflare-protected, read via headless browser',
+    note: 'Returns HTTP 403 to plain HTTP clients; a real browser with automation fingerprinting disabled gets through.',
   },
   {
     id: 'revid',

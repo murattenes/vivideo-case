@@ -1,0 +1,470 @@
+{
+ "checkedAt": "2026-08-01T21:29:15.151Z",
+ "products": {
+  "vivideo": {
+   "observedAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://vivideo.ai/pricing",
+   "hash": "9b796588cc6b091e1ddde4309174063726a043fbf31fb29adaaa5fb1e4b8614f",
+   "priceSignature": {
+    "default": "$199|$2|$4|$99"
+   },
+   "views": {
+    "default": {
+     "prices": [
+      "$2",
+      "$99",
+      "$4",
+      "$199"
+     ],
+     "plans": [
+      {
+       "name": "PRO",
+       "price": "$2",
+       "period": "week"
+      },
+      {
+       "name": "PRO",
+       "price": "$99",
+       "period": null
+      },
+      {
+       "name": "MAX",
+       "price": "$4",
+       "period": "week"
+      },
+      {
+       "name": "MAX",
+       "price": "$199",
+       "period": null
+      }
+     ],
+     "hasMonthly": false,
+     "hasYearly": true
+    }
+   }
+  },
+  "heygen": {
+   "observedAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://www.heygen.com/pricing",
+   "hash": "4a5cee9a6ec403ba7539e31f8ca4a294192d48484ee50d6a16ae7c8016553b0a",
+   "priceSignature": {
+    "default": "$0|$149|$20|$24|$29|$4,300|$49",
+    "yearly": "$0|$149|$20|$24|$288|$29|$4,300|$41|$488|$49"
+   },
+   "views": {
+    "default": {
+     "prices": [
+      "$0",
+      "$29",
+      "$49",
+      "$24",
+      "$149",
+      "$20",
+      "$4,300"
+     ],
+     "plans": [
+      {
+       "name": "Free",
+       "price": "$0",
+       "period": "mo"
+      },
+      {
+       "name": "Creator",
+       "price": "$29",
+       "period": "mo"
+      },
+      {
+       "name": "Pro",
+       "price": "$49",
+       "period": "mo"
+      },
+      {
+       "name": "Pricing FAQs",
+       "price": "$29",
+       "period": "month"
+      }
+     ],
+     "hasMonthly": true,
+     "hasYearly": true
+    },
+    "yearly": {
+     "prices": [
+      "$0",
+      "$24",
+      "$29",
+      "$288",
+      "$41",
+      "$49",
+      "$488",
+      "$149",
+      "$20",
+      "$4,300"
+     ],
+     "plans": [
+      {
+       "name": "Free",
+       "price": "$0",
+       "period": "mo"
+      },
+      {
+       "name": "Creator",
+       "price": "$24",
+       "period": "mo"
+      },
+      {
+       "name": "Creator",
+       "price": "$288",
+       "period": null
+      },
+      {
+       "name": "Pro",
+       "price": "$41",
+       "period": "mo"
+      },
+      {
+       "name": "Pro",
+       "price": "$488",
+       "period": null
+      },
+      {
+       "name": "Pricing FAQs",
+       "price": "$29",
+       "period": "month"
+      }
+     ],
+     "hasMonthly": true,
+     "hasYearly": true
+    }
+   }
+  },
+  "invideo": {
+   "observedAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://invideo.io/pricing/",
+   "hash": "001d56a625e4815a46767d27326b427817a32c6ec8a50f6200618df8637e4c66",
+   "priceSignature": {
+    "default": "$1000|$10800|$17|$170|$200|$2000|$85|$900"
+   },
+   "views": {
+    "default": {
+     "prices": [
+      "$17",
+      "$200",
+      "$85",
+      "$1000",
+      "$170",
+      "$2000",
+      "$900",
+      "$10800"
+     ],
+     "plans": [
+      {
+       "name": "For exploring",
+       "price": "$17",
+       "period": "mo"
+      },
+      {
+       "name": "For exploring",
+       "price": "$200",
+       "period": null
+      },
+      {
+       "name": "For occasional use",
+       "price": "$85",
+       "period": "mo"
+      },
+      {
+       "name": "For occasional use",
+       "price": "$1000",
+       "period": null
+      },
+      {
+       "name": "For daily use",
+       "price": "$170",
+       "period": "mo"
+      },
+      {
+       "name": "For daily use",
+       "price": "$2000",
+       "period": null
+      },
+      {
+       "name": "For power creators",
+       "price": "$900",
+       "period": "mo"
+      },
+      {
+       "name": "For power creators",
+       "price": "$10800",
+       "period": null
+      }
+     ],
+     "hasMonthly": true,
+     "hasYearly": true
+    }
+   }
+  },
+  "pollo": {
+   "observedAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://pollo.ai/pricing",
+   "hash": "bd38bf673c6b5fd1327d4a9f52862529cf4ceb91ebc15411ea13c198c619402d",
+   "priceSignature": {
+    "default": "$10.00|$109.00|$139.00|$14.50|$15.00|$29.00",
+    "monthly": "$139.00|$15.00|$29.00"
+   },
+   "views": {
+    "default": {
+     "prices": [
+      "$15.00",
+      "$29.00",
+      "$139.00",
+      "$10.00",
+      "$14.50",
+      "$109.00"
+     ],
+     "plans": [
+      {
+       "name": "LITE",
+       "price": "$15.00",
+       "period": "mo"
+      },
+      {
+       "name": "PRO",
+       "price": "$29.00",
+       "period": "mo"
+      },
+      {
+       "name": "ULTRA",
+       "price": "$139.00",
+       "period": "mo"
+      },
+      {
+       "name": "Lite",
+       "price": "$10.00",
+       "period": "month"
+      },
+      {
+       "name": "Pro",
+       "price": "$14.50",
+       "period": "month"
+      },
+      {
+       "name": "Ultra",
+       "price": "$109.00",
+       "period": "month"
+      }
+     ],
+     "hasMonthly": true,
+     "hasYearly": true
+    },
+    "monthly": {
+     "prices": [
+      "$15.00",
+      "$29.00",
+      "$139.00"
+     ],
+     "plans": [
+      {
+       "name": "Lite",
+       "price": "$15.00",
+       "period": "month"
+      },
+      {
+       "name": "Pro",
+       "price": "$29.00",
+       "period": "month"
+      },
+      {
+       "name": "Ultra",
+       "price": "$139.00",
+       "period": "month"
+      }
+     ],
+     "hasMonthly": true,
+     "hasYearly": true
+    }
+   }
+  },
+  "revid": {
+   "observedAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://www.revid.ai/pricing",
+   "hash": "87b6f6f2b79826bcd059633edc8faf282d532ed7a4054ee5217fd4b508f654c0",
+   "priceSignature": {
+    "default": "$199|$39|$99"
+   },
+   "views": {
+    "default": {
+     "prices": [
+      "$39",
+      "$99",
+      "$199"
+     ],
+     "plans": [
+      {
+       "name": "HOBBY",
+       "price": "$39",
+       "period": "month"
+      },
+      {
+       "name": "GROWTH",
+       "price": "$99",
+       "period": "month"
+      },
+      {
+       "name": "GROWTH",
+       "price": "$39",
+       "period": "month"
+      },
+      {
+       "name": "ULTRA",
+       "price": "$199",
+       "period": "month"
+      }
+     ],
+     "hasMonthly": true,
+     "hasYearly": true
+    }
+   }
+  },
+  "runway": {
+   "observedAt": "2026-08-01T21:29:15.151Z",
+   "sourceUrl": "https://runway.com/pricing",
+   "hash": "b3217967c8f57264c0bc91b09d9b59002af3085c28ff18a7bf17a32487325ff7",
+   "priceSignature": {
+    "default": "$0|$12|$15|$228|$28|$35|$36|$76|$84|$95",
+    "monthly": "$0|$15|$35|$95"
+   },
+   "views": {
+    "default": {
+     "prices": [
+      "$0",
+      "$36",
+      "$15",
+      "$12",
+      "$84",
+      "$35",
+      "$28",
+      "$228",
+      "$95",
+      "$76"
+     ],
+     "plans": [
+      {
+       "name": "Free",
+       "price": "$0",
+       "period": "month"
+      },
+      {
+       "name": "Standard",
+       "price": "$36",
+       "period": "annually"
+      },
+      {
+       "name": "Standard",
+       "price": "$15",
+       "period": "month"
+      },
+      {
+       "name": "Standard",
+       "price": "$12",
+       "period": "month"
+      },
+      {
+       "name": "Pro",
+       "price": "$84",
+       "period": "annually"
+      },
+      {
+       "name": "Pro",
+       "price": "$35",
+       "period": "month"
+      },
+      {
+       "name": "Pro",
+       "price": "$28",
+       "period": "month"
+      },
+      {
+       "name": "Max",
+       "price": "$228",
+       "period": "annually"
+      },
+      {
+       "name": "Max",
+       "price": "$95",
+       "period": "month"
+      },
+      {
+       "name": "Max",
+       "price": "$76",
+       "period": "month"
+      },
+      {
+       "name": "Standard",
+       "price": "$12",
+       "period": "month"
+      },
+      {
+       "name": "Pro",
+       "price": "$28",
+       "period": "month"
+      },
+      {
+       "name": "Max",
+       "price": "$76",
+       "period": "month"
+      }
+     ],
+     "hasMonthly": true,
+     "hasYearly": true
+    },
+    "monthly": {
+     "prices": [
+      "$0",
+      "$15",
+      "$35",
+      "$95"
+     ],
+     "plans": [
+      {
+       "name": "Free",
+       "price": "$0",
+       "period": "month"
+      },
+      {
+       "name": "Standard",
+       "price": "$15",
+       "period": "month"
+      },
+      {
+       "name": "Pro",
+       "price": "$35",
+       "period": "month"
+      },
+      {
+       "name": "Max",
+       "price": "$95",
+       "period": "month"
+      },
+      {
+       "name": "Standard",
+       "price": "$15",
+       "period": "month"
+      },
+      {
+       "name": "Pro",
+       "price": "$35",
+       "period": "month"
+      },
+      {
+       "name": "Max",
+       "price": "$95",
+       "period": "month"
+      }
+     ],
+     "hasMonthly": true,
+     "hasYearly": true
+    }
+   }
+  }
+ }
+}

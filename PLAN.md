@@ -11,12 +11,12 @@ _Revision 3. Freshness checker is now **fully deterministic — no API calls**. 
 | 1 — Repo scaffold | ✅ **Done** |
 | 2 — Minimal deploy | ✅ **Done** — live at https://murattenes.github.io/vivideo-case/ |
 | 3 — Pricing data model | ✅ **Done** |
-| 4 — Freshness checker (no API) | ⏸️ **Deferred** by request — foundation built & verified in Phase 3; finish after the site presents well |
+| 4 — Freshness checker (no API) | ✅ **Done** — 6/6 readable, live at /freshness/ |
 | 5 — Design system + executive summary | ✅ **Done** — https://murattenes.github.io/vivideo-case/executive-summary/ |
 | 6 — Remaining content | ✅ **Done** — all 9 pages live |
 | 7 — Media pipeline | ✅ **Done** — 30 players + 25 session-recording links live |
-| 8 — Privacy pass | ☐ Not started |
-| 9 — Deploy | ☐ Not started |
+| 8 — Privacy pass | ✅ **Done** — skipped by request (repo carries no credentials; recordings are deliberately shared) |
+| 9 — Deploy | ✅ **Done** — auto-deploys on every push to main |
 
 ## Context
 
@@ -272,7 +272,37 @@ Documented and usable now, from `spend-report.md`: HeyGen Creator $29, InVideo P
 
 ---
 
-## Phase 4 — Freshness checker (deterministic, no API)
+## Phase 4 — Freshness checker ✅ DONE
+
+**Live: https://murattenes.github.io/vivideo-case/freshness/ — 6/6 readable, 0 failed.**
+
+Both Phase 3 limitations are **solved**: the watcher drives a real browser, so Pollo's Cloudflare 403 and InVideo's client-rendered pricing are both readable.
+
+| | Plain `fetch` | Headless Chrome |
+|---|---|---|
+| Pollo AI | HTTP 403 | ✅ readable |
+| InVideo AI | 200, zero prices | ✅ readable |
+
+Pollo needs `--headless=new` + `--disable-blink-features=AutomationControlled` + a `navigator.webdriver` override, or Cloudflare serves `Just a moment…`. Each target also gets a **fresh browser** — sharing one tab made Cloudflare challenge Pollo mid-sequence though it passed in isolation.
+
+**Monthly and yearly** are both captured by clicking the billing toggle (HeyGen: Creator $29/mo → $24/mo billed $288/yr; Pollo: Lite $15 → $10/mo yearly).
+
+### Three nondeterminism bugs found and fixed while building
+
+1. **Hand-escaped injected regexes matched nothing** — reported all six as unreadable. Fixed by stringifying real functions instead of escaping by hand.
+2. **Rotating promo bars moved the hash** (Pollo's "Flash Sale 50% Off") → phantom changes every run. Fixed by wiring noise filters into the rendered-text hash.
+3. **Toggle clicks don't always land**, so an intermittently-captured yearly view moved the hash. Fixed by hashing the **default view only**, and comparing extra views only when both runs captured them — capture variance can never be reported as a price change.
+
+### Verified before shipping
+
+- **Stable:** two consecutive full runs → byte-identical hashes for all six.
+- **Detects real changes:** injecting `$29 → $19` into the stored snapshot surfaced `CHANGED` with a field-level diff.
+- **Fails honestly:** a deliberately broken URL produced `fetch_failed`, preserved the prior snapshot and `lastSuccessfulAt`, and did **not** appear in the diff.
+
+No API keys, no secrets, no model. Weekly cron + `workflow_dispatch`; commits only when a snapshot actually changes. README at `scripts/freshness/README.md`.
+
+<details>
+<summary>Original Phase 4 plan</summary>
 
 **No API calls, no `ANTHROPIC_API_KEY`, no model dependency.** The brief explicitly accepts this shape: *"a pricing-page diff watcher, changelog/review-stream alerts, or a repeatable checklist."* A diff watcher is a first-class answer, not a downgrade — and it removes the failure mode where a model hallucinates a price nobody published.
 

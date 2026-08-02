@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import { route } from '../lib/url';
 import current from '../data/freshness/current.json';
 import watcherStatus from '../data/freshness/status.json';
 
@@ -9,37 +8,31 @@ const researchRows = [
     id: 'vivideo',
     tested: 'MAX plan (all benchmark runs)',
     paid: '—',
-    note: 'Pricing not recorded during the research window — the current column is the watcher’s first read, not a change.',
   },
   {
     id: 'heygen',
     tested: 'Creator · $29/mo',
     paid: '$29.00',
-    note: 'Free tier watermarks output; 1080p, download and editing gated behind upgrades (observed in testing).',
   },
   {
     id: 'invideo',
     tested: 'Plus · $20/mo',
     paid: '$20.00 (charged TRY 985.87)',
-    note: 'Static HTML has no prices at all; rendering the page in a real browser makes them readable.',
   },
   {
     id: 'pollo',
     tested: 'Lite · $15/mo',
     paid: '$15.00',
-    note: 'Monthly pricing is captured automatically; the annual toggle requires the dated manual verification shown by the watcher.',
   },
   {
     id: 'revid',
     tested: 'Growth · $39/mo',
     paid: '$39.00',
-    note: 'Most expensive tested plan; pricing link sits below the homepage fold.',
   },
   {
     id: 'runway',
     tested: 'Standard · $15/mo',
     paid: '$15.00 (charged TRY 886.84 incl. VAT)',
-    note: 'Free allocation permitted image generation but not the expected video access (observed in testing).',
   },
 ];
 
@@ -72,7 +65,6 @@ const rows = researchRows.map((row) => {
       ? snapshot.plans.map(planText).join(' | ')
       : 'No successful pricing snapshot',
     status: statusText(status),
-    watcherNote: status?.yearlyNote ?? null,
   };
 });
 
@@ -113,12 +105,6 @@ const spend = [
     <header class="head">
       <p class="eyebrow">Pricing · credits · cancellation</p>
       <h1>What plans cost, and what leaving costs</h1>
-      <p class="stand">
-        Every price below was either paid with a real card during testing or
-        read from the live pricing page on 1 August 2026 — the two are kept
-        separate so a gap in the research can never masquerade as a price
-        change.
-      </p>
     </header>
 
     <section aria-labelledby="snap-h">
@@ -141,11 +127,7 @@ const spend = [
                   <th scope="row" class="p-name">{names[r.id]}</th>
                   <td>{r.tested}</td>
                   <td class="n">{r.paid}</td>
-                  <td>
-                    {r.current}
-                    <span class="cell-note">{r.note}</span>
-                    {r.watcherNote && <span class="cell-note">{r.watcherNote}</span>}
-                  </td>
+                  <td>{r.current}</td>
                   <td class="n status">{r.status}</td>
                 </tr>
               ))
@@ -153,34 +135,24 @@ const spend = [
           </tbody>
         </table>
       </div>
-      <p class="fineprint">
-        Tested-plan and paid-price observations remain fixed research evidence.
-        The current column is rendered directly from
-        <code>site/src/data/freshness/current.json</code>, so Pricing and
-        Freshness cannot silently present different live values. The dated
-        watcher status is shown separately; Pollo's annual toggle is explicitly
-        marked as manually verified rather than automatically captured.
-      </p>
     </section>
 
     <section class="framing" aria-labelledby="framing-h">
-      <h2 id="framing-h">The pricing-psychology finding</h2>
+      <h2 id="framing-h">Recommendation for Vivideo pricing</h2>
       <div class="framing-card">
         <p class="framing-lede">
-          <strong>Vivideo’s own pricing anchors on the week and bills by the
-          year.</strong>
+          <strong>Show the total charge as clearly as the weekly equivalent.</strong>
         </p>
         <p>
           The headline reads <span class="num">$2/week</span> (Pro) and
           <span class="num">$4/week</span> (Max) under a “Save up to 79%”
-          banner — but the charge is <span class="num">$99</span> or
-          <span class="num">$199</span>, once, for a year. The genuinely weekly
-          option costs <span class="num">$9</span>/<span class="num">$19</span>
-          per week: 4.5× the anchored rate. This is the same
-          pay-attention-after-commitment pattern the category’s reviews complain
-          about — and Vivideo’s reviewers specifically allege the free video
-          required payment to view.
-          <span class="prov" data-kind="observed">observed</span>
+          banner, while the annual charge is <span class="num">$99</span> or
+          <span class="num">$199</span>. The separate weekly plans cost
+          <span class="num">$9</span> or <span class="num">$19</span> per week.
+          Make the amount charged today and its billing period equally prominent,
+          and visually separate weekly plans from annual plans so the user knows
+          exactly what will be billed before selecting a plan.
+          <span class="prov" data-kind="interpretation">interpretation</span>
         </p>
       </div>
     </section>
@@ -306,12 +278,6 @@ const spend = [
   .head h1 {
     margin: 0.6rem 0 0.8rem;
   }
-  .stand {
-    font-size: var(--step-1);
-    color: var(--ink-mid);
-    margin: 0;
-  }
-
   section {
     margin-top: 2.6rem;
   }
@@ -340,12 +306,6 @@ const spend = [
     color: var(--subject);
   }
 
-  .cell-note {
-    display: block;
-    margin-top: 0.25rem;
-    font-size: 0.74rem;
-    color: var(--ink-soft);
-  }
   .status {
     white-space: nowrap;
     font-size: 0.72rem;

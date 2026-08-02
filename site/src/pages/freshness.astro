@@ -53,12 +53,6 @@ const counts = {
     <header class="head">
       <p class="eyebrow">Freshness · automated pricing watcher</p>
       <h1>Is any of this still true?</h1>
-      <p class="stand">
-        A scheduled job re-reads all six pricing pages every week, extracts the
-        plans and prices, and commits a snapshot. When something moves, the
-        diff appears here. When a check fails, it says so instead of quietly
-        showing stale numbers as current.
-      </p>
     </header>
 
     <div class="summary">
@@ -223,8 +217,6 @@ const counts = {
 <style>
   .head { max-width: 46rem; }
   .head h1 { margin: 0.6rem 0 0.8rem; }
-  .stand { font-size: var(--step-1); color: var(--ink-mid); margin: 0; }
-
   .summary {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));

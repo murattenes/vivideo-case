@@ -2,20 +2,11 @@
 import Base from '../layouts/Base.astro';
 import { route } from '../lib/url';
 
-const stats = [
-  { n: '6', label: 'products, tested on paid plans' },
-  { n: '5', label: 'fixed prompts, run everywhere' },
-  { n: '30', label: 'first-run outputs kept' },
-  { n: '59', label: 'user reviews coded' },
-  { n: '$118', label: 'spent on five competitor subscriptions' },
-  { n: '8', label: 'days, 25 Jul – 1 Aug' },
-];
-
 const sections = [
   {
     href: 'executive-summary',
     title: 'Executive summary',
-    hook: 'The 10 things to know and the 5 recommendations, on one printable page.',
+    hook: 'The 9 things to know and the 5 recommendations, on one printable page.',
     kicker: 'Start here',
   },
   {
@@ -51,7 +42,7 @@ const sections = [
   {
     href: 'strategy',
     title: 'Strategy',
-    hook: 'Steal / Avoid / Attack, a sequenced roadmap, and the three 12-month threats.',
+    hook: 'Steal / Avoid / Attack, a sequenced roadmap, and two 12-month threats.',
     kicker: 'the "so what"',
   },
   {
@@ -59,12 +50,6 @@ const sections = [
     title: 'Freshness',
     hook: 'A weekly headless-browser watcher re-reads all six pricing pages and reports what moved.',
     kicker: 'still true?',
-  },
-  {
-    href: 'methodology',
-    title: 'Methodology',
-    hook: 'The prompt set, shared assets, capability boundary, spend report, and the limits of one run.',
-    kicker: 'read the caveats',
   },
 ];
 ---
@@ -99,17 +84,6 @@ const sections = [
         <a class="cta ghost" href={route('benchmarks')}>See the benchmark runs</a>
       </p>
     </header>
-
-    <ul class="stats" aria-label="Scope of testing">
-      {
-        stats.map((s) => (
-          <li>
-            <span class="stat-n num">{s.n}</span>
-            <span class="stat-l">{s.label}</span>
-          </li>
-        ))
-      }
-    </ul>
 
     <nav class="grid" aria-label="Report sections">
       {
@@ -226,35 +200,11 @@ const sections = [
     border-color: var(--subject);
   }
 
-  .stats {
-    list-style: none;
-    margin: 2.75rem 0 0;
-    padding: 1.1rem 0;
-    border-top: 2px solid var(--ink);
-    border-bottom: 1px solid var(--rule);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
-    gap: 0.9rem 1.5rem;
-  }
-  .stat-n {
-    display: block;
-    font-size: var(--step-2);
-    font-weight: 600;
-    line-height: 1.1;
-  }
-  .stat-l {
-    display: block;
-    font-size: 0.74rem;
-    color: var(--ink-soft);
-    line-height: 1.35;
-    margin-top: 0.15rem;
-  }
-
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
     gap: 0.8rem;
-    margin-top: 2rem;
+    margin-top: 2.75rem;
   }
   .card {
     display: flex;

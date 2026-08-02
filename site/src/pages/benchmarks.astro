@@ -29,20 +29,6 @@ const isBaseline = (id: string) => (products as Record<string, { name: string; b
       </p>
     </header>
 
-    <aside class="caveat" aria-label="How to read these tables">
-      <p>
-        <strong>One run per product per workflow.</strong> This is directional
-        case-study evidence, not a statistical ranking — a single run can be
-        lucky or unlucky.
-        <strong>Workflow labels matter:</strong> an <span class="wf" data-wf="agent">agent</span> row
-        (the product planned, chose models, assembled) is not comparable to a
-        <span class="wf" data-wf="manual">manual</span> row (we picked the model
-        and settings) on output quality alone. And the same visible prompt never
-        isolates model quality — products rewrite prompts, route models, and
-        post-process differently. No single winner is claimed.
-      </p>
-    </aside>
-
     <nav class="jump" aria-label="Jump to prompt">
       {prompts.map((p) => <a class="num" href={`#${p.slug}`}>{p.id}</a>)}
     </nav>
@@ -126,13 +112,6 @@ const isBaseline = (id: string) => (products as Record<string, { name: string; b
       <h2 id="reading-h">What the thirty runs add up to</h2>
       <ul>
         <li>
-          <strong>The workflow explains more than the model label.</strong>
-          Seedance 2.0 variants appear behind InVideo's cleanest runs and
-          Runway's self-capped 10s run alike. Prompt rewriting, routing, clip
-          assembly and post-processing changed what the same visible prompt
-          became.
-        </li>
-        <li>
           <strong>I2V-01 was the hardest benchmark in this test set.</strong>
           Every output rotated the red pinwheel more than the requested
           approximately one full clockwise turn. InVideo preserved the source
@@ -167,21 +146,6 @@ const isBaseline = (id: string) => (products as Record<string, { name: string; b
     font-size: var(--step-1);
     color: var(--ink-mid);
     margin: 0;
-  }
-
-  .caveat {
-    margin: 1.6rem 0 0;
-    padding: 0.9rem 1.1rem;
-    background: var(--paper-raised);
-    border: 1px solid var(--rule);
-    border-left: 3px solid var(--ink);
-    max-width: 52rem;
-  }
-  .caveat p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--ink-mid);
-    line-height: 1.55;
   }
 
   .jump {

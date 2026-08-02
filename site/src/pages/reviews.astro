@@ -215,7 +215,6 @@ const crossThemes = [
   { theme: 'Paying for failed or unusable generations', where: 'Runway, Pollo, HeyGen, Vivideo, InVideo' },
   { theme: 'Prompt-adherence and source-fidelity failures', where: 'Pollo, Revid, Runway, InVideo' },
   { theme: 'Billing, cancellation, refund and support frustration', where: 'Revid, HeyGen, Vivideo, InVideo, Runway' },
-  { theme: 'Preview hidden behind payment', where: 'Vivideo' },
   { theme: 'Export, resolution or watermark restrictions disclosed late', where: 'Revid, Pollo, HeyGen' },
   { theme: 'Ease of use and speed to first result (positive)', where: 'InVideo, Pollo, HeyGen, Vivideo' },
 ];
@@ -232,17 +231,6 @@ const crossThemes = [
         deliberately including both praise and complaints.
       </p>
     </header>
-
-    <aside class="caveat">
-      <p>
-        <strong>What these counts can and cannot say.</strong> The sample was
-        selected, not randomly drawn, so counts describe which themes appear in
-        the sample — never which product “has more complaints.” Every review is
-        a <span class="prov" data-kind="claim">review claim</span>: a user
-        allegation, not verified fact. App Store feedback describes mobile
-        apps; the benchmarks tested web products.
-      </p>
-    </aside>
 
     <section aria-labelledby="cross-h">
       <h2 id="cross-h">Themes that recur across products</h2>
@@ -330,21 +318,6 @@ const crossThemes = [
     font-size: var(--step-1);
     color: var(--ink-mid);
     margin: 0;
-  }
-
-  .caveat {
-    margin: 1.6rem 0 0;
-    padding: 0.9rem 1.1rem;
-    background: var(--paper-raised);
-    border: 1px solid var(--rule);
-    border-left: 3px solid var(--ink);
-    max-width: 52rem;
-  }
-  .caveat p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--ink-mid);
-    line-height: 1.55;
   }
 
   section {

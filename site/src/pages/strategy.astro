@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import { route } from '../lib/url';
 
 const recs = [
   {
@@ -34,21 +33,21 @@ const recs = [
     n: 3,
     title: 'Make model routing intelligent but visible',
     problem:
-      'Pollo shows model breadth becoming clutter. InVideo’s agent defaults to strong, expensive models. Runway’s agent kept choosing Seedance even when asked to switch — its dialog offered only an Approve button. Opaque routing plus real money is the trust leak.',
+      'InVideo’s agent defaults to strong, expensive models. Runway’s agent kept choosing Seedance even when asked to switch — its dialog offered only an Approve button. When an agent chooses the model, the user needs to see and approve the model and cost.',
     what: [
       'Four modes: Fast & affordable / Balanced / Best quality / Choose manually. Each shows model name, credit ceiling, expected time, supported duration and resolution, why it fits, known limitations.',
       'Lock the approved model. A fallback requires consent and shows the new cost. Route by task over time: avatar → best lip-sync; packshot → best source fidelity; cinematic → motion-focused.',
     ],
     steal:
-      'Pollo’s breadth without its clutter; the InVideo and Runway defaults as the cautionary tales.',
+      'InVideo and Runway show the value of model recommendations, as well as the need for explicit approval before the choice affects cost.',
     metrics:
-      'Accepted output per credit by mode · model-override rate · fallback frequency and consent rate · cost delta between recommended and manual.',
+      'Model-override rate · fallback frequency and consent rate · cost delta between recommended and manual · completion rate by mode.',
   },
   {
     n: 4,
     title: 'Package outcomes and preserve creator memory',
     problem:
-      'Revid exposes 156 tools that are mostly one generator re-skinned; Pollo’s library crowds its UI; an empty prompt box assumes the user already knows what the product can make. Meanwhile Revid quietly built the right primitive: characters that persist to the profile.',
+      'Revid exposes 156 tools that are mostly one generator re-skinned, while an empty prompt box assumes the user already knows what the product can make. Revid also built a useful retention primitive: characters that persist to the profile.',
     what: [
       '10–15 curated recipes — product image → ad, URL → product video, UGC-style ad, educational short, faceless explainer, avatar announcement, podcast/article → short, text-or-PDF → “brainrot”-style study short, music-to-video, multi-platform variations — each with example output, inputs, credit range, recommended mode, editable prompt.',
       'Persistent creator memory: brand kit, saved characters and voices, default CTA, audiences, platforms, caption style, reusable product assets. The agent asks only what changed.',
@@ -76,12 +75,10 @@ const recs = [
 
 const hygiene = [
   'Show a playable, watermarked preview before requiring an upgrade.',
-  'Disclose watermark, resolution, credit and export restrictions before generation.',
   'Keep the original prompt and generation settings visible afterwards.',
   'Show estimated vs. actual credit use on every generation.',
   'Restore credits automatically for clear technical failures.',
   'Provide a self-service cancellation that completes in-product.',
-  'Make cancellation feedback optional.',
   'Confirm the subscription end date immediately.',
 ];
 
@@ -106,8 +103,6 @@ const avoid = [
   'Pay-before-preview funnels.',
   'Hundreds of near-identical novelty tools.',
   'Rewarding low-quality or spam activity.',
-  'Mandatory cancellation surveys.',
-  'Support-assisted cancellation as the only exit.',
 ];
 
 const attack = [
@@ -116,11 +111,10 @@ const attack = [
   'Offer the clearest model–cost–speed–quality relationship in the category.',
   'Own the most trustworthy first-video experience end to end.',
   'Connect creation, creator memory, publishing and performance in one workflow.',
-  'Compete on accepted output per credit — not model count.',
 ];
 
 const roadmap = [
-  { phase: 'Now', focus: 'Trust foundation', items: 'Generation Contract · prompt history · credit ceiling and restoration · early restriction disclosure · watermarked preview · self-service cancellation' },
+  { phase: 'Now', focus: 'Trust foundation', items: 'Generation Contract · prompt history · credit ceiling and restoration · watermarked preview · self-service cancellation' },
   { phase: 'Next', focus: 'Controllable creation', items: 'Guided planning · focused scene correction · transparent routing modes · fallback consent' },
   { phase: 'Expand', focus: 'Activation & retention', items: 'Curated recipes · public use-case pages · creator memory · reusable assets' },
   { phase: 'Scale', focus: 'Distribution', items: 'Referrals on activation · meaningful quests · publishing rewards · remixable templates · affiliate program' },
@@ -132,12 +126,6 @@ const threats = [
     detail:
       'InVideo, HeyGen and Revid fold scripting, generation, editing and publishing into one flow. If “idea to published post” is solved elsewhere, a generator with sharing is a feature, not a product.',
     watch: 'Watch: InVideo/HeyGen shipping publishing analytics; Revid speeding up generation.',
-  },
-  {
-    title: 'Multi-model platforms erase model differentiation',
-    detail:
-      'Pollo sells whichever model is currently best through one interface. Any advantage built on model access is rentable by competitors within weeks.',
-    watch: 'Watch: aggregator pricing per generation falling; new models appearing on Pollo within days of release.',
   },
   {
     title: 'Loop economies compound while quality converges',
@@ -157,12 +145,10 @@ const threats = [
         <em>not another model marketplace.</em>
       </h1>
       <p class="stand">
-        Several tested products route across the same third-party model families,
-        while their surrounding workflows remain visibly different. The durable
-        position is the layer between a user’s intent and a publishable video:
-        approved plan → transparent routing → editable draft → measured
-        publishing. Priced not in model count but in
-        <strong>accepted output per credit</strong>.
+        Focus the product on the moments that determine whether a user completes
+        a video: approving a clear plan, understanding the cost, correcting a
+        missed requirement without restarting, reusing creator assets and
+        publishing the result.
       </p>
     </header>
 
@@ -253,7 +239,7 @@ const threats = [
     </section>
 
     <section aria-labelledby="threats-h">
-      <h2 id="threats-h" class="sec-title"><span class="eyebrow">Three threats in the next 12 months — with indicators to watch</span></h2>
+      <h2 id="threats-h" class="sec-title"><span class="eyebrow">Two threats in the next 12 months — with indicators to watch</span></h2>
       <div class="threats">
         {
           threats.map((t) => (
@@ -267,16 +253,6 @@ const threats = [
       </div>
     </section>
 
-    <p class="closing">
-      A visible, binding plan; a recoverable draft; transparent routing;
-      persistent creator context; measurable publishing loops. That converts
-      Vivideo from another generator into the trusted operating system for
-      social video. Evidence for every claim above:
-      <a href={route('benchmarks')}>benchmarks</a> ·
-      <a href={route('pricing')}>pricing</a> ·
-      <a href={route('reviews')}>reviews</a> ·
-      <a href={route('distribution')}>distribution</a>.
-    </p>
   </div>
 </Base>
 
@@ -296,10 +272,6 @@ const threats = [
     color: var(--ink-mid);
     margin: 0;
   }
-  .stand strong {
-    color: var(--ink);
-  }
-
   section {
     margin-top: 2.8rem;
   }
@@ -454,13 +426,4 @@ const threats = [
     font-family: var(--mono);
   }
 
-  .closing {
-    margin: 3rem 0 0;
-    padding-top: 1.2rem;
-    border-top: 2px solid var(--ink);
-    font-size: 0.95rem;
-    color: var(--ink-mid);
-    max-width: 52rem;
-    line-height: 1.6;
-  }
 </style>

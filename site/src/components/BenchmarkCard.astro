@@ -116,10 +116,11 @@ const { id, productName, baseline = false, driveId, poster, durationSec, session
   }
 
   .bc-meta {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr;
     align-items: baseline;
-    gap: 0.45rem;
-    flex-wrap: wrap;
+    column-gap: 0.45rem;
+    row-gap: 0.25rem;
     margin-top: 0.35rem;
     font-size: 0.72rem;
   }
@@ -135,7 +136,8 @@ const { id, productName, baseline = false, driveId, poster, durationSec, session
     color: var(--ink-soft);
   }
   .bc-sr {
-    margin-left: auto;
+    grid-column: 1 / -1;
+    justify-self: end;
     font-family: var(--mono);
     font-size: 0.62rem;
     color: var(--ink-soft);

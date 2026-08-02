@@ -15,12 +15,22 @@ import { mkdirSync, readFileSync, writeFileSync, appendFileSync, existsSync } fr
 import { setTimeout as sleep } from 'node:timers/promises';
 import { launch } from './browser.mjs';
 import { extractPlans, clickPeriod } from './extract.mjs';
-import { TARGETS, GLOBAL_NOISE } from './targets.mjs';
+import { TARGETS } from './targets.mjs';
 
 const DATA_DIR = new URL('../../site/src/data/freshness/', import.meta.url);
 const args = process.argv.slice(2);
-const only = args.includes('--only') ? args[args.indexOf('--only') + 1].split(',') : null;
 const dry = args.includes('--dry');
+const onlyIndex = args.indexOf('--only');
+const onlyValue = onlyIndex >= 0 ? args[onlyIndex + 1] : null;
+if (onlyIndex >= 0 && (!onlyValue || onlyValue.startsWith('--'))) {
+  console.error('--only requires a comma-separated product list');
+  process.exit(2);
+}
+const only = onlyValue ? onlyValue.split(',') : null;
+if (only && !dry) {
+  console.error('--only must be used with --dry so a partial run cannot replace the full snapshot');
+  process.exit(2);
+}
 const now = new Date().toISOString();
 
 const sha = (s) => createHash('sha256').update(s, 'utf8').digest('hex');
@@ -29,12 +39,6 @@ const readJson = (name, fallback) => {
   if (!existsSync(p)) return fallback;
   try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return fallback; }
 };
-
-function denoise(text) {
-  let out = text;
-  for (const re of GLOBAL_NOISE) out = out.replace(re, ' ');
-  return out.replace(/\s+/g, ' ').trim();
-}
 
 /** Poll until the declared plans actually carry prices — pages hydrate late. */
 async function settle(page, target) {
@@ -156,13 +160,25 @@ for (const target of targets) {
     }
 
     const plans = mergePlans(target, views.monthly, views.yearly);
-    // Hash the plan table, not the whole page: immune to marketing copy edits
-    // and to whether the yearly toggle happened to land.
+    // Hash the monthly plan table, not the whole page: immune to marketing
+    // copy edits and to whether the yearly toggle happened to land. Yearly
+    // prices are compared separately only when both runs captured them.
     const sig = plans
-      .map((p) => `${p.name}:${p.monthly?.price ?? ''}:${p.yearly?.price ?? ''}:${p.yearly?.billedTotal ?? ''}`)
+      .map((p) => `${p.name}:${p.monthly?.price ?? ''}`)
       .join('|');
     const hash = sha(sig);
-    const changed = prev ? prev.hash !== hash : false;
+    const previousSig = (prev?.plans ?? [])
+      .map((p) => `${p.name}:${p.monthly?.price ?? ''}`)
+      .join('|');
+    const yearlyChanged = prev
+      ? plans.some((p) => {
+          const before = prev.plans?.find((x) => x.name === p.name);
+          if (!before?.yearly || !p.yearly) return false;
+          return before.yearly.price !== p.yearly.price ||
+            before.yearly.billedTotal !== p.yearly.billedTotal;
+        })
+      : false;
+    const changed = prev ? sha(previousSig) !== hash || yearlyChanged : false;
 
     if (changed) {
       const changes = [];
@@ -171,10 +187,12 @@ for (const target of targets) {
         if (!before) { changes.push({ plan: p.name, note: 'new plan' }); continue; }
         if (before.monthly?.price !== p.monthly?.price)
           changes.push({ plan: p.name, field: 'monthly', from: before.monthly?.price ?? null, to: p.monthly?.price ?? null });
-        if (before.yearly?.price !== p.yearly?.price)
-          changes.push({ plan: p.name, field: 'yearly', from: before.yearly?.price ?? null, to: p.yearly?.price ?? null });
-        if (before.yearly?.billedTotal !== p.yearly?.billedTotal)
-          changes.push({ plan: p.name, field: 'annual total', from: before.yearly?.billedTotal ?? null, to: p.yearly?.billedTotal ?? null });
+        if (before.yearly && p.yearly) {
+          if (before.yearly.price !== p.yearly.price)
+            changes.push({ plan: p.name, field: 'yearly', from: before.yearly.price, to: p.yearly.price });
+          if (before.yearly.billedTotal !== p.yearly.billedTotal)
+            changes.push({ plan: p.name, field: 'annual total', from: before.yearly.billedTotal ?? null, to: p.yearly.billedTotal ?? null });
+        }
       }
       for (const b of prev.plans ?? [])
         if (!plans.find((x) => x.name === b.name)) changes.push({ plan: b.name, note: 'plan removed' });

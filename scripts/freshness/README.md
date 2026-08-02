@@ -1,8 +1,9 @@
 # Pricing freshness watcher
 
 Re-reads all six competitor pricing pages, extracts plans and prices for both
-billing periods, and commits a snapshot. Answers one question on a schedule:
-**is any of the pricing in this analysis still true?**
+billing periods where available, and saves a dated snapshot plus a field-level
+price diff. Answers one question on a schedule: **is any of the pricing in this
+analysis still true?**
 
 Deterministic by design — no API keys, no model, nothing that can invent a
 price it did not read. The brief accepts "a pricing-page diff watcher" as a
@@ -14,7 +15,7 @@ what it cannot see.
 ```bash
 node scripts/freshness/check.mjs              # all six, writes a snapshot
 node scripts/freshness/check.mjs --dry        # run without writing
-node scripts/freshness/check.mjs --only pollo,revid
+node scripts/freshness/check.mjs --only pollo,revid --dry
 ```
 
 Requires Chrome. Found automatically on macOS and common Linux paths; override
@@ -22,8 +23,9 @@ with `CHROME_PATH=/path/to/chrome`. No `npm install` — the checker uses only
 Node built-ins and drives Chrome over the DevTools Protocol directly.
 
 Runs weekly via `.github/workflows/freshness.yml` (Mondays 07:15 UTC) and on
-demand through **Actions → Pricing freshness check → Run workflow**. It commits
-only when a snapshot actually changes, so an unchanged week produces no commit.
+demand through **Actions → Pricing freshness check → Run workflow**. Each run
+records when the check happened. If prices are unchanged, the status is
+`unchanged` and the field-level diff remains empty.
 
 ## Sample run
 
@@ -42,11 +44,14 @@ only when a snapshot actually changes, so an unchanged week produces no commit.
       Elite        monthly $1000     yearly $900 ($10800/yr)
   pollo     unchanged  3/3 plans (monthly only)
       LITE         monthly $15.00    yearly —
+      PRO          monthly $29.00    yearly —
+      ULTRA        monthly $139.00   yearly —
   revid     unchanged  3/3 plans +yearly
       HOBBY        monthly $39       yearly $32 ($384/yr)
       GROWTH       monthly $39       yearly $32 ($384/yr)
       ULTRA        monthly $199      yearly $166 ($1992/yr)
   runway    unchanged  4/4 plans +yearly
+      Free         monthly $0        yearly $0
       Standard     monthly $15       yearly $12
       Pro          monthly $35       yearly $28
       Max          monthly $95       yearly $76
@@ -69,8 +74,8 @@ launch Chrome (per target)
   → render the pricing page, poll until the price count stops growing
   → read plan names / prices / billing periods out of the rendered text
   → click the billing-period toggle, capture the second view
-  → strip promo churn (flash sales, countdowns, % off, social proof)
-  → sha256
+  → hash the monthly plan table
+  → compare yearly prices when both runs captured them
   → compare with the previous snapshot
   → write snapshot, status, field-level diff, history
 ```
@@ -93,21 +98,21 @@ Each target gets a **fresh browser**. Sharing one tab across sites caused
 Cloudflare to challenge Pollo when it ran mid-sequence, even though the same
 target succeeded in isolation.
 
-### What the change gate hashes
+### What counts as a price change
 
-The hash covers the **default view only** — the page as it first loads.
-Toggle-captured views are recorded and displayed but excluded from the hash,
-because a toggle click does not land every time and **capture variance must
-never be reported as a price change**. Views present in *both* runs are
-additionally compared price-by-price, so a yearly-only move is still caught.
+The hash covers the declared plan names and monthly prices, not the surrounding
+marketing page. This keeps banners, countdowns, testimonials and other copy out
+of the change gate. Yearly prices and annual totals are additionally compared
+when both the current and previous runs captured them. If a yearly toggle fails
+to switch on one run, that missing view is not reported as a price change.
 
 ## Output — `site/src/data/freshness/`
 
 | File | Contents |
 |---|---|
-| `current.json` | Latest snapshot: per product, per view — plans, prices, periods, hash, price signature |
+| `current.json` | Latest snapshot: per product — plans, monthly and captured yearly prices, billing periods and monthly price hash |
 | `previous.json` | The snapshot before it |
-| `diff.json` | Field-level added/removed prices, per view |
+| `diff.json` | Field-level monthly, yearly and annual-total changes by plan |
 | `status.json` | Per product: status, `checkedAt`, `lastSuccessfulAt`, source URL |
 | `history.jsonl` | Append-only timeline, one line per run |
 
@@ -124,38 +129,12 @@ additionally compared price-by-price, so a yearly-only move is still caught.
 
 - **Stable across runs.** Two consecutive full runs produced byte-identical
   hashes for all six — an unstable hash would report a change every week and
-  make the whole mechanism noise. Getting here required filtering rotating
-  promo bars (Pollo's "Flash Sale 50% Off") out of the hash input.
+  make the whole mechanism noise.
 - **Detects a real change.** A price edited in the stored snapshot
   (`$29` → `$19`) was correctly surfaced as `CHANGED` with a field-level diff.
 - **Fails honestly.** Pointing a target at a 404 produced `fetch_failed`,
   preserved the prior snapshot and `lastSuccessfulAt`, and did **not** appear
   in the diff.
-
-## Six bugs this shook out
-
-Worth recording, because each produced *plausible but wrong* numbers rather
-than an obvious failure:
-
-1. **HeyGen served Turkish.** It geolocates, so plan names came back as
-   `Oluşturucu` / `$29 / ay` and name matching fell through to the nearest
-   heading — which is how "Pricing FAQs" became a plan. Fixed by forcing
-   `Accept-Language: en-US`.
-2. **Plan names cannot be inferred.** "Text nearest the price" produced FAQ
-   headings, taglines ("For exploring"), and off-by-one card names. Names are
-   now declared per site.
-3. **Two sites load already showing yearly.** Trusting the default state
-   silently swapped the monthly and yearly columns for Vivideo and InVideo.
-   The monthly view is now selected explicitly before reading.
-4. **Revid fakes its strikethrough.** The original price uses a Tailwind
-   `::after` bar with `opacity-50`, so computed `text-decoration` is `none`
-   and DOM detection missed it — reading `$99` as Growth's current price
-   instead of `$39`. Current price is now the lower of a discounted pair.
-5. **Annual totals read as headline rates.** "$288 billed annually" and
-   "Save $36/year" sit directly under the price; both were being picked up as
-   the price itself.
-6. **Pollo animates its price change.** Sampling at a fixed delay caught
-   `$ $15.00` mid-transition. The view is now polled until stable.
 
 ## Known limits
 

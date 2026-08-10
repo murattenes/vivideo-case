@@ -1,10 +1,10 @@
 {
- "checkedAt": "2026-08-01T22:06:42.258Z",
+ "checkedAt": "2026-08-03T10:51:26.054Z",
  "products": {
   "vivideo": {
-   "observedAt": "2026-08-01T22:06:42.258Z",
+   "observedAt": "2026-08-03T10:51:26.054Z",
    "sourceUrl": "https://vivideo.ai/pricing",
-   "hash": "c37fafe6174d25f5843d1cdbadddaf971b611d20acd174ece3c23b298360d81b",
+   "hash": "cef0f9877ca44864d037174d4d8ba4fcf5ace0321167f0ed44732d04c661db85",
    "hasYearlyView": true,
    "plans": [
     {
@@ -36,9 +36,9 @@
    ]
   },
   "heygen": {
-   "observedAt": "2026-08-01T22:06:42.258Z",
+   "observedAt": "2026-08-03T10:51:26.054Z",
    "sourceUrl": "https://www.heygen.com/pricing",
-   "hash": "bf2c579648dafe0d4c85257d7e4b86d436b08a8215be942d216252055d50efb0",
+   "hash": "3ab453a7424222a9fb0197f2386d5daa07c2df46236a6e4f28339a22e419a44a",
    "hasYearlyView": true,
    "plans": [
     {
@@ -83,9 +83,9 @@
    ]
   },
   "invideo": {
-   "observedAt": "2026-08-01T22:06:42.258Z",
+   "observedAt": "2026-08-03T10:51:26.054Z",
    "sourceUrl": "https://invideo.io/pricing/",
-   "hash": "dac38fe56f38cac988469e6893592656f4c61f2620df91420e8fd15313ae7dfc",
+   "hash": "eaf64900c0810fd6c74f7ef9afbb567503f39c75f17f1b048ab382e7600233c0",
    "hasYearlyView": true,
    "plans": [
     {
@@ -143,9 +143,9 @@
    ]
   },
   "pollo": {
-   "observedAt": "2026-08-01T22:06:42.258Z",
+   "observedAt": "2026-08-03T10:51:26.054Z",
    "sourceUrl": "https://pollo.ai/pricing",
-   "hash": "38a550ff1ee540a593aabd7d1145202b43c585d9624f6b877237b7a15329a12d",
+   "hash": "db4ca4711ce337faa947cf39896284ff82fe3ee6799e3d17fd4ce45856fc87a7",
    "hasYearlyView": false,
    "plans": [
     {
@@ -175,9 +175,9 @@
    ]
   },
   "revid": {
-   "observedAt": "2026-08-01T22:06:42.258Z",
+   "observedAt": "2026-08-03T10:51:26.054Z",
    "sourceUrl": "https://www.revid.ai/pricing",
-   "hash": "763eb6016bf8cee1168e90fe14e7d26df8440f3c4412b10aa0e377985cb55cd4",
+   "hash": "ed5f8f5a14b1cfa6b3293b7b6304863f723e9b6df1d6c46137a7b8660c432f7a",
    "hasYearlyView": true,
    "plans": [
     {
@@ -222,9 +222,9 @@
    ]
   },
   "runway": {
-   "observedAt": "2026-08-01T22:06:42.258Z",
+   "observedAt": "2026-08-03T10:51:26.054Z",
    "sourceUrl": "https://runway.com/pricing",
-   "hash": "2e085abc9a29ad34f42f48800e4f62437a8b57fb7f179f9a4bc728d4871d9abe",
+   "hash": "91852b7bd49d6c9b19c96659cfdcced718adcd2ee703420f63810e6cced34d86",
    "hasYearlyView": true,
    "plans": [
     {

@@ -1,4 +1,27 @@
 {
- "checkedAt": "2026-08-10T08:50:43.167Z",
- "products": {}
+ "checkedAt": "2026-08-17T07:59:25.446Z",
+ "products": {
+  "invideo": {
+   "changes": [
+    {
+     "plan": "Max",
+     "field": "annual total",
+     "from": "$1000",
+     "to": "$1,000"
+    },
+    {
+     "plan": "Generative",
+     "field": "annual total",
+     "from": "$2000",
+     "to": "$2,000"
+    },
+    {
+     "plan": "Elite",
+     "field": "annual total",
+     "from": "$10800",
+     "to": "$10,800"
+    }
+   ]
+  }
+ }
 }

@@ -1,10 +1,10 @@
 {
- "checkedAt": "2026-08-10T08:50:43.167Z",
+ "checkedAt": "2026-08-17T07:59:25.446Z",
  "products": {
   "vivideo": {
    "status": "unchanged",
-   "checkedAt": "2026-08-10T08:50:43.167Z",
-   "lastSuccessfulAt": "2026-08-10T08:50:43.167Z",
+   "checkedAt": "2026-08-17T07:59:25.446Z",
+   "lastSuccessfulAt": "2026-08-17T07:59:25.446Z",
    "sourceUrl": "https://vivideo.ai/pricing",
    "plansFound": 2,
    "plansExpected": 2,
@@ -14,8 +14,8 @@
   },
   "heygen": {
    "status": "unchanged",
-   "checkedAt": "2026-08-10T08:50:43.167Z",
-   "lastSuccessfulAt": "2026-08-10T08:50:43.167Z",
+   "checkedAt": "2026-08-17T07:59:25.446Z",
+   "lastSuccessfulAt": "2026-08-17T07:59:25.446Z",
    "sourceUrl": "https://www.heygen.com/pricing",
    "plansFound": 3,
    "plansExpected": 3,
@@ -24,9 +24,9 @@
    "yearlyNote": null
   },
   "invideo": {
-   "status": "unchanged",
-   "checkedAt": "2026-08-10T08:50:43.167Z",
-   "lastSuccessfulAt": "2026-08-10T08:50:43.167Z",
+   "status": "changed",
+   "checkedAt": "2026-08-17T07:59:25.446Z",
+   "lastSuccessfulAt": "2026-08-17T07:59:25.446Z",
    "sourceUrl": "https://invideo.io/pricing/",
    "plansFound": 4,
    "plansExpected": 4,
@@ -36,8 +36,8 @@
   },
   "pollo": {
    "status": "unchanged",
-   "checkedAt": "2026-08-10T08:50:43.167Z",
-   "lastSuccessfulAt": "2026-08-10T08:50:43.167Z",
+   "checkedAt": "2026-08-17T07:59:25.446Z",
+   "lastSuccessfulAt": "2026-08-17T07:59:25.446Z",
    "sourceUrl": "https://pollo.ai/pricing",
    "plansFound": 3,
    "plansExpected": 3,
@@ -47,8 +47,8 @@
   },
   "revid": {
    "status": "unchanged",
-   "checkedAt": "2026-08-10T08:50:43.167Z",
-   "lastSuccessfulAt": "2026-08-10T08:50:43.167Z",
+   "checkedAt": "2026-08-17T07:59:25.446Z",
+   "lastSuccessfulAt": "2026-08-17T07:59:25.446Z",
    "sourceUrl": "https://www.revid.ai/pricing",
    "plansFound": 3,
    "plansExpected": 3,
@@ -58,8 +58,8 @@
   },
   "runway": {
    "status": "unchanged",
-   "checkedAt": "2026-08-10T08:50:43.167Z",
-   "lastSuccessfulAt": "2026-08-10T08:50:43.167Z",
+   "checkedAt": "2026-08-17T07:59:25.446Z",
+   "lastSuccessfulAt": "2026-08-17T07:59:25.446Z",
    "sourceUrl": "https://runway.com/pricing",
    "plansFound": 4,
    "plansExpected": 4,

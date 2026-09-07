@@ -1,8 +1,8 @@
 {
- "checkedAt": "2026-08-24T08:03:27.850Z",
+ "checkedAt": "2026-08-31T15:04:37.591Z",
  "products": {
   "vivideo": {
-   "observedAt": "2026-08-24T08:03:27.850Z",
+   "observedAt": "2026-08-31T15:04:37.591Z",
    "sourceUrl": "https://vivideo.ai/pricing",
    "hash": "cef0f9877ca44864d037174d4d8ba4fcf5ace0321167f0ed44732d04c661db85",
    "hasYearlyView": true,
@@ -36,7 +36,7 @@
    ]
   },
   "heygen": {
-   "observedAt": "2026-08-24T08:03:27.850Z",
+   "observedAt": "2026-08-31T15:04:37.591Z",
    "sourceUrl": "https://www.heygen.com/pricing",
    "hash": "3ab453a7424222a9fb0197f2386d5daa07c2df46236a6e4f28339a22e419a44a",
    "hasYearlyView": true,
@@ -83,7 +83,7 @@
    ]
   },
   "invideo": {
-   "observedAt": "2026-08-24T08:03:27.850Z",
+   "observedAt": "2026-08-31T15:04:37.591Z",
    "sourceUrl": "https://invideo.io/pricing/",
    "hash": "eaf64900c0810fd6c74f7ef9afbb567503f39c75f17f1b048ab382e7600233c0",
    "hasYearlyView": true,
@@ -143,7 +143,7 @@
    ]
   },
   "pollo": {
-   "observedAt": "2026-08-24T08:03:27.850Z",
+   "observedAt": "2026-08-31T15:04:37.591Z",
    "sourceUrl": "https://pollo.ai/pricing",
    "hash": "db4ca4711ce337faa947cf39896284ff82fe3ee6799e3d17fd4ce45856fc87a7",
    "hasYearlyView": false,
@@ -175,7 +175,7 @@
    ]
   },
   "revid": {
-   "observedAt": "2026-08-24T08:03:27.850Z",
+   "observedAt": "2026-08-31T15:04:37.591Z",
    "sourceUrl": "https://www.revid.ai/pricing",
    "hash": "ed5f8f5a14b1cfa6b3293b7b6304863f723e9b6df1d6c46137a7b8660c432f7a",
    "hasYearlyView": true,
@@ -222,7 +222,7 @@
    ]
   },
   "runway": {
-   "observedAt": "2026-08-24T08:03:27.850Z",
+   "observedAt": "2026-08-31T15:04:37.591Z",
    "sourceUrl": "https://runway.com/pricing",
    "hash": "91852b7bd49d6c9b19c96659cfdcced718adcd2ee703420f63810e6cced34d86",
    "hasYearlyView": true,

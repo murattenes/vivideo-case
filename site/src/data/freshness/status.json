@@ -1,10 +1,10 @@
 {
- "checkedAt": "2026-09-07T13:29:34.397Z",
+ "checkedAt": "2026-09-14T14:00:56.439Z",
  "products": {
   "vivideo": {
    "status": "unchanged",
-   "checkedAt": "2026-09-07T13:29:34.397Z",
-   "lastSuccessfulAt": "2026-09-07T13:29:34.397Z",
+   "checkedAt": "2026-09-14T14:00:56.439Z",
+   "lastSuccessfulAt": "2026-09-14T14:00:56.439Z",
    "sourceUrl": "https://vivideo.ai/pricing",
    "plansFound": 2,
    "plansExpected": 2,
@@ -14,8 +14,8 @@
   },
   "heygen": {
    "status": "unchanged",
-   "checkedAt": "2026-09-07T13:29:34.397Z",
-   "lastSuccessfulAt": "2026-09-07T13:29:34.397Z",
+   "checkedAt": "2026-09-14T14:00:56.439Z",
+   "lastSuccessfulAt": "2026-09-14T14:00:56.439Z",
    "sourceUrl": "https://www.heygen.com/pricing",
    "plansFound": 3,
    "plansExpected": 3,
@@ -24,20 +24,16 @@
    "yearlyNote": null
   },
   "invideo": {
-   "status": "unchanged",
-   "checkedAt": "2026-09-07T13:29:34.397Z",
+   "status": "fetch_failed",
+   "checkedAt": "2026-09-14T14:00:56.439Z",
    "lastSuccessfulAt": "2026-09-07T13:29:34.397Z",
    "sourceUrl": "https://invideo.io/pricing/",
-   "plansFound": 4,
-   "plansExpected": 4,
-   "yearlyCaptured": true,
-   "yearlyNotAutomatable": false,
-   "yearlyNote": null
+   "note": "page did not render readable pricing (blocked or changed)"
   },
   "pollo": {
    "status": "changed",
-   "checkedAt": "2026-09-07T13:29:34.397Z",
-   "lastSuccessfulAt": "2026-09-07T13:29:34.397Z",
+   "checkedAt": "2026-09-14T14:00:56.439Z",
+   "lastSuccessfulAt": "2026-09-14T14:00:56.439Z",
    "sourceUrl": "https://pollo.ai/pricing",
    "plansFound": 3,
    "plansExpected": 3,
@@ -47,8 +43,8 @@
   },
   "revid": {
    "status": "unchanged",
-   "checkedAt": "2026-09-07T13:29:34.397Z",
-   "lastSuccessfulAt": "2026-09-07T13:29:34.397Z",
+   "checkedAt": "2026-09-14T14:00:56.439Z",
+   "lastSuccessfulAt": "2026-09-14T14:00:56.439Z",
    "sourceUrl": "https://www.revid.ai/pricing",
    "plansFound": 3,
    "plansExpected": 3,
@@ -58,8 +54,8 @@
   },
   "runway": {
    "status": "unchanged",
-   "checkedAt": "2026-09-07T13:29:34.397Z",
-   "lastSuccessfulAt": "2026-09-07T13:29:34.397Z",
+   "checkedAt": "2026-09-14T14:00:56.439Z",
+   "lastSuccessfulAt": "2026-09-14T14:00:56.439Z",
    "sourceUrl": "https://runway.com/pricing",
    "plansFound": 4,
    "plansExpected": 4,
